@@ -47,7 +47,7 @@ end
 
 
 -- variable grille
-l=8 
+l=12 
 a={}
 for i=0,100//l+1 do
 	a[i]={}
@@ -78,8 +78,8 @@ function TIC()
 	for i=0,100//l+1 do
 		for j=0,100//l+1  do
 			if a[i][j]==0 then
-				rect(60+(l*i),60+(l*j),l,l,12)
-				rectb(10+(l*i),60+(l*j),l,l,13)
+				rect(65+(l*i),10+(l*j),l,l,8)
+				rectb(65+(l*i),10+(l*j),l,l,13)
 			end
 		end
 	end
@@ -88,8 +88,8 @@ function TIC()
   -- config des rectangle en dynamique
   local r = {}
   
-  r.larg = 7
-  r.haut = 7
+  r.larg = 10
+  r.haut = 10
   r.x = math.random(0,55 - r.larg)
   r.y = math.random(0,135 - r.haut)
   r.color = math.random(1,15)
@@ -154,15 +154,13 @@ function TIC()
  	print("Numero " .. listRect[numeroRect].nb
 																		,10,128)
  	rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
- 	rect(mvRect.x-2, mvRect.y-2, mvRect.larg+4, mvRect.haut+4,12)
- 	rect(mvRect.x-1, mvRect.y-1, mvRect.larg+2, mvRect.haut+2,0)
+ 	rectb(mvRect.x-1, mvRect.y-1, mvRect.larg+1, mvRect.haut+1,12)
 		print(mvRect.nb,mvRect.x+1,mvRect.y+1,12)
   	
   -- deplacement rectangle
   if mvRect.nb and Lock then
  		rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
- 		rect(mvRect.x-2, mvRect.y-2, mvRect.larg+4, mvRect.haut+4,0)
- 		rect(mvRect.x-1, mvRect.y-1, mvRect.larg+2, mvRect.haut+2,12)
+ 		rectb(mvRect.x-1, mvRect.y-1, mvRect.larg+1, mvRect.haut+1,0)
 			print(mvRect.nb,mvRect.x+1,mvRect.y+1,0)
  		
 	-- keyboard Haut
@@ -196,11 +194,13 @@ function TIC()
  end  
  
  -- Cadre du puzzle
+ --[[
  rectb(Cadre.x,
  						Cadre.y,
        Cadre.larg,
        Cadre.haut,
        12)
+ --]]
 	
 	-- Menu Debug
 	if about then
@@ -246,7 +246,7 @@ function TIC()
 	end
 	
 	-- touche L
-	if (keyp(12)) then
+	if (keyp(12)) or rb then
 		if Lock == true then
 			Lock = false
 		else
