@@ -7,7 +7,7 @@
 -- script:  lua
 
 -- Variable
-x = 10
+x = 100
 count = 0
 second = 0
 accSecond = 30
@@ -22,8 +22,8 @@ listRect = {}
 Cadre = {}
 	Cadre.x = 60
 	Cadre.y = 10
-	Cadre.larg = 180
-	Cadre.haut = 115
+	Cadre.larg = 70
+	Cadre.haut = 70
 
 -- formule collision
 function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
@@ -46,6 +46,17 @@ function counter()
 end
 
 
+-- variable grille
+l=12 
+a={}
+for i=0,100//l+1 do
+	a[i]={}
+	for j=0,100//l+1 do
+		a[i][j]=0
+	end
+end
+
+
 function TIC()
 
 	cls(0)
@@ -61,6 +72,16 @@ function TIC()
 		end	
 	elseif #listRect == x then
 		startCount = false
+	end
+	
+	-- Afficher grille
+	for i=0,100//l+1 do
+		for j=0,100//l+1  do
+			if a[i][j]==0 then
+				rect(60+(l*i),10+(l*j),l,l,12)
+				rectb(60+(l*i),10+(l*j),l,l,13)
+			end
+		end
 	end
 
  if count > 66 and #listRect < x then
@@ -175,11 +196,13 @@ function TIC()
  end  
  
  -- Cadre du puzzle
+ --[[
  rectb(Cadre.x,
  						Cadre.y,
        Cadre.larg,
        Cadre.haut,
        12)
+ --]]
 	
 	-- Menu Debug
 	if about then

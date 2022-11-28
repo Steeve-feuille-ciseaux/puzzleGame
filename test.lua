@@ -7,18 +7,23 @@
 -- script:  lua
 
 -- Variable
-x = 10
-listRect = {}
+x = 100
 count = 0
 second = 0
 accSecond = 30
 boxC = 0
-numberRect = 0
+numberRect = 1
 numeroRect = 1
 about = false
 startCount = false
 moveRect = false
 Lock = false
+listRect = {}
+Cadre = {}
+	Cadre.x = 60
+	Cadre.y = 10
+	Cadre.larg = 70
+	Cadre.haut = 70
 
 -- formule collision
 function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
@@ -41,6 +46,17 @@ function counter()
 end
 
 
+-- variable grille
+l=8 
+a={}
+for i=0,100//l+1 do
+	a[i]={}
+	for j=0,100//l+1 do
+		a[i][j]=0
+	end
+end
+
+
 function TIC()
 
 	cls(0)
@@ -57,6 +73,16 @@ function TIC()
 	elseif #listRect == x then
 		startCount = false
 	end
+	
+	-- Afficher grille
+	for i=0,100//l+1 do
+		for j=0,100//l+1  do
+			if a[i][j]==0 then
+				rect(60+(l*i),60+(l*j),l,l,12)
+				rectb(10+(l*i),60+(l*j),l,l,13)
+			end
+		end
+	end
 
  if count > 66 and #listRect < x then
   -- config des rectangle en dynamique
@@ -64,7 +90,7 @@ function TIC()
   
   r.larg = 7
   r.haut = 7
-  r.x = math.random(0,239 - r.larg)
+  r.x = math.random(0,55 - r.larg)
   r.y = math.random(0,135 - r.haut)
   r.color = math.random(1,15)
   r.nb = numberRect
@@ -80,14 +106,18 @@ function TIC()
 	  r.haut = 7 	
   end
   
-  -- Trier les rectangle en collision dans la liste
-  local ok = true	
+  -- Collision rectangle
+  local ok = true
+  	
+  -- fonction collision
+  --[[
   for i,v in ipairs(listRect) do
    if CheckCollision(r.x,r.y,r.larg,r.haut,v.x,v.y,v.larg,v.haut) then
     ok = false
     boxC = boxC + 1
    end
   end	
+  --]]
   
   -- ajouter les rectangle dans la liste
   if ok then   
@@ -118,8 +148,7 @@ function TIC()
  if moveRect then
  	local mvRect = listRect[numeroRect]
   
- 	-- Selection rectangle
-  
+ 	-- Selection rectangle  
 		rect(0,116,76,41,12)
  	print("Deplace Rect ",4,118)
  	print("Numero " .. listRect[numeroRect].nb
@@ -136,19 +165,42 @@ function TIC()
  		rect(mvRect.x-1, mvRect.y-1, mvRect.larg+2, mvRect.haut+2,12)
 			print(mvRect.nb,mvRect.x+1,mvRect.y+1,0)
  		
-   if Lock and key((58)) then
-   		mvRect.y = mvRect.y - 1 
-   elseif Lock and key((59)) then
-   		mvRect.y = mvRect.y + 1 
-   elseif Lock and key((60)) then
-   		mvRect.x = mvRect.x - 1 
-   elseif Lock and key((61)) then
+	-- keyboard Haut
+    if Lock and key((58)) then
+        mvRect.y = mvRect.y - 1 
+    end
+    -- keyboard Bas
+    if Lock and key((59)) then
+        mvRect.y = mvRect.y + 1 
+    end
+    -- keyboard Gauche
+    if Lock and key((60)) then
+        mvRect.x = mvRect.x - 1 
+    end
+	-- keyboard Droite
+    if Lock and key((61)) then
    		mvRect.x = mvRect.x + 1 
-			end
+    end
+ 		
+    -- mouse axe Y
+    if Lock and lb then
+    mvRect.y = mY - 7
+    end
+    -- mouse axe X
+    if Lock and lb then
+    mvRect.x = mX - 6
+    end
    
   end
   
  end  
+ 
+ -- Cadre du puzzle
+ rectb(Cadre.x,
+ 						Cadre.y,
+       Cadre.larg,
+       Cadre.haut,
+       12)
 	
 	-- Menu Debug
 	if about then
@@ -166,7 +218,7 @@ function TIC()
 																						.. " rect ",1,31)	
 	end
 	
-	-- Input keyboard
+	-- touche Espace
 	if (keyp(48)) then
 		if about == true then
 			about = false
@@ -174,7 +226,8 @@ function TIC()
 			about = true
 		end
 	end		
-		
+	
+	-- touche M
 	if (keyp(13)) then
 		if moveRect == true then
 			moveRect = false
@@ -183,6 +236,7 @@ function TIC()
 		end
 	end
 	
+	-- touche gauche/droite
 	if Lock == false then
 		if (keyp(60)) and numeroRect > 1 then
 			numeroRect = numeroRect - 1
@@ -191,6 +245,7 @@ function TIC()
 		end
 	end
 	
+	-- touche L
 	if (keyp(12)) then
 		if Lock == true then
 			Lock = false
@@ -199,4 +254,6 @@ function TIC()
 		end
 	end
 	
+    -- Extension souris
+    mX,mY,lb,mb,rb= mouse()
 end 
