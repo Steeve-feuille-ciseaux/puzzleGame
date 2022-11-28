@@ -97,15 +97,15 @@ function TIC()
   r.nb = numberRect
   
   -- ajustement taille rect / number
-  if numberRect >= 10  then
-	  r.larg = 13
-	  r.haut = 7
+  --[[
+  if numberRect < 10  then
+			
 		end	
 				
-		if numberRect >= 100 then 
-	  r.larg = 18
-	  r.haut = 7 	
+		if numberRect >= 10 then 
+			
   end
+  --]]
   
   -- Collision rectangle
   local ok = true
@@ -132,10 +132,19 @@ function TIC()
 	for i,v in ipairs(listRect) do
 		rect(v.x, v.y, v.larg, v.haut, v.color)
 		-- gestion numero et couleur
-		if v.color == 8 or v.color == 15 then
-			print(v.nb,v.x+2,v.y+1,12)
-		else
-			print(v.nb,v.x+1,v.y+1)
+  if numberRect < 10  then
+			if v.color == 8 or v.color == 15 then
+				print(v.nb,v.x+2,v.y+1,12)
+			else
+				print(v.nb,v.x+1,v.y+1)
+			end
+		end
+		if numberRect >= 10 then 
+			if v.color == 8 or v.color == 15 then
+				print(v.nb,v.x+2,v.y+1,12)
+			else
+				print(v.nb,v.x+1,v.y+1)
+			end
 		end
 	end
  

@@ -1,3 +1,4 @@
-v0.0.01 -> add move rectangle with mouse
-v0.1.00 -> add grid on dashboard
-v0.2.00 -> add size piece
+v0.00.1 -> add move rectangle with mouse
+v0.01.0 -> add grid on dashboard
+v0.02.0 -> add size piece
+v0.03.0 -> fix number position on piece
