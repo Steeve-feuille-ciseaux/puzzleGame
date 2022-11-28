@@ -7,6 +7,7 @@
 -- script:  lua
 
 -- Variable
+pieceS = 12
 x = 100
 count = 0
 second = 0
@@ -88,8 +89,8 @@ function TIC()
   -- config des rectangle en dynamique
   local r = {}
   
-  r.larg = 10
-  r.haut = 10
+  r.larg = pieceS
+  r.haut = pieceS
   r.x = math.random(0,55 - r.larg)
   r.y = math.random(0,135 - r.haut)
   r.color = math.random(1,15)
@@ -132,7 +133,7 @@ function TIC()
 		rect(v.x, v.y, v.larg, v.haut, v.color)
 		-- gestion numero et couleur
 		if v.color == 8 or v.color == 15 then
-			print(v.nb,v.x+1,v.y+1,12)
+			print(v.nb,v.x+2,v.y+1,12)
 		else
 			print(v.nb,v.x+1,v.y+1)
 		end
@@ -154,14 +155,14 @@ function TIC()
  	print("Numero " .. listRect[numeroRect].nb
 																		,10,128)
  	rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
- 	rectb(mvRect.x-1, mvRect.y-1, mvRect.larg+1, mvRect.haut+1,12)
-		print(mvRect.nb,mvRect.x+1,mvRect.y+1,12)
+ 	rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
+		print(mvRect.nb,mvRect.x+1,mvRect.y+1,0)
   	
   -- deplacement rectangle
   if mvRect.nb and Lock then
  		rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
- 		rectb(mvRect.x-1, mvRect.y-1, mvRect.larg+1, mvRect.haut+1,0)
-			print(mvRect.nb,mvRect.x+1,mvRect.y+1,0)
+ 		rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,12)
+			print(mvRect.nb,mvRect.x+1,mvRect.y+1,12)
  		
 	-- keyboard Haut
     if Lock and key((58)) then
