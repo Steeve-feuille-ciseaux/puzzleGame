@@ -85,10 +85,10 @@ function TIC()
 	for i=0,100//l+1 do
 		for j=0,100//l+1  do
 			if a[i][j]==0 then
-				rect(65+(l*i),10+(l*j),l,l,8)
-				rectb(65+(l*i),10+(l*j),l,l,13)
+				rect(58+(l*i),10+(l*j),l,l,8)
+				rectb(58+(l*i),10+(l*j),l,l,13)
 					for p=0,100//l+1  do
-						rect(70+(l*i),15+(l*p),2,2,13)
+						rect(62+(l*i),15+(l*p),2,2,13)
 					end
 			end
 		end
@@ -105,7 +105,7 @@ function TIC()
   r.color = math.random(1,15)
   r.nb = numberRect
   
-  -- ajustement taille rect / number
+  -- ajustement taille piece / number
   if numberRect >= 100  then
 	  r.larg = pieceS + 6
 	  r.haut = pieceS
@@ -170,7 +170,7 @@ function TIC()
  
  if flash >= 1 then				
 		if countM < 30 and readyMessage then	
-			print("PLACER LES PIECES",78,2)
+			print("PLACER LES PIECES",70,2)
 		elseif countM == 40 then
 			readyMessage = false				
 		elseif countM == 45 then
@@ -180,24 +180,26 @@ function TIC()
 		elseif flash == 4 then
 			stop = true
 			readyMessage = false
-		 print("PLACER LES PIECES",78,2)
+		 print("PLACER LES PIECES",70,2)
+			moveRect = true
 		end
 	end	
  
  -- menu deplacement Rectangle
  if moveRect then
  	local mvRect = listRect[numeroRect]
-  
- 	-- Selection rectangle  
-		if mvRect.nb >= 100  then
-			rect(0,116,65,48,12)
-		else
-			rect(0,116,60,41,12)
-		end
-		
-	 	print("Select ",12,118)
-	 	print("piece n' " .. listRect[numeroRect].nb
-																			,3,128)
+			
+			rect(180,2,60,30,12)
+	 	print("Select ",192,4)
+	 	print("manuel ",192,14)
+	 	-- Selection rectangle  
+			if mvRect.nb >= 100  then
+		 	print("piece n' " .. listRect[numeroRect].nb
+																				,180,24)
+			else
+		 	print("piece n' " .. listRect[numeroRect].nb
+																				,183,24)
+			end														
 	 	rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
 	 	rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
   
@@ -282,6 +284,7 @@ function TIC()
 	end		
 	
 	-- touche M
+	--[[
 	if (keyp(13)) then
 		if moveRect == true then
 			moveRect = false
@@ -289,6 +292,7 @@ function TIC()
 			moveRect = true
 		end
 	end
+	--]]
 	
 	-- touche gauche/droite
 	if Lock == false then
@@ -311,5 +315,5 @@ function TIC()
 	end
 	
     -- Extension souris
-    mX,mY,lb,mb,rb= mouse()
+    mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 end 
