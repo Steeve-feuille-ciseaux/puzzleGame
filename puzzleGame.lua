@@ -47,16 +47,18 @@ function counter()
 end
 
 
--- variable grille
+-- variable grid 
 l=12 
 a={}
 for i=0,100//l+1 do
 	a[i]={}
 	for j=0,100//l+1 do
 		a[i][j]=0
+			for p=0,100//l+1 do
+				a[i][p]=0
+			end
 	end
 end
-
 
 function TIC()
 
@@ -75,16 +77,19 @@ function TIC()
 		startCount = false
 	end
 	
-	-- Afficher grille
+	-- Afficher grid
 	for i=0,100//l+1 do
 		for j=0,100//l+1  do
 			if a[i][j]==0 then
 				rect(65+(l*i),10+(l*j),l,l,8)
 				rectb(65+(l*i),10+(l*j),l,l,13)
+					for p=0,100//l+1  do
+						rect(70+(l*i),15+(l*p),2,2,13)
+					end
 			end
 		end
 	end
-
+	
  if count > 66 and #listRect < x then
   -- config des rectangle en dynamique
   local r = {}
