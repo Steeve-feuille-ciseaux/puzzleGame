@@ -97,15 +97,10 @@ function TIC()
   r.nb = numberRect
   
   -- ajustement taille rect / number
-  --[[
-  if numberRect < 10  then
-			
+  if numberRect >= 100  then
+	  r.larg = pieceS + 6
+	  r.haut = pieceS
 		end	
-				
-		if numberRect >= 10 then 
-			
-  end
-  --]]
   
   -- Collision rectangle
   local ok = true
@@ -159,10 +154,14 @@ function TIC()
  	local mvRect = listRect[numeroRect]
   
  	-- Selection rectangle  
-		rect(0,116,76,41,12)
- 	print("Deplace Rect ",4,118)
- 	print("Numero " .. listRect[numeroRect].nb
-																		,10,128)
+		if mvRect.nb == 100  then
+			rect(0,116,65,48,12)
+		else
+			rect(0,116,60,41,12)
+		end
+ 	print("Select ",12,118)
+ 	print("piece n' " .. listRect[numeroRect].nb
+																		,3,128)
  	rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
  	rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
   if mvRect.nb < 10  then
