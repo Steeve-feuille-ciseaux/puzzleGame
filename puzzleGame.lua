@@ -9,7 +9,7 @@
 -- Variable
 countM = 0
 pieceS = 12
-x = 10
+x = 100
 count = 0
 second = 0
 accSecond = 30
@@ -154,18 +154,18 @@ function TIC()
  
  -- Message fin de tache
  
+ if stop == false then
+ 	countM = countM + 1
+ end
+ 
  if #listRect == x and flash == 0 then
 		rect(80,50,76,21,12)
 		print("PUZZLE PRET",87,58)
-		if countM > 120 then
+		if countM > 400 then
 			flash = flash + 1
 			readyMessage = true
 			countM = 0
 		end
- end
- 
- if stop == false then
- 	countM = countM + 1
  end
  
  if flash >= 1 then				
@@ -189,21 +189,24 @@ function TIC()
  	local mvRect = listRect[numeroRect]
   
  	-- Selection rectangle  
-		if mvRect.nb == 100  then
+		if mvRect.nb >= 100  then
 			rect(0,116,65,48,12)
 		else
 			rect(0,116,60,41,12)
 		end
- 	print("Select ",12,118)
- 	print("piece n' " .. listRect[numeroRect].nb
-																		,3,128)
- 	rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
- 	rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
+		
+	 	print("Select ",12,118)
+	 	print("piece n' " .. listRect[numeroRect].nb
+																			,3,128)
+	 	rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
+	 	rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
+  
   if mvRect.nb < 10  then
 			print(mvRect.nb,mvRect.x+4,mvRect.y+3,0)
   else
  		print(mvRect.nb,mvRect.x+1,mvRect.y+3,0)
   end	
+  
   -- deplacement rectangle
   if mvRect.nb and Lock then
  		rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
@@ -215,30 +218,30 @@ function TIC()
  	 end
    
 	-- keyboard Haut
-    if Lock and key((58)) then
-        mvRect.y = mvRect.y - 1 
-    end
-    -- keyboard Bas
-    if Lock and key((59)) then
-        mvRect.y = mvRect.y + 1 
-    end
-    -- keyboard Gauche
-    if Lock and key((60)) then
-        mvRect.x = mvRect.x - 1 
-    end
+   if Lock and key((58)) then
+       mvRect.y = mvRect.y - 1 
+   end
+ -- keyboard Bas
+   if Lock and key((59)) then
+       mvRect.y = mvRect.y + 1 
+   end
+ -- keyboard Gauche
+   if Lock and key((60)) then
+       mvRect.x = mvRect.x - 1 
+   end
 	-- keyboard Droite
-    if Lock and key((61)) then
-   		mvRect.x = mvRect.x + 1 
-    end
+   if Lock and key((61)) then
+  		mvRect.x = mvRect.x + 1 
+   end
  		
-    -- mouse axe Y
-    if Lock and lb then
-    mvRect.y = mY - 7
-    end
-    -- mouse axe X
-    if Lock and lb then
-    mvRect.x = mX - 6
-    end
+ -- mouse axe Y
+   if Lock and lb then
+   mvRect.y = mY - 7
+   end
+ -- mouse axe X
+   if Lock and lb then
+   mvRect.x = mX - 6
+   end
    
   end
   

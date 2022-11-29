@@ -8,5 +8,6 @@ v0.06.0 -> add point in every rectangle middle on grid
 v0.07.0 -> message animation ready then start
 v0.07.1 -> message animation ready then start 1erPolish
 v0.07.2 -> message animation ready then start 2ndPolish
+v0.07.3-> message animation ready then start 3rdPolish need to fix timing => variable countM
 v0.xx.0 -> next fix size piece number 100
 v0.xx.0 -> message ready for then start
