@@ -7,8 +7,9 @@
 -- script:  lua
 
 -- Variable
+countM = 0
 pieceS = 12
-x = 100
+x = 10
 count = 0
 second = 0
 accSecond = 30
@@ -19,6 +20,7 @@ about = false
 startCount = false
 moveRect = false
 Lock = false
+readyMessage = true
 listRect = {}
 Cadre = {}
 	Cadre.x = 60
@@ -47,16 +49,18 @@ function counter()
 end
 
 
--- variable grille
+-- variable grid 
 l=12 
 a={}
 for i=0,100//l+1 do
 	a[i]={}
 	for j=0,100//l+1 do
 		a[i][j]=0
+			for p=0,100//l+1 do
+				a[i][p]=0
+			end
 	end
 end
-
 
 function TIC()
 
@@ -75,16 +79,19 @@ function TIC()
 		startCount = false
 	end
 	
-	-- Afficher grille
+	-- Afficher grid
 	for i=0,100//l+1 do
 		for j=0,100//l+1  do
 			if a[i][j]==0 then
 				rect(65+(l*i),10+(l*j),l,l,8)
 				rectb(65+(l*i),10+(l*j),l,l,13)
+					for p=0,100//l+1  do
+						rect(70+(l*i),15+(l*p),2,2,13)
+					end
 			end
 		end
 	end
-
+	
  if count > 66 and #listRect < x then
   -- config des rectangle en dynamique
   local r = {}
@@ -97,15 +104,10 @@ function TIC()
   r.nb = numberRect
   
   -- ajustement taille rect / number
-  --[[
-  if numberRect < 10  then
-			
+  if numberRect >= 100  then
+	  r.larg = pieceS + 6
+	  r.haut = pieceS
 		end	
-				
-		if numberRect >= 10 then 
-			
-  end
-  --]]
   
   -- Collision rectangle
   local ok = true
@@ -132,26 +134,42 @@ function TIC()
 	for i,v in ipairs(listRect) do
 		rect(v.x, v.y, v.larg, v.haut, v.color)
 		-- gestion numero et couleur
-  if numberRect < 10  then
+  if v.nb < 10  then
 			if v.color == 8 or v.color == 15 then
-				print(v.nb,v.x+2,v.y+1,12)
+				print(v.nb,v.x+4,v.y+3,12)
 			else
-				print(v.nb,v.x+1,v.y+1)
+				print(v.nb,v.x+4,v.y+3)
 			end
 		end
-		if numberRect >= 10 then 
+		if v.nb >= 10 then 
 			if v.color == 8 or v.color == 15 then
-				print(v.nb,v.x+2,v.y+1,12)
+				print(v.nb,v.x+1,v.y+3,12)
 			else
-				print(v.nb,v.x+1,v.y+1)
+				print(v.nb,v.x+1,v.y+3)
 			end
 		end
 	end
  
  -- Message fin de tache
- if #listRect == x and moveRect == false then
-		rect(80,50,76,21,12)
- 	print("TACHE TERMINE",82,58)
+ countM = countM + 1
+ if #listRect == x then	
+ print("valeur j : " .. tostring(readyMessage)
+ 																				.. countM
+                     ,82,2)  
+
+  while stopM >= 2 do
+  	local stopM = 0
+			if countM < 66 and readyMessage then	
+				rect(80,50,76,21,12)
+				print("PUZZLE PRET" .. i,82,58)				
+			elseif countM == 66 then
+				readyMessage = false				
+			elseif countM == 86 then
+				readyMessage = true
+				countM = 0
+				stopM = stopM + 1
+			end
+		end	
  end
  
  -- menu deplacement Rectangle
@@ -159,20 +177,31 @@ function TIC()
  	local mvRect = listRect[numeroRect]
   
  	-- Selection rectangle  
-		rect(0,116,76,41,12)
- 	print("Deplace Rect ",4,118)
- 	print("Numero " .. listRect[numeroRect].nb
-																		,10,128)
+		if mvRect.nb == 100  then
+			rect(0,116,65,48,12)
+		else
+			rect(0,116,60,41,12)
+		end
+ 	print("Select ",12,118)
+ 	print("piece n' " .. listRect[numeroRect].nb
+																		,3,128)
  	rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
  	rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
-		print(mvRect.nb,mvRect.x+1,mvRect.y+1,0)
-  	
+  if mvRect.nb < 10  then
+			print(mvRect.nb,mvRect.x+4,mvRect.y+3,0)
+  else
+ 		print(mvRect.nb,mvRect.x+1,mvRect.y+3,0)
+  end	
   -- deplacement rectangle
   if mvRect.nb and Lock then
  		rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
  		rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,12)
-			print(mvRect.nb,mvRect.x+1,mvRect.y+1,12)
- 		
+		 if mvRect.nb < 10  then
+				print(mvRect.nb,mvRect.x+4,mvRect.y+3,12)
+ 		else
+  		print(mvRect.nb,mvRect.x+1,mvRect.y+3,12)
+ 	 end
+   
 	-- keyboard Haut
     if Lock and key((58)) then
         mvRect.y = mvRect.y - 1 
@@ -248,9 +277,11 @@ function TIC()
 	
 	-- touche gauche/droite
 	if Lock == false then
-		if (keyp(60)) and numeroRect > 1 then
+		if (keyp(60)) and numeroRect > 1
+		or (key(59)) and numeroRect > 1 then
 			numeroRect = numeroRect - 1
-		elseif (keyp(61	)) and numeroRect < #listRect then
+		elseif (keyp(61	)) and numeroRect < #listRect
+		or (key(58)) and numeroRect < #listRect then
 			numeroRect = numeroRect + 1
 		end
 	end

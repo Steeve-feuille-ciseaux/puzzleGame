@@ -7,18 +7,21 @@
 -- script:  lua
 
 -- Variable
+countM = 0
 pieceS = 12
-x = 100
+x = 10
 count = 0
 second = 0
 accSecond = 30
 boxC = 0
 numberRect = 1
 numeroRect = 1
+flash = 1
 about = false
 startCount = false
 moveRect = false
 Lock = false
+readyMessage = true
 listRect = {}
 Cadre = {}
 	Cadre.x = 60
@@ -149,9 +152,24 @@ function TIC()
 	end
  
  -- Message fin de tache
- if #listRect == x and moveRect == false then
-		rect(80,50,76,21,12)
- 	print("TACHE TERMINE",82,58)
+ countM = countM + 1
+ if #listRect == x then	
+ print("valeur j : " .. tostring(readyMessage)
+ 																				.. countM
+                     ,82,2)
+  if flash <= 3 then
+			if countM < 66 and readyMessage then	
+				rect(80,50,76,21,12)
+				print("PUZZLE PRET",82,58)				
+			elseif countM == 66 then
+				readyMessage = false				
+			elseif countM == 86 then
+				readyMessage = true
+				countM = 0
+				flash = flash + 1
+			end
+		end
+		
  end
  
  -- menu deplacement Rectangle
