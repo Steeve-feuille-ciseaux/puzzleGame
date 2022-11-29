@@ -254,9 +254,11 @@ function TIC()
 	
 	-- touche gauche/droite
 	if Lock == false then
-		if (keyp(60)) and numeroRect > 1 then
+		if (keyp(60)) and numeroRect > 1
+		or (key(59)) and numeroRect > 1 then
 			numeroRect = numeroRect - 1
-		elseif (keyp(61	)) and numeroRect < #listRect then
+		elseif (keyp(61	)) and numeroRect < #listRect
+		or (key(58)) and numeroRect < #listRect then
 			numeroRect = numeroRect + 1
 		end
 	end

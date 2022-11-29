@@ -4,3 +4,4 @@ v0.02.0 -> add size piece
 v0.03.0 -> fix number position on piece
 v0.04.0 -> change message select piece + fix size number 100
 v0.05.0 -> next fix size piece number 100
+v0.06.0 -> next fix size piece number 100
