@@ -16,12 +16,13 @@ accSecond = 30
 boxC = 0
 numberRect = 1
 numeroRect = 1
-flash = 1
+flash = 0
 about = false
 startCount = false
 moveRect = false
 Lock = false
-readyMessage = true
+readyMessage = false
+stop = false
 listRect = {}
 Cadre = {}
 	Cadre.x = 60
@@ -152,25 +153,35 @@ function TIC()
 	end
  
  -- Message fin de tache
- countM = countM + 1
- if #listRect == x then	
- print("valeur j : " .. tostring(readyMessage)
- 																				.. countM
-                     ,82,2)
-  if flash <= 3 then
-			if countM < 66 and readyMessage then	
-				rect(80,50,76,21,12)
-				print("PUZZLE PRET",82,58)				
-			elseif countM == 66 then
-				readyMessage = false				
-			elseif countM == 86 then
-				readyMessage = true
-				countM = 0
-				flash = flash + 1
-			end
+ 
+ if #listRect == x and flash == 0 then
+		rect(80,50,76,21,12)
+		print("PUZZLE PRET",82,58)
+		if countM > 100 then
+			flash = flash + 1
+			readyMessage = true
 		end
-		
  end
+ 
+ if stop == false then
+ 	countM = countM + 1
+ end
+ 
+ if flash >= 1 then				
+		if countM < 100 and readyMessage then	
+			print("PLACER LES PIECES",78,2)
+		elseif countM == 106 then
+			readyMessage = false				
+		elseif countM == 126 then
+			readyMessage = true
+			countM = 0
+			flash = flash + 1
+		elseif flash == 4 then
+			stop = true
+			readyMessage = false
+		 print("PLACER LES PIECES",78,2)
+		end
+	end	
  
  -- menu deplacement Rectangle
  if moveRect then
