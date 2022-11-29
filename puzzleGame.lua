@@ -156,10 +156,11 @@ function TIC()
  
  if #listRect == x and flash == 0 then
 		rect(80,50,76,21,12)
-		print("PUZZLE PRET",82,58)
-		if countM > 100 then
+		print("PUZZLE PRET",87,58)
+		if countM > 120 then
 			flash = flash + 1
 			readyMessage = true
+			countM = 0
 		end
  end
  
@@ -168,11 +169,11 @@ function TIC()
  end
  
  if flash >= 1 then				
-		if countM < 100 and readyMessage then	
+		if countM < 30 and readyMessage then	
 			print("PLACER LES PIECES",78,2)
-		elseif countM == 106 then
+		elseif countM == 40 then
 			readyMessage = false				
-		elseif countM == 126 then
+		elseif countM == 45 then
 			readyMessage = true
 			countM = 0
 			flash = flash + 1

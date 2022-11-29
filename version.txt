@@ -6,6 +6,7 @@ v0.04.0 -> change message select piece + fix size number 100
 v0.05.0 -> add better select piece with arrow up & down
 v0.06.0 -> add point in every rectangle middle on grid
 v0.07.0 -> message animation ready then start
-v0.07.1 -> message animation ready then start (polish)
+v0.07.1 -> message animation ready then start 1erPolish
+v0.07.2 -> message animation ready then start 2ndPolish
 v0.xx.0 -> next fix size piece number 100
 v0.xx.0 -> message ready for then start
