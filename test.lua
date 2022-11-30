@@ -9,18 +9,21 @@
 -- Variable
 countM = 0
 pieceS = 12
-x = 10
+x = 100
 count = 0
 second = 0
 accSecond = 30
 boxC = 0
 numberRect = 1
 numeroRect = 1
+flash = 0
 about = false
 startCount = false
 moveRect = false
 Lock = false
-readyMessage = true
+readyMessage = false
+stop = false
+placePiece = false
 listRect = {}
 Cadre = {}
 	Cadre.x = 60
@@ -83,14 +86,27 @@ function TIC()
 	for i=0,100//l+1 do
 		for j=0,100//l+1  do
 			if a[i][j]==0 then
-				rect(65+(l*i),10+(l*j),l,l,8)
-				rectb(65+(l*i),10+(l*j),l,l,13)
+				rect(58+(l*i),10+(l*j),l,l,8)
+				rectb(58+(l*i),10+(l*j),l,l,13)
 					for p=0,100//l+1  do
-						rect(70+(l*i),15+(l*p),2,2,13)
+						rect(62+(l*i),15+(l*p),2,2,13)
 					end
+			elseif a[i][j]==1 then
+				rect(58+(l*i),10+(l*j),l,l,10)
+				rectb(58+(l*i),10+(l*j),l,l,9)
 			end
 		end
 	end
+	
+	-- grid soluce
+	if lb then
+		if a[mx//l][my//l]==0 then
+			a[mx//l][my//l]==1
+		elseif	a[mx//l][my//l]==1 then
+				a[mx//l][my//l]==0
+		end
+	end
+	
 	
  if count > 66 and #listRect < x then
   -- config des rectangle en dynamique
@@ -103,7 +119,7 @@ function TIC()
   r.color = math.random(1,15)
   r.nb = numberRect
   
-  -- ajustement taille rect / number
+  -- ajustement taille piece / number
   if numberRect >= 100  then
 	  r.larg = pieceS + 6
 	  r.haut = pieceS
@@ -151,47 +167,62 @@ function TIC()
 	end
  
  -- Message fin de tache
- countM = countM + 1
- if #listRect == x then	
- print("valeur j : " .. tostring(readyMessage)
- 																				.. countM
-                     ,82,2)  
-
-  while stopM >= 2 do
-  	local stopM = 0
-			if countM < 66 and readyMessage then	
-				rect(80,50,76,21,12)
-				print("PUZZLE PRET" .. i,82,58)				
-			elseif countM == 66 then
-				readyMessage = false				
-			elseif countM == 86 then
-				readyMessage = true
-				countM = 0
-				stopM = stopM + 1
-			end
-		end	
+ 
+ if stop == false then
+ 	countM = countM + 1
  end
+ 
+ if #listRect == x and flash == 0 then
+		rect(80,50,76,21,12)
+		print("PUZZLE PRET",87,58)
+		if countM > 400 then
+			flash = flash + 1
+			readyMessage = true
+			countM = 0
+		end
+ end
+ 
+ if flash >= 1 then				
+		if countM < 30 and readyMessage then	
+			print("PLACER LES PIECES",70,2)
+		elseif countM == 40 then
+			readyMessage = false				
+		elseif countM == 45 then
+			readyMessage = true
+			countM = 0
+			flash = flash + 1
+		elseif flash == 4 then
+			stop = true
+			readyMessage = false
+		 print("PLACER LES PIECES",70,2)
+			moveRect = true
+		end
+	end	
  
  -- menu deplacement Rectangle
  if moveRect then
  	local mvRect = listRect[numeroRect]
+			
+			rect(180,2,60,30,12)
+	 	print("Select ",192,4)
+	 	print("manuel ",192,14)
+	 	-- Selection rectangle  
+			if mvRect.nb >= 100  then
+		 	print("piece n' " .. listRect[numeroRect].nb
+																				,180,24)
+			else
+		 	print("piece n' " .. listRect[numeroRect].nb
+																				,183,24)
+			end														
+	 	rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
+	 	rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
   
- 	-- Selection rectangle  
-		if mvRect.nb == 100  then
-			rect(0,116,65,48,12)
-		else
-			rect(0,116,60,41,12)
-		end
- 	print("Select ",12,118)
- 	print("piece n' " .. listRect[numeroRect].nb
-																		,3,128)
- 	rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
- 	rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
   if mvRect.nb < 10  then
 			print(mvRect.nb,mvRect.x+4,mvRect.y+3,0)
   else
  		print(mvRect.nb,mvRect.x+1,mvRect.y+3,0)
   end	
+  
   -- deplacement rectangle
   if mvRect.nb and Lock then
  		rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
@@ -203,30 +234,30 @@ function TIC()
  	 end
    
 	-- keyboard Haut
-    if Lock and key((58)) then
-        mvRect.y = mvRect.y - 1 
-    end
-    -- keyboard Bas
-    if Lock and key((59)) then
-        mvRect.y = mvRect.y + 1 
-    end
-    -- keyboard Gauche
-    if Lock and key((60)) then
-        mvRect.x = mvRect.x - 1 
-    end
+   if Lock and key((58)) then
+       mvRect.y = mvRect.y - 1 
+   end
+ -- keyboard Bas
+   if Lock and key((59)) then
+       mvRect.y = mvRect.y + 1 
+   end
+ -- keyboard Gauche
+   if Lock and key((60)) then
+       mvRect.x = mvRect.x - 1 
+   end
 	-- keyboard Droite
-    if Lock and key((61)) then
-   		mvRect.x = mvRect.x + 1 
-    end
+   if Lock and key((61)) then
+  		mvRect.x = mvRect.x + 1 
+   end
  		
-    -- mouse axe Y
-    if Lock and lb then
-    mvRect.y = mY - 7
-    end
-    -- mouse axe X
-    if Lock and lb then
-    mvRect.x = mX - 6
-    end
+ -- mouse axe Y
+   if Lock and lb then
+   mvRect.y = mY - 7
+   end
+ -- mouse axe X
+   if Lock and lb then
+   mvRect.x = mX - 6
+   end
    
   end
   
@@ -267,6 +298,7 @@ function TIC()
 	end		
 	
 	-- touche M
+	--[[
 	if (keyp(13)) then
 		if moveRect == true then
 			moveRect = false
@@ -274,6 +306,7 @@ function TIC()
 			moveRect = true
 		end
 	end
+	--]]
 	
 	-- touche gauche/droite
 	if Lock == false then
@@ -296,5 +329,5 @@ function TIC()
 	end
 	
     -- Extension souris
-    mX,mY,lb,mb,rb= mouse()
+    mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 end 

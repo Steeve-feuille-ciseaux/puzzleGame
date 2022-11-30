@@ -90,6 +90,9 @@ function TIC()
 					for p=0,100//l+1  do
 						rect(62+(l*i),15+(l*p),2,2,13)
 					end
+			elseif a[i][j]==1 then
+				rect(58+(l*i),10+(l*j),l,l,8)
+				rectb(58+(l*i),10+(l*j),l,l,13)
 			end
 		end
 	end
