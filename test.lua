@@ -81,28 +81,78 @@ mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 			count = count + 1 * accSecond
 			counter()
 		end	
-	elseif #listRect == x then
-		startCount = false
-	end
+ elseif #listRect == x then
+	startCount = false
+ end
+	
+	if count > 66 and #listRect < x then
+	 -- config des rectangle en dynamique
+	 local r = {}
+	 
+	 r.larg = pieceS
+	 r.haut = pieceS
+	 r.x = math.random(0,55 - r.larg)
+	 r.y = math.random(0,135 - r.haut)
+	 r.color = math.random(1,15)
+	 r.nb = numberRect
+	 
+	  -- ajustement taille piece / number
+	  if numberRect >= 100  then
+		 r.larg = pieceS + 6
+		 r.haut = pieceS
+	  end	
+	 
+	 -- Collision rectangle
+	 local ok = true
+		 
+	 -- fonction collision
+	 --[[
+	 for i,v in ipairs(listRect) do
+	  if CheckCollision(r.x,r.y,r.larg,r.haut,v.x,v.y,v.larg,v.haut) then
+	   ok = false
+	   boxC = boxC + 1
+	  end
+	 end	
+	 --]]
+	 
+	 -- ajouter les rectangle dans la liste
+	 if ok then   
+	  numberRect = numberRect + 1
+	  table.insert(listRect, r)
+	 end
+	 count = 0
+	end 
 	
 	-- Afficher grid
 	for i=0,100//l+1 do
+		local mvRect = listRect[numeroRect]
+		if Lock and mX >= 60 and mX <= 175
+		        and mY >= 12 and mY <= 130  then
+				rectb((l*(mX//l)-2),(l*(mY//l)-2),l,l,5)
+		end
+		if Lock and lb == false and mvRect.x >= 54 and mvRect.x <= 173
+		        and mvRect.y >= 5 and mvRect.y <= 123  then
+				rectb((l*(mX//l)-2),(l*(mY//l)-2),l,l,5)
+	
+				print("pieceX : ".. tostring(mvRect.x),180,80)
+				print("pieceY : ".. tostring(mvRect.y),180,90)
+		end
 		for j=0,100//l+1  do
 			if a[i][j]==0 then
 				rect(58+(l*i),10+(l*j),l,l,8)
 				rectb(58+(l*i),10+(l*j),l,l,13)
 					for p=0,100//l+1  do
-						rect(62+(l*i),15+(l*p),2,2,13)
+						rect(63+(l*i),15+(l*p),2,2,13)
 					end
 			elseif a[i][j]==1 then
 				rect(58+(l*i),10+(l*j),l,l,10)
 				rectb(58+(l*i),10+(l*j),l,l,9)
 			end
 		end
-		rectb(l*(mX//l),l*(mY//l),l,l,5)
 	end
 	
 	-- grid soluce
+	--[[
 	if lb then
 		if a[mX//l][mY//l]==0 then
 			a[mX//l][mY//l]=1
@@ -110,45 +160,7 @@ mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 				a[mX//l][mY//l]=0
 		end
 	end
-	
-	
- if count > 66 and #listRect < x then
-  -- config des rectangle en dynamique
-  local r = {}
-  
-  r.larg = pieceS
-  r.haut = pieceS
-  r.x = math.random(0,55 - r.larg)
-  r.y = math.random(0,135 - r.haut)
-  r.color = math.random(1,15)
-  r.nb = numberRect
-  
-  -- ajustement taille piece / number
-  if numberRect >= 100  then
-	  r.larg = pieceS + 6
-	  r.haut = pieceS
-		end	
-  
-  -- Collision rectangle
-  local ok = true
-  	
-  -- fonction collision
-  --[[
-  for i,v in ipairs(listRect) do
-   if CheckCollision(r.x,r.y,r.larg,r.haut,v.x,v.y,v.larg,v.haut) then
-    ok = false
-    boxC = boxC + 1
-   end
-  end	
-  --]]
-  
-  -- ajouter les rectangle dans la liste
-  if ok then   
-   numberRect = numberRect + 1
-   table.insert(listRect, r)
-  end
-  count = 0
- end 
+	--]]
  
 	-- Afficher les rectangle
 	for i,v in ipairs(listRect) do
@@ -254,12 +266,9 @@ mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
   		mvRect.x = mvRect.x + 1 
    end
  		
- -- mouse axe Y
+ -- déplacement mouse 
    if Lock and lb then
    mvRect.y = mY - 7
-   end
- -- mouse axe X
-   if Lock and lb then
    mvRect.x = mX - 6
    end
    

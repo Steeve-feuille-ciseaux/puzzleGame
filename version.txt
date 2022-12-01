@@ -12,5 +12,6 @@ v0.07.3-> message animation ready then start 3rdPolish need to fix timing => var
 v0.08.0 -> move interface manual selection piece
 v0.09.0 -> add focus green on grid when a piece is take
 v0.10.0 -> polish writing code control piece with mouse
+v0.11.0 -> polish point's case position on grid
 v0.xx.0 -> next fix size piece number 100
 v0.xx.0 -> message ready for then start
