@@ -23,6 +23,7 @@ moveRect = false
 Lock = false
 readyMessage = false
 stop = false
+placePiece = false
 listRect = {}
 Cadre = {}
 	Cadre.x = 60
@@ -66,7 +67,13 @@ end
 
 function TIC()
 
+-- Extension souris
+mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
+
 	cls(0)
+	
+	print("mX : ".. tostring(mX),190,80)
+	print("mY : ".. tostring(mY),190,90)
 		
  -- Counter
  if #listRect < x  then  
@@ -91,11 +98,26 @@ function TIC()
 						rect(62+(l*i),15+(l*p),2,2,13)
 					end
 			elseif a[i][j]==1 then
-				rect(58+(l*i),10+(l*j),l,l,8)
-				rectb(58+(l*i),10+(l*j),l,l,13)
+				rect(58+(l*i),10+(l*j),l,l,10)
+				rectb(58+(l*i),10+(l*j),l,l,9)
 			end
 		end
+		if Lock and mX >= 60 and mX <= 175
+		        and mY >= 12 and mY <= 130  then
+			rectb((l*(mX//l)-2),(l*(mY//l)-2),l,l,5)
+		end
 	end
+	
+	-- grid soluce
+	--[[
+	if lb then
+		if a[mX//l][mY//l]==0 then
+			a[mX//l][mY//l]=1
+		elseif	a[mX//l][mY//l]==1 then
+				a[mX//l][mY//l]=0
+		end
+	end
+	--]]
 	
  if count > 66 and #listRect < x then
   -- config des rectangle en dynamique
@@ -317,6 +339,4 @@ function TIC()
 		end
 	end
 	
-    -- Extension souris
-    mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 end 

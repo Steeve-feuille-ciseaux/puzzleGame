@@ -67,6 +67,9 @@ end
 
 function TIC()
 
+-- Extension souris
+mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
+
 	cls(0)
 		
  -- Counter
@@ -96,14 +99,15 @@ function TIC()
 				rectb(58+(l*i),10+(l*j),l,l,9)
 			end
 		end
+		rectb(l*(mX//l),l*(mY//l),l,l,5)
 	end
 	
 	-- grid soluce
 	if lb then
-		if a[mx//l][my//l]==0 then
-			a[mx//l][my//l]==1
-		elseif	a[mx//l][my//l]==1 then
-				a[mx//l][my//l]==0
+		if a[mX//l][mY//l]==0 then
+			a[mX//l][mY//l]=1
+		elseif	a[mX//l][mY//l]==1 then
+				a[mX//l][mY//l]=0
 		end
 	end
 	
@@ -328,6 +332,4 @@ function TIC()
 		end
 	end
 	
-    -- Extension souris
-    mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 end 
