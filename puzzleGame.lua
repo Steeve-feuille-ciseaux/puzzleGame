@@ -123,13 +123,16 @@ mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 	 count = 0
 	end 
 	
-	-- Afficher grid
+	-- Show grid
 	for i=0,100//l+1 do
 		local mvRect = listRect[numeroRect]
+		-- Focus grend put piece
 		if Lock and mX >= 60 and mX <= 175
 		        and mY >= 12 and mY <= 130  then
 				rectb((l*(mX//l)-2),(l*(mY//l)-2),l,l,5)
 		end
+
+		-- autofocus put on grid
 		if Lock and lb == false and mvRect.x >= 54 and mvRect.x <= 173
 		        and mvRect.y >= 5 and mvRect.y <= 123  then
 				rectb((l*(mX//l)-2),(l*(mY//l)-2),l,l,5)
@@ -137,6 +140,8 @@ mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 				print("pieceX : ".. tostring(mvRect.x),180,80)
 				print("pieceY : ".. tostring(mvRect.y),180,90)
 		end
+
+		-- draw grid
 		for j=0,100//l+1  do
 			if a[i][j]==0 then
 				rect(58+(l*i),10+(l*j),l,l,8)
