@@ -7,6 +7,7 @@
 -- script:  lua
 
 -- Variable
+endPuzzle = 0
 countM = 0
 pieceS = 12
 x = 100
@@ -21,9 +22,11 @@ about = false
 startCount = false
 moveRect = false
 Lock = false
+autoPut = true
 readyMessage = false
 stop = false
 placePiece = false
+goalPuzzle = false
 listRect = {}
 Cadre = {}
 	Cadre.x = 60
@@ -133,16 +136,18 @@ mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 		end
 
 		-- autofocus put on grid
-		if Lock and lb == false and mvRect.x >= 54 and mvRect.x <= 173
+		if Lock and lb == false and autoPut == true
+				and mvRect.x >= 54 and mvRect.x <= 173
 		        and mvRect.y >= 5 and mvRect.y <= 123  then
-				rectb((l*(mX//l)-2),(l*(mY//l)-2),l,l,5)
-	
-				print("pieceX : ".. tostring(mvRect.x),180,80)
-				print("pieceY : ".. tostring(mvRect.y),180,90)
+				mvRect.x = l*(mX//l)-2
+				mvRect.y = l*(mY//l)-2
+				autoPut = false
 		end
 
 		-- draw grid
 		for j=0,100//l+1  do
+			local nbCase = (i + 1) + (j * 10)
+
 			if a[i][j]==0 then
 				rect(58+(l*i),10+(l*j),l,l,8)
 				rectb(58+(l*i),10+(l*j),l,l,13)
@@ -153,19 +158,25 @@ mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 				rect(58+(l*i),10+(l*j),l,l,10)
 				rectb(58+(l*i),10+(l*j),l,l,9)
 			end
+
+			print(nbCase,58+(l*i),10+(l*j),12)
 		end
 	end
 	
 	-- grid soluce
-	--[[
-	if lb then
-		if a[mX//l][mY//l]==0 then
-			a[mX//l][mY//l]=1
-		elseif	a[mX//l][mY//l]==1 then
-				a[mX//l][mY//l]=0
+		local adjust_mX = mX - 58
+		local adjust_mY = mY - 10
+	
+	if lb and adjust_mX >= 0 and adjust_mX <= 119 then
+		print("case n' ".. tostring(mX), 170,80)
+
+		if a[adjust_mX//l][adjust_mY//l]==0 then
+			a[adjust_mX//l][adjust_mY//l]=1
+		elseif	a[adjust_mX//l][adjust_mY//l]==1 then
+				a[adjust_mX//l][adjust_mY//l]=0
 		end
 	end
-	--]]
+	
  
 	-- Afficher les rectangle
 	for i,v in ipairs(listRect) do
@@ -273,10 +284,10 @@ mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
  		
  -- déplacement mouse 
    if Lock and lb then
-   mvRect.y = mY - 7
-   mvRect.x = mX - 6
+	mvRect.y = mY - 7
+	mvRect.x = mX - 6
+	autoPut = true
    end
-   
   end
   
  end  
