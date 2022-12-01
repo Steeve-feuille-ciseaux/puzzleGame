@@ -16,5 +16,6 @@ v0.11.0 -> polish point's case position on grid
 v0.11.1 -> polish comment on grid
 v0.12.0 -> add autoput a piece on grid
 v0.13.0 -> reaction grid
+v0.13.1 -> reaction grid polish
 v0.xx.0 -> next fix size piece number 100
 v0.xx.0 -> message ready for then start
