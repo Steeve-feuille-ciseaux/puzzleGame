@@ -261,12 +261,9 @@ mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
   		mvRect.x = mvRect.x + 1 
    end
  		
- -- mouse axe Y
+ -- déplacement mouse 
    if Lock and lb then
    mvRect.y = mY - 7
-   end
- -- mouse axe X
-   if Lock and lb then
    mvRect.x = mX - 6
    end
    
