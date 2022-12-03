@@ -89,41 +89,41 @@
 	end
 		
 		if count > 66 and #listRect < x then
-		-- config des rectangle en dynamique
-		local r = {}
-		
-		r.larg = pieceS
-		r.haut = pieceS
-		r.x = math.random(0,55 - r.larg)
-		r.y = math.random(0,135 - r.haut)
-		r.color = math.random(1,15)
-		r.nb = numberRect
-		
-		-- ajustement taille piece / number
-		if numberRect >= 100  then
-			r.larg = pieceS + 6
-			r.haut = pieceS
-		end	
-		
-		-- Collision rectangle
-		local ok = true
+			-- config des rectangle en dynamique
+			local r = {}
 			
-		-- fonction collision
-		--[[
-		for i,v in ipairs(listRect) do
-		if CheckCollision(r.x,r.y,r.larg,r.haut,v.x,v.y,v.larg,v.haut) then
-		ok = false
-		boxC = boxC + 1
-		end
-		end	
-		--]]
-		
-		-- ajouter les rectangle dans la liste
-		if ok then   
-		numberRect = numberRect + 1
-		table.insert(listRect, r)
-		end
-		count = 0
+			r.larg = pieceS
+			r.haut = pieceS
+			r.x = math.random(0,55 - r.larg)
+			r.y = math.random(0,135 - r.haut)
+			r.color = math.random(1,15)
+			r.nb = numberRect
+			
+			-- ajustement taille piece / number
+			if numberRect >= 100  then
+				r.larg = pieceS + 6
+				r.haut = pieceS
+			end	
+			
+			-- Collision rectangle
+			local ok = true
+				
+			-- fonction collision
+			--[[
+			for i,v in ipairs(listRect) do
+			if CheckCollision(r.x,r.y,r.larg,r.haut,v.x,v.y,v.larg,v.haut) then
+			ok = false
+			boxC = boxC + 1
+			end
+			end	
+			--]]
+			
+			-- ajouter les rectangle dans la liste
+			if ok then   
+				numberRect = numberRect + 1
+				table.insert(listRect, r)
+			end
+			count = 0
 		end 
 		
 		-- Show grid
@@ -142,6 +142,29 @@
 					mvRect.x = l*(mX//l)-2
 					mvRect.y = l*(mY//l)-2
 					autoPut = false
+		
+				-- grid soluce
+				local adjust_mX = mvRect.x - 58
+				local adjust_mY = mvRect.y - 10
+				local ligne = adjust_mX//l+1
+				local colonne = (adjust_mY//l*10) 
+				local resultat = ligne+colonne
+				
+				-- A REPRENDRE ICI !!!
+				if lb and adjust_mX >= 0 and adjust_mX <= 119 then
+					print("reste : ".. tostring(endPuzzle), 185,80)
+					print("x : ".. tostring(adjust_mX//l+1), 185,90)
+					print("y : ".. tostring(adjust_mY//l+1), 185,100)
+					print("num : ".. tostring(resultat), 185,110)
+		
+					if a[adjust_mX//l][adjust_mY//l]==0 then
+						a[adjust_mX//l][adjust_mY//l]=1
+						endPuzzle = endPuzzle + 1
+					elseif	a[adjust_mX//l][adjust_mY//l]==1 then
+							a[adjust_mX//l][adjust_mY//l]=0
+							endPuzzle = endPuzzle - 1
+					end
+				end
 			end
 
 			-- draw grid
@@ -160,28 +183,6 @@
 				end
 
 				print(nbCase,58+(l*i),10+(l*j),12)
-			end
-		end
-		
-		-- grid soluce
-			local adjust_mX = mX - 58
-			local adjust_mY = mY - 10
-			local ligne = adjust_mX//l+1
-			local colonne = (adjust_mY//l*10) 
-			local resultat = ligne+colonne
-		
-		if lb and adjust_mX >= 0 and adjust_mX <= 119 then
-			print("reste : ".. tostring(endPuzzle), 185,80)
-			print("x : ".. tostring(adjust_mX//l+1), 185,90)
-			print("y : ".. tostring(adjust_mY//l+1), 185,100)
-			print("num : ".. tostring(resultat), 185,110)
-
-			if a[adjust_mX//l][adjust_mY//l]==0 then
-				a[adjust_mX//l][adjust_mY//l]=1
-				endPuzzle = endPuzzle + 1
-			elseif	a[adjust_mX//l][adjust_mY//l]==1 then
-					a[adjust_mX//l][adjust_mY//l]=0
-					endPuzzle = endPuzzle - 1
 			end
 		end
 		
