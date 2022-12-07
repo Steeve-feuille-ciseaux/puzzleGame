@@ -46,6 +46,16 @@
 		listRect = {}	
 	end
 
+	-- TEST RATER
+	function endgoal()
+		for i,v in ipairs(listRect) do
+			if listRect[x].find == true then
+				endPuzzle = endPuzzle + 1
+			end
+		end
+	end
+	
+
 	-- Counter
 	function counter()
 		if count > 66 then
@@ -77,6 +87,8 @@
 		mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 
 		cls(0)
+		print("Okay : ".. tostring(endPuzzle), 185,130)
+		local mvRect = listRect[numeroRect]
 			
 		-- Counter
 		if #listRect < x  then  
@@ -130,7 +142,6 @@
 			end
 			count = 0
 		end 
-		local mvRect = listRect[numeroRect]
 	
 		-- Show grid
 		for i=0,100//l+1 do
@@ -147,6 +158,24 @@
 					mvRect.x = l*(mX//l)-2
 					mvRect.y = l*(mY//l)-2
 					mvRect.autoPut = true
+		
+				-- grid soluce
+				local grid_X = 58
+				local grid_Y = 10
+				local adjust_mX = mX - grid_X
+				local adjust_mY = mY - grid_Y
+				local ligne = adjust_mX//l+1
+				local colonne = (adjust_mY//l*10) 
+				local resultat = ligne+colonne
+
+					if ((mvRect.x-grid_X)//l+1)+((mvRect.y-grid_Y)//l*10) == mvRect.nb and mvRect.autoPut == true then
+						mvRect.find = true
+						-- print("Okay : ".. tostring(endPuzzle), 185,130)
+						-- !!! REPRENDRE ICI !!!
+						if mvRect.find == true then
+							endPuzzle = endPuzzle + 1
+						end
+					end
 			end
 
 			-- draw grid
@@ -167,36 +196,13 @@
 				print(nbCase,58+(l*i),10+(l*j),12)
 			end
 		end
-		
-		-- grid soluce
-			local grid_X = 58
-			local grid_Y = 10
-			local adjust_mX = mX - grid_X
-			local adjust_mY = mY - grid_Y
-			local ligne = adjust_mX//l+1
-			local colonne = (adjust_mY//l*10) 
-			local resultat = ligne+colonne
 	
-		if lb and adjust_mX >= 0 and adjust_mX <= 119 then
 			--[[
 			print("reste : ".. tostring(endPuzzle), 185,40)
 			print("x : ".. tostring(adjust_mX//l+1), 185,50)
 			print("y : ".. tostring(adjust_mY//l+1), 185,60)
 			print("num : ".. tostring(resultat), 185,70)
 			]]
-
-			print("rectN : ".. tostring(mvRect.nb), 185,90)
-			print("rectX : ".. tostring((mvRect.x-grid_X)//l+1), 185,100)
-			print("rectY : ".. tostring((mvRect.y-grid_Y)//l+1), 185,110)
-			print("rectP : ".. tostring(((mvRect.x-grid_X)//l+1)+((mvRect.y-grid_Y)//l*10)), 185,120)
-
-			if ((mvRect.x-grid_X)//l+1)+((mvRect.y-grid_Y)//l*10) == mvRect.nb and mvRect.autoPut == true then
-				mvRect.find = true
-				print("Okay : ".. tostring(endPuzzle), 185,130)
-				if mvRect.find == true then
-					endPuzzle = endPuzzle + 1
-				end
-			end
 
 			--[[
 			if a[adjust_mX//l][adjust_mY//l]==0 then
@@ -207,7 +213,6 @@
 					endPuzzle = endPuzzle - 1
 			end
 			--]]
-		end
 		
 	
 		-- Afficher les rectangle

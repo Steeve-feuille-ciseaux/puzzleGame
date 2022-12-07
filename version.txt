@@ -18,5 +18,7 @@ v0.12.0 -> add autoput a piece on grid
 v0.13.0 -> reaction grid
 v0.13.1 -> reaction grid 2dn polish
 v0.13.2 -> reaction grid 3rd polish
+v0.14.0 -> piece find on grid
+v0.14.1 -> piece find on grid polish
 v0.xx.0 -> next fix size piece number 100
 v0.xx.0 -> message ready for then start
