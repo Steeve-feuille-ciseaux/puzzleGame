@@ -10,7 +10,7 @@
 	endPuzzle = 0
 	countM = 0
 	pieceS = 12
-	x = 100
+	x = 3
 	count = 0
 	second = 0
 	accSecond = 30
@@ -53,8 +53,7 @@
 				endPuzzle = endPuzzle + 1
 			end
 		end
-	end
-	
+	end	
 
 	-- Counter
 	function counter()
@@ -87,7 +86,13 @@
 		mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 
 		cls(0)
-		print("Okay : ".. tostring(endPuzzle), 185,130)
+
+		if endPuzzle == x then 
+			print("Finish !!! : " .. tostring(endPuzzle), 185,130)
+		else
+			print(endPuzzle .. " / " .. tostring(x), 185,130)
+		end
+
 		local mvRect = listRect[numeroRect]
 			
 		-- Counter
@@ -115,6 +120,7 @@
 			r.nb = numberRect
 			r.autoPut = false
 			r.find = false
+			r.lock = false
 		
 			-- ajustement taille piece / number
 			if numberRect >= 100  then
@@ -167,14 +173,12 @@
 				local ligne = adjust_mX//l+1
 				local colonne = (adjust_mY//l*10) 
 				local resultat = ligne+colonne
-
+					
+					-- Count puzzle
 					if ((mvRect.x-grid_X)//l+1)+((mvRect.y-grid_Y)//l*10) == mvRect.nb and mvRect.autoPut == true then
 						mvRect.find = true
-						-- print("Okay : ".. tostring(endPuzzle), 185,130)
-						-- !!! REPRENDRE ICI !!!
-						if mvRect.find == true then
-							endPuzzle = endPuzzle + 1
-						end
+						endPuzzle = endPuzzle + 1
+						mvRect.lock = true
 					end
 			end
 
@@ -268,7 +272,7 @@
 			end
 		end	
 	
-		-- menu deplacement Rectangle
+		-- menu deplacement Rectangle 
 		if moveRect then
 					
 			rect(180,2,60,30,12)
@@ -302,28 +306,15 @@
 				print(mvRect.nb,mvRect.x+1,mvRect.y+3,12)
 			end
 			
-			-- keyboard Haut
-			if Lock and key((58)) then
-				mvRect.y = mvRect.y - 1 
-			end
-			-- keyboard Bas
-			if Lock and key((59)) then
-				mvRect.y = mvRect.y + 1 
-			end
-			-- keyboard Gauche
-			if Lock and key((60)) then
-				mvRect.x = mvRect.x - 1 
-			end
-				-- keyboard Droite
-			if Lock and key((61)) then
-					mvRect.x = mvRect.x + 1 
-			end
-			
 			-- déplacement mouse 
-			if Lock and lb then
+			if Lock and lb and mvRect.lock == false  then
 				mvRect.y = mY - 7
 				mvRect.x = mX - 6
 				mvRect.autoPut = false
+			-- !! REPRENDRE ICI !! 
+			elseif Lock and lb and mvRect.lock == true then
+				mvRect.y = mvRect.y
+				mvRect.x = mvRect.x
 			end
 		end
 	
