@@ -10,7 +10,7 @@
 	endPuzzle = 0
 	countM = 0
 	pieceS = 12
-	x = 3
+	x = 100
 	count = 0
 	second = 0
 	accSecond = 30
@@ -88,9 +88,10 @@
 		cls(0)
 
 		if endPuzzle == x then 
-			print("Finish !!! : " .. tostring(endPuzzle), 185,130)
+			print("Finish !!!", 195,130)
 		else
-			print(endPuzzle .. " / " .. tostring(x), 185,130)
+			print("Puzzle", 196,123)
+			print(endPuzzle .. " / " .. tostring(x), 195,130)
 		end
 
 		local mvRect = listRect[numeroRect]
@@ -276,7 +277,7 @@
 		if moveRect then
 					
 			rect(180,2,60,30,12)
-			print("Select ",192,4)
+			print("Selection ",186,4)
 			print("manuel ",192,14)
 
 			-- Selection rectangle  
