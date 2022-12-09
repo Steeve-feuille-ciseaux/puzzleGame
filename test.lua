@@ -99,10 +99,10 @@
 		cls(0)
 
 		if endPuzzle == x then 
-			print("Finish !!!", 195,130)
+			print("Finish !!!", 195,130,12)
 		else
-			print("Progress", 187,123)
-			print(endPuzzle .. " / " .. tostring(x), 195,130)
+			print("Progress", 187,123,12)
+			print(endPuzzle .. " / " .. tostring(x), 195,130,12)
 		end
 
 		local mvRect = listRect[numeroRect]
@@ -269,7 +269,7 @@
 	
 		if flash >= 1 then				
 			if countM < 30 and readyMessage then	
-				print("DO THE PUZZLE",82,2)
+				print("DO THE PUZZLE",82,2,12)
 			elseif countM == 40 then
 				readyMessage = false				
 			elseif countM == 45 then
@@ -279,7 +279,7 @@
 			elseif flash == 4 then
 				stop = true
 				readyMessage = false
-				print("DO THE PUZZLE",82,2)
+				print("DO THE PUZZLE",82,2,12)
 				moveRect = true
 			end
 		end	
@@ -289,20 +289,31 @@
 					
 
 			-- how to play
-			rect(180,2,60,30,12)
+			rect(180,2,60,20,12)
 			if Lock == false then
 				print("Select",192,4)
+				print("use ",200,34,12)
+				print("keyboard",186,42,12)
+				print("arrow",195,50,12)
 			else
-				print("Move",196,4)
+				print("Move",198,4)
+				print("use ",200,34,12)
+				print("mouse",194,42,12)
+				print("then switch",180,55,12)
+				print("with",199,63,12)
+				print("L or K",194,71,12)
 			end
 
 			-- Selection rectangle  
-			if mvRect.nb >= 100  then
+			if mvRect.nb >= 1 and mvRect.nb <= 9 then
 				print("piece n' " .. listRect[numeroRect].nb
-																				,180,24)
-			else
+																				,186,14)
+			elseif mvRect.nb >= 10 and mvRect.nb <= 99 then
 				print("piece n' " .. listRect[numeroRect].nb
-																				,183,24)
+																				,183,14)
+			elseif mvRect.nb >= 100 then
+				print("piece n' " .. listRect[numeroRect].nb
+																				,180,14)
 			end														
 				rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
 				rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)

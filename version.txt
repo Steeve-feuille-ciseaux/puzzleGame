@@ -27,6 +27,7 @@ v1.00.0 -> Game online on tic80.com
 v1.01.0 -> translate in game french to english
 v1.02.0 -> polish UI "action and number piece"
 v1.02.1 -> add UI "How to play"
+v1.02.2 -> switch grey color to withe
 v0.xx.0 -> add music
 v0.xx.0 -> next fix size piece number 100
 v0.xx.0 -> message ready for then start

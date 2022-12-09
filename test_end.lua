@@ -1,10 +1,11 @@
-	-- title:   game title
-	-- author:  game developer, email, etc.
-	-- desc:    short description
-	-- site:    website link
-	-- license: MIT License (change this to your license of choice)
+	-- title:   Puzzle Game Children
+	-- author:  Steeve-feuille-ciseaux
+	-- desc:    Game for learn count from 1 to 100
+	-- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
+	-- license: 
 	-- version: 0.1
 	-- script:  lua
+	-- Thanks to HaPiter and maniek207 for sharing tool!
 
 	-- Variable
 	endPuzzle = 0
@@ -53,8 +54,7 @@
 				endPuzzle = endPuzzle + 1
 			end
 		end
-	end
-	
+	end	
 
 	-- Counter
 	function counter()
@@ -81,13 +81,30 @@
 		end
 	end
 
+	-- Musique 
+	
+	function musique()
+	end
+
 	function TIC()
+
+		-- Musique
+		musique()
+	
+		musicLoop = true
 
 		-- Extension souris
 		mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 
 		cls(0)
-		print("Okay : ".. tostring(endPuzzle), 185,130)
+
+		if endPuzzle == x then 
+			print("Finish !!!", 195,130,12)
+		else
+			print("Progress", 187,123,12)
+			print(endPuzzle .. " / " .. tostring(x), 195,130,12)
+		end
+
 		local mvRect = listRect[numeroRect]
 			
 		-- Counter
@@ -115,6 +132,7 @@
 			r.nb = numberRect
 			r.autoPut = false
 			r.find = false
+			r.lock = false
 		
 			-- ajustement taille piece / number
 			if numberRect >= 100  then
@@ -167,14 +185,12 @@
 				local ligne = adjust_mX//l+1
 				local colonne = (adjust_mY//l*10) 
 				local resultat = ligne+colonne
-
+					
+					-- Count puzzle
 					if ((mvRect.x-grid_X)//l+1)+((mvRect.y-grid_Y)//l*10) == mvRect.nb and mvRect.autoPut == true then
 						mvRect.find = true
-						-- print("Okay : ".. tostring(endPuzzle), 185,130)
-						-- !!! REPRENDRE ICI !!!
-						if mvRect.find == true then
-							endPuzzle = endPuzzle + 1
-						end
+						endPuzzle = endPuzzle + 1
+						mvRect.lock = true
 					end
 			end
 
@@ -243,7 +259,7 @@
 	
 		if #listRect == x and flash == 0 then
 				rect(80,50,76,21,12)
-				print("PUZZLE PRET",87,58)
+				print("PUZZLE READY",84,58)
 				if countM > 400 then
 					flash = flash + 1
 					readyMessage = true
@@ -253,7 +269,7 @@
 	
 		if flash >= 1 then				
 			if countM < 30 and readyMessage then	
-				print("PLACER LES PIECES",70,2)
+				print("DO THE PUZZLE",82,2,12)
 			elseif countM == 40 then
 				readyMessage = false				
 			elseif countM == 45 then
@@ -263,25 +279,41 @@
 			elseif flash == 4 then
 				stop = true
 				readyMessage = false
-			print("PLACER LES PIECES",70,2)
+				print("DO THE PUZZLE",82,2,12)
 				moveRect = true
 			end
 		end	
 	
-		-- menu deplacement Rectangle
+		-- menu deplacement Rectangle 
 		if moveRect then
 					
-			rect(180,2,60,30,12)
-			print("Select ",192,4)
-			print("manuel ",192,14)
+
+			-- how to play
+			rect(180,2,60,20,12)
+			if Lock == false then
+				print("Select",192,4)
+				print("use ",200,34,12)
+				print("keyboard",186,42,12)
+				print("arrow",195,50,12)
+			else
+				print("Move",198,4)
+				print("use ",200,34,12)
+				print("mouse",194,42,12)
+				print("then switch",180,55,12)
+				print("with",199,63,12)
+				print("L or K",194,71,12)
+			end
 
 			-- Selection rectangle  
-			if mvRect.nb >= 100  then
+			if mvRect.nb >= 1 and mvRect.nb <= 9 then
 				print("piece n' " .. listRect[numeroRect].nb
-																				,180,24)
-			else
+																				,186,14)
+			elseif mvRect.nb >= 10 and mvRect.nb <= 99 then
 				print("piece n' " .. listRect[numeroRect].nb
-																				,183,24)
+																				,183,14)
+			elseif mvRect.nb >= 100 then
+				print("piece n' " .. listRect[numeroRect].nb
+																				,180,14)
 			end														
 				rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
 				rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
@@ -302,28 +334,15 @@
 				print(mvRect.nb,mvRect.x+1,mvRect.y+3,12)
 			end
 			
-			-- keyboard Haut
-			if Lock and key((58)) then
-				mvRect.y = mvRect.y - 1 
-			end
-			-- keyboard Bas
-			if Lock and key((59)) then
-				mvRect.y = mvRect.y + 1 
-			end
-			-- keyboard Gauche
-			if Lock and key((60)) then
-				mvRect.x = mvRect.x - 1 
-			end
-				-- keyboard Droite
-			if Lock and key((61)) then
-					mvRect.x = mvRect.x + 1 
-			end
-			
 			-- déplacement mouse 
-			if Lock and lb then
+			if Lock and lb and mvRect.lock == false  then
 				mvRect.y = mY - 7
 				mvRect.x = mX - 6
 				mvRect.autoPut = false
+			-- !! REPRENDRE ICI !! 
+			elseif Lock and lb and mvRect.lock == true then
+				mvRect.y = mvRect.y
+				mvRect.x = mvRect.x
 			end
 		end
 	
@@ -338,60 +357,60 @@
 		12)
 	--]]
 		
-		-- Menu Debug
-		if about then
-			rect(0,0,87,37,12)
-			print("Frame : " .. tostring(accSecond)
-																			.. " x " 
-																				.. tostring(count)
-																				,1,1)
-			print("Time : " .. second
-																			.. " sec"
-																			,1,8)
-			print("Rectangle : " .. #listRect,1,15)
-			print("Collision : " .. boxC,1,23)
-			print("limite : " .. x
-																							.. " rect ",1,31)	
+	-- Menu Debug
+	if about then
+		rect(0,0,87,37,12)
+		print("Frame : " .. tostring(accSecond)
+																		.. " x " 
+																			.. tostring(count)
+																			,1,1)
+		print("Time : " .. second
+																		.. " sec"
+																		,1,8)
+		print("Rectangle : " .. #listRect,1,15)
+		print("Collision : " .. boxC,1,23)
+		print("limite : " .. x
+																						.. " rect ",1,31)	
+	end
+	
+	-- touche Espace
+	if (keyp(48)) then
+		if about == true then
+			about = false
+		else
+			about = true
 		end
-		
-		-- touche Espace
-		if (keyp(48)) then
-			if about == true then
-				about = false
-			else
-				about = true
-			end
-		end		
-		
-		-- touche M
-		--[[
-		if (keyp(13)) then
-			if moveRect == true then
-				moveRect = false
-			else
-				moveRect = true
-			end
+	end		
+	
+	-- touche M
+	--[[
+	if (keyp(13)) then
+		if moveRect == true then
+			moveRect = false
+		else
+			moveRect = true
 		end
-		--]]
-		
-		-- touche gauche/droite
-		if Lock == false then
-			if (keyp(60)) and numeroRect > 1
-			or (key(59)) and numeroRect > 1 then
-				numeroRect = numeroRect - 1
-			elseif (keyp(61	)) and numeroRect < #listRect
-			or (key(58)) and numeroRect < #listRect then
-				numeroRect = numeroRect + 1
-			end
+	end
+	--]]
+	
+	-- touche gauche/droite
+	if Lock == false then
+		if (keyp(60)) and numeroRect > 1
+		or (key(59)) and numeroRect > 1 then
+			numeroRect = numeroRect - 1
+		elseif (keyp(61	)) and numeroRect < #listRect
+		or (key(58)) and numeroRect < #listRect then
+			numeroRect = numeroRect + 1
 		end
-		
-		-- touche L
-		if (keyp(12)) or rb then
-			if Lock == true then
-				Lock = false
-			else
-				Lock = true
-			end
+	end
+	
+	-- touche L
+	if (keyp(12)) or rb then
+		if Lock == true then
+			Lock = false
+		else
+			Lock = true
 		end
-		
-	end 
+	end
+	
+end 

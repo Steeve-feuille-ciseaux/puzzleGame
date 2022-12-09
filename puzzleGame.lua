@@ -99,10 +99,10 @@
 		cls(0)
 
 		if endPuzzle == x then 
-			print("Finish !!!", 195,130)
+			print("Finish !!!", 195,130,12)
 		else
-			print("Progress", 187,123)
-			print(endPuzzle .. " / " .. tostring(x), 195,130)
+			print("Progress", 187,123,12)
+			print(endPuzzle .. " / " .. tostring(x), 195,130,12)
 		end
 
 		local mvRect = listRect[numeroRect]
@@ -269,7 +269,7 @@
 	
 		if flash >= 1 then				
 			if countM < 30 and readyMessage then	
-				print("DO THE PUZZLE",82,2)
+				print("DO THE PUZZLE",82,2,12)
 			elseif countM == 40 then
 				readyMessage = false				
 			elseif countM == 45 then
@@ -279,7 +279,7 @@
 			elseif flash == 4 then
 				stop = true
 				readyMessage = false
-				print("DO THE PUZZLE",82,2)
+				print("DO THE PUZZLE",82,2,12)
 				moveRect = true
 			end
 		end	
