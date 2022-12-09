@@ -3,7 +3,7 @@
 -- desc:   dum dum dum
 -- script: lua
 -- This writes patern directy into mem. By this i can make more than 60 patenrs 
--- Thanks to HaPiter for sharing tool!
+-- Thanks to HaPiter and maniek207 for sharing tool!
 t=0
 x=96
 y=24
@@ -27,14 +27,14 @@ data4=musicdata4
 function musique()
 
 	if onerun then
-		counter=0
+		CounterM=0
 			msg=''
 		for i=0,191 do
 			s = string.sub(data1,i*2+1,i*2+2)
 			val = tonumber(s,16)
 			poke(0x11164+i,val)
 		end
-			counter=0
+			CounterM=0
 			msg=''
 		for i=0,191 do
 			s = string.sub(data2,i*2+1,i*2+2)
