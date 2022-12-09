@@ -289,20 +289,23 @@
 					
 
 			-- how to play
-			rect(180,2,60,30,12)
+			rect(180,2,60,20,12)
 			if Lock == false then
 				print("Select",192,4)
 			else
-				print("Move",196,4)
+				print("Move",198,4)
 			end
 
 			-- Selection rectangle  
-			if mvRect.nb >= 100  then
+			if mvRect.nb >= 1 and mvRect.nb <= 9 then
 				print("piece n' " .. listRect[numeroRect].nb
-																				,180,24)
-			else
+																				,186,14)
+			elseif mvRect.nb >= 10 and mvRect.nb <= 99 then
 				print("piece n' " .. listRect[numeroRect].nb
-																				,183,24)
+																				,183,14)
+			elseif mvRect.nb >= 100 then
+				print("piece n' " .. listRect[numeroRect].nb
+																				,180,14)
 			end														
 				rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
 				rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
