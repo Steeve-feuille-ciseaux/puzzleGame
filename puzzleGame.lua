@@ -292,8 +292,16 @@
 			rect(180,2,60,20,12)
 			if Lock == false then
 				print("Select",192,4)
+				print("use ",200,34,12)
+				print("keyboard",186,42,12)
+				print("arrow",195,50,12)
 			else
 				print("Move",198,4)
+				print("use ",200,34,12)
+				print("mouse",194,42,12)
+				print("then switch",180,55,12)
+				print("with",199,63,12)
+				print("L or K",194,71,12)
 			end
 
 			-- Selection rectangle  

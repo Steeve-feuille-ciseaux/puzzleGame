@@ -25,7 +25,8 @@ v0.14.2 -> piece find on grid polish => fix bug count
 -- BETA
 v1.00.0 -> Game online on tic80.com
 v1.01.0 -> translate in game french to english
-v1.02.0 -> polish UI 
+v1.02.0 -> polish UI "action and number piece"
+v1.02.1 -> add UI "How to play"
 v0.xx.0 -> add music
 v0.xx.0 -> next fix size piece number 100
 v0.xx.0 -> message ready for then start
