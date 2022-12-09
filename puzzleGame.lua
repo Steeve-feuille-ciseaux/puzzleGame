@@ -295,6 +295,9 @@
 				print("use ",200,34,12)
 				print("keyboard",186,42,12)
 				print("arrow",195,50,12)
+				print("then",199,63,12)
+				print("L or K",194,71,12)
+				print("for move",187,79,12)
 			else
 				print("Move",198,4)
 				print("use ",200,34,12)
