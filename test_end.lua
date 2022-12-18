@@ -19,6 +19,7 @@
 	numberRect = 1
 	numeroRect = 1
 	flash = 0
+	showAnswer = false
 	about = false
 	startCount = false
 	moveRect = false
@@ -97,6 +98,8 @@
 		mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 
 		cls(0)
+		print(mX, 205,100,12)
+		print(mY, 205,110,12)
 
 		if endPuzzle == x then 
 			print("Finish !!!", 195,130,12)
@@ -133,6 +136,8 @@
 			r.autoPut = false
 			r.find = false
 			r.lock = false
+			r.answerX = 58
+			r.answerY = 10
 		
 			-- ajustement taille piece / number
 			if numberRect >= 100  then
@@ -163,7 +168,17 @@
 	
 		-- Show grid
 		for i=0,100//l+1 do
-			-- Focus grend put piece
+			-- Show Answer piece
+			if showAnswer == false and numeroRect == 5 and Lock then
+				-- !!! REPRENDRE ICI !!! --
+				local aX = l * 13
+				local aY = 5
+				rectb(58+aX,10,l,l,3)
+				print(58+aX, 195,100,12)
+				print(mvRect.answerY, 195,110,12)
+			end
+
+			-- Focus grid put piece
 			if Lock and mX >= 60 and mX <= 175
 					and mY >= 12 and mY <= 130  then
 					rectb((l*(mX//l)-2),(l*(mY//l)-2),l,l,5)
@@ -177,7 +192,7 @@
 					mvRect.y = l*(mY//l)-2
 					mvRect.autoPut = true
 		
-				-- grid soluce
+				-- grid answer
 				local grid_X = 58
 				local grid_Y = 10
 				local adjust_mX = mX - grid_X
@@ -186,12 +201,12 @@
 				local colonne = (adjust_mY//l*10) 
 				local resultat = ligne+colonne
 					
-					-- Count puzzle
-					if ((mvRect.x-grid_X)//l+1)+((mvRect.y-grid_Y)//l*10) == mvRect.nb and mvRect.autoPut == true then
-						mvRect.find = true
-						endPuzzle = endPuzzle + 1
-						mvRect.lock = true
-					end
+				-- Count puzzle
+				if ((mvRect.x-grid_X)//l+1)+((mvRect.y-grid_Y)//l*10) == mvRect.nb and mvRect.autoPut == true then
+					mvRect.find = true
+					endPuzzle = endPuzzle + 1
+					mvRect.lock = true
+				end
 			end
 
 			-- draw grid
@@ -211,25 +226,7 @@
 
 				print(nbCase,58+(l*i),10+(l*j),12)
 			end
-		end
-	
-			--[[
-			print("reste : ".. tostring(endPuzzle), 185,40)
-			print("x : ".. tostring(adjust_mX//l+1), 185,50)
-			print("y : ".. tostring(adjust_mY//l+1), 185,60)
-			print("num : ".. tostring(resultat), 185,70)
-			]]
-
-			--[[
-			if a[adjust_mX//l][adjust_mY//l]==0 then
-				a[adjust_mX//l][adjust_mY//l]=1
-				endPuzzle = endPuzzle + 1
-			elseif	a[adjust_mX//l][adjust_mY//l]==1 then
-					a[adjust_mX//l][adjust_mY//l]=0
-					endPuzzle = endPuzzle - 1
-			end
-			--]]
-		
+		end		
 	
 		-- Afficher les rectangle
 		for i,v in ipairs(listRect) do
@@ -295,6 +292,9 @@
 				print("use ",200,34,12)
 				print("keyboard",186,42,12)
 				print("arrow",195,50,12)
+				print("then",199,63,12)
+				print("L or K",194,71,12)
+				print("for move",187,79,12)
 			else
 				print("Move",198,4)
 				print("use ",200,34,12)
@@ -339,7 +339,7 @@
 				mvRect.y = mY - 7
 				mvRect.x = mX - 6
 				mvRect.autoPut = false
-			-- !! REPRENDRE ICI !! 
+			
 			elseif Lock and lb and mvRect.lock == true then
 				mvRect.y = mvRect.y
 				mvRect.x = mvRect.x
