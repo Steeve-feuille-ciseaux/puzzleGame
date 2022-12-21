@@ -30,6 +30,7 @@ v1.02.1 -> add UI "How to play"
 v1.02.2 -> switch grey color to white
 v1.02.3 -> polish UI "How to play"
 v1.03.0 -> Begin answer piece on grid * SHOW DEBUG ON *
+v0.xx.0 -> bug colonne 10/20/30/40/../100 autofocus and anwser
 v0.xx.0 -> add music
 v0.xx.0 -> next fix size piece number 100
 v0.xx.0 -> message ready for then start

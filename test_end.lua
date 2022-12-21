@@ -98,8 +98,8 @@
 		mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
 
 		cls(0)
-		print(mX, 205,100,12)
-		print(mY, 205,110,12)
+		print(mX, 215,100,12)
+		print(mY, 215,110,12)
 
 		if endPuzzle == x then 
 			print("Finish !!!", 195,130,12)
@@ -169,11 +169,19 @@
 		-- Show grid
 		for i=0,100//l+1 do
 			-- Show Answer piece
-			if showAnswer == false and numeroRect == 5 and Lock then
-				-- !!! REPRENDRE ICI !!! --
-				local aX = l * 13
-				local aY = 5
-				rectb(58+aX,10,l,l,3)
+			if showAnswer == false and Lock then
+				local aX = 0
+				local aY = 0
+				if numeroRect >= 1 and numeroRect <= 10 then
+					aX = (numeroRect - 1) * 12
+				elseif numeroRect >= 11 and numeroRect <= 20 then
+					-- !!! REPRENDRE ICI !!! --
+					aX = (numeroRect - 1) * 12
+					aY = 12
+				else
+					aX = (numeroRect - 1) * 12
+				end
+				rectb(58+aX,10+aY,l,l,3)
 				print(58+aX, 195,100,12)
 				print(mvRect.answerY, 195,110,12)
 			end
