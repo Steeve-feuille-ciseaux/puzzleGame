@@ -23,4 +23,8 @@ Le projet est codé en **LUA**, un langage simple que j'ai choisi pour sa facili
 - Ajouter de nouveaux niveaux et puzzles pour diversifier l'expérience.
 - Optimiser davantage le code pour une meilleure performance et une plus grande évolutivité.
 
+## Source des puzzles
+
+- **à venir**
+
 readMe v.1
