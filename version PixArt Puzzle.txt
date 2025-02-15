@@ -1,0 +1,2 @@
+-- ALPHA 
+v0.01.0 -> Définir le nombre de pixel ainsi que leur couleur
