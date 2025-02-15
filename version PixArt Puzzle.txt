@@ -1,3 +1,4 @@
 -- ALPHA 
 v0.01.0 -> Définir le nombre de pixel ainsi que leur couleur
 v0.01.1 -> Afficher la quantité de pixel selon la couleur
+v0.01.2 -> Reflexion nom de variable

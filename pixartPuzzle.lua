@@ -18,6 +18,9 @@ sizeGrid = 0
 startCount = false
 x = 100
 
+-- Stock le nombre de couleur differente
+nbColor = {}
+
 -- Nombre de rectangles par couleurs 
 blackCount = 0
 purleCount = 0
@@ -52,10 +55,30 @@ maxBlue4 = 0
 maxWhite = 10
 maxGrey1 = 10
 maxGrey2 = 0
-maxGrey3 = 0
+maxGrey3 = 10
 
--- Stock le nombre de couleur differente
-validMaxValues = {}
+-- Ajouter les variables avec des valeurs > 0 dans le tableau
+if maxBlack > 0 then table.insert(nbColor, maxBlack) end
+if maxPurple > 0 then table.insert(nbColor, maxPurple) end
+if maxRed > 0 then table.insert(nbColor, maxRed) end
+if maxOrange > 0 then table.insert(nbColor, maxOrange) end
+if maxYellow > 0 then table.insert(nbColor, maxYellow) end
+if maxGreen1 > 0 then table.insert(nbColor, maxGreen1) end
+if maxGreen2 > 0 then table.insert(nbColor, maxGreen2) end
+if maxGreen3 > 0 then table.insert(nbColor, maxGreen3) end
+if maxBlue1 > 0 then table.insert(nbColor, maxBlue1) end
+if maxBlue2 > 0 then table.insert(nbColor, maxBlue2) end
+if maxBlue3 > 0 then table.insert(nbColor, maxBlue3) end
+if maxBlue4 > 0 then table.insert(nbColor, maxBlue4) end
+if maxWhite > 0 then table.insert(nbColor, maxWhite) end
+if maxGrey1 > 0 then table.insert(nbColor, maxGrey1) end
+if maxGrey2 > 0 then table.insert(nbColor, maxGrey2) end
+if maxGrey3 > 0 then table.insert(nbColor, maxGrey3) end
+
+-- Affichage compteur rectangle par couleur et le nombre
+for i, v in ipairs(nbColor) do
+	print("Valid max value: " .. #nbColor)
+end
 
 -- formule collision
 function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
@@ -181,17 +204,17 @@ function TIC()
 	-- Afficher les rectangle
 	for i,v in ipairs(listRect) do
 		rect(v.x, v.y, v.larg, v.haut, v.color)
-	end
-
-	-- Affichage compteur rectangle par couleur et le nombre
-	for i, v in ipairs(validMaxValues) do
-		print("Valid max value: " .. #validMaxValues)
-	end
+	end	
 
 	-- Ajuster la position du chiffre selon le nombre restant
 	if redCount >= 1 then
 		rect(57, 5, 12, 12, 2)
 		print("x"..redCount, 57, 5, 12)
+	end
+
+	for i,v in ipairs(nbColor) do
+		rect(57, 15 * i, 12, 12, 2)
+		print(#nbColor, 57, 25, 12)
 	end
 	
 	-- Affiche les coordonné X et Y de la souris
