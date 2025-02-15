@@ -54,6 +54,9 @@ maxGrey1 = 10
 maxGrey2 = 0
 maxGrey3 = 0
 
+-- Stock le nombre de couleur differente
+validMaxValues = {}
+
 -- formule collision
 function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
 return x1 < x2+w2 and
@@ -178,21 +181,22 @@ function TIC()
 	-- Afficher les rectangle
 	for i,v in ipairs(listRect) do
 		rect(v.x, v.y, v.larg, v.haut, v.color)
-		-- gestion numero et couleur
-		if v.nb < 10  then
-			if v.color == 8 or v.color == 15 then
-				print(v.nb,v.x+4,v.y+3,12)
-			else
-				print(v.nb,v.x+4,v.y+3)
-			end
-		end
-		if v.nb >= 10 then 
-			if v.color == 8 or v.color == 15 then
-				print(v.nb,v.x+1,v.y+3,12)
-			else
-				print(v.nb,v.x+1,v.y+3)
-			end
-		end
 	end
+
+	-- Affichage compteur rectangle par couleur et le nombre
+	for i, v in ipairs(validMaxValues) do
+		print("Valid max value: " .. #validMaxValues)
+	end
+
+	-- Ajuster la position du chiffre selon le nombre restant
+	if redCount >= 1 then
+		rect(57, 5, 12, 12, 2)
+		print("x"..redCount, 57, 5, 12)
+	end
+	
+	-- Affiche les coordonné X et Y de la souris
+	mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
+	print(mX, 215,100,12)
+	print(mY, 215,110,12)
 
 end
