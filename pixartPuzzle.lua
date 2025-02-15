@@ -19,7 +19,9 @@ startCount = false
 x = 100
 
 -- Stock le nombre de couleur differente
-nbColor = {}
+drawGrid = {}
+drawGrid.up = false
+drawGrid.color = 0
 
 -- Nombre de rectangles par couleurs 
 blackCount = 0
@@ -58,26 +60,90 @@ maxGrey2 = 0
 maxGrey3 = 10
 
 -- Ajouter les variables avec des valeurs > 0 dans le tableau
-if maxBlack > 0 then table.insert(nbColor, maxBlack) end
-if maxPurple > 0 then table.insert(nbColor, maxPurple) end
-if maxRed > 0 then table.insert(nbColor, maxRed) end
-if maxOrange > 0 then table.insert(nbColor, maxOrange) end
-if maxYellow > 0 then table.insert(nbColor, maxYellow) end
-if maxGreen1 > 0 then table.insert(nbColor, maxGreen1) end
-if maxGreen2 > 0 then table.insert(nbColor, maxGreen2) end
-if maxGreen3 > 0 then table.insert(nbColor, maxGreen3) end
-if maxBlue1 > 0 then table.insert(nbColor, maxBlue1) end
-if maxBlue2 > 0 then table.insert(nbColor, maxBlue2) end
-if maxBlue3 > 0 then table.insert(nbColor, maxBlue3) end
-if maxBlue4 > 0 then table.insert(nbColor, maxBlue4) end
-if maxWhite > 0 then table.insert(nbColor, maxWhite) end
-if maxGrey1 > 0 then table.insert(nbColor, maxGrey1) end
-if maxGrey2 > 0 then table.insert(nbColor, maxGrey2) end
-if maxGrey3 > 0 then table.insert(nbColor, maxGrey3) end
+if maxBlack > 0 then
+	drawGrid.up = true
+	drawGrid.color = 0
+	table.insert(drawGrid, maxBlack)
+end
+if maxPurple > 0 then
+	drawGrid.up = true
+	drawGrid.color = 1
+	table.insert(drawGrid, maxPurple)
+end
+if maxRed > 0 then
+	drawGrid.up = true
+	drawGrid.color = 2
+	table.insert(drawGrid, maxRed)
+end
+if maxOrange > 0 then
+	drawGrid.up = true
+	drawGrid.color = 3
+	table.insert(drawGrid, maxOrange)
+end
+if maxYellow > 0 then
+	drawGrid.up = true
+	drawGrid.color = 4
+	table.insert(drawGrid, maxYellow)
+end
+if maxGreen1 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 5
+	table.insert(drawGrid, maxGreen1)
+end
+if maxGreen2 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 6
+	table.insert(drawGrid, maxGreen2)
+end
+if maxGreen3 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 7
+	table.insert(drawGrid, maxGreen3)
+end
+if maxBlue1 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 8
+	table.insert(drawGrid, maxBlue1)
+end
+if maxBlue2 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 9
+	table.insert(drawGrid, maxBlue2)
+end
+if maxBlue3 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 10
+	table.insert(drawGrid, maxBlue3)
+end
+if maxBlue4 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 11
+	table.insert(drawGrid, maxBlue4)
+end
+if maxWhite > 0 then
+	drawGrid.up = true
+	drawGrid.color = 12
+	table.insert(drawGrid, maxWhite)
+end
+if maxGrey1 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 13
+	table.insert(drawGrid, maxGrey1)
+end
+if maxGrey2 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 14
+	table.insert(drawGrid, maxGrey2)
+end
+if maxGrey3 > 0 then
+	drawGrid.up = true
+	drawGrid.color = 15
+	table.insert(drawGrid, maxGrey3)
+end
 
 -- Affichage compteur rectangle par couleur et le nombre
-for i, v in ipairs(nbColor) do
-	print("Valid max value: " .. #nbColor)
+for i, v in ipairs(drawGrid) do
+	print("Valid max value: " .. #drawGrid)
 end
 
 -- formule collision
@@ -212,9 +278,11 @@ function TIC()
 		print("x"..redCount, 57, 5, 12)
 	end
 
-	for i,v in ipairs(nbColor) do
-		rect(57, 15 * i, 12, 12, 2)
-		print(#nbColor, 57, 25, 12)
+	for i,v in ipairs(drawGrid) do
+		if drawGrid.up then
+			rect(57, 15 * i, 12, 12, drawGrid.color)
+		end
+		print(#drawGrid, 57, 25, 12)
 	end
 	
 	-- Affiche les coordonné X et Y de la souris
