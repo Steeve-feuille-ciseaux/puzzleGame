@@ -1,424 +1,198 @@
-	-- title:   Puzzle Game Children
-	-- author:  Steeve-feuille-ciseaux
-	-- desc:    Game for learn count from 1 to 100
-	-- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
-	-- license: 
-	-- version: 0.1
-	-- script:  lua
-	-- Thanks to HaPiter and maniek207 for sharing tool!
+-- title:   pixArt Puzzle
+-- author:  Steeve-feuille-ciseaux
+-- desc:    Puzzle in Pixel
+-- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
+-- license: 
+-- version: 0.1
+-- script:  lua
+-- Thanks to HaPiter and maniek207 for sharing tool!
 
-	-- Variable
-	endPuzzle = 0
-	countM = 0
-	pieceS = 12
-	x = 100
-	count = 0
-	second = 0
-	accSecond = 30
-	boxC = 0
-	numberRect = 1
-	numeroRect = 1
-	flash = 0
-	showAnswer = false
-	about = false
-	startCount = false
-	moveRect = false
-	Lock = false
-	readyMessage = false
-	stop = false
-	placePiece = false
-	goalPuzzle = false
-	listRect = {}
-	Cadre = {}
-		Cadre.x = 60
-		Cadre.y = 10
-		Cadre.larg = 70
-		Cadre.haut = 70
+-- Variable
+accSecond = 30
+count = 00
+listRect = {}
+numberRect = 1
+pieceS = 12
+second = 0
+sizeGrid = 0
+startCount = false
+x = 100
 
-	-- formule collision
-	function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
-	return x1 < x2+w2 and
-			x2 < x1+w1 and
-			y1 < y2+h2 and
-			y2 < y1+h1
-	end
+-- Nombre de rectangles par couleurs 
+blackCount = 0
+purleCount = 0
+redCount = 0
+orangeCount = 0
+yellowCount = 0
+green1Count = 0
+green2Count = 0
+green3Count = 0
+blue1Count = 0
+blue2Count = 0
+blue3Count = 0
+blue4Count = 0
+whiteCount = 0
+grey1Count = 0
+grey2Count = 0
+grey3Count = 0
 
-	-- Remise a zero
-	function init()
-		listRect = {}	
-	end
+-- Nombre maximum de rectangles par couleur
+maxBlack = 0 
+maxPurple = 0
+maxRed = 10
+maxOrange = 0
+maxYellow = 0
+maxGreen1 = 10
+maxGreen2 = 0
+maxGreen3 = 0
+maxBlue1 = 0
+maxBlue2 = 10
+maxBlue3 = 0
+maxBlue4 = 0
+maxWhite = 10
+maxGrey1 = 10
+maxGrey2 = 0
+maxGrey3 = 0
 
-	-- TEST RATER
-	function endgoal()
-		for i,v in ipairs(listRect) do
-			if listRect[x].find == true then
-				endPuzzle = endPuzzle + 1
-			end
-		end
-	end	
+-- formule collision
+function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
+return x1 < x2+w2 and
+		x2 < x1+w1 and
+		y1 < y2+h2 and
+		y2 < y1+h1
+end
+
+-- Remise a zero
+function init()
+	listRect = {}	
+end
+
+-- Counter
+function counter()
+	if count > 66 then
+		second = second +1 
+	end		
+end
+
+function TIC()
+
+	cls(0)
 
 	-- Counter
-	function counter()
-		if count > 66 then
-			second = second +1 
-		end		
-	end
-
-	-- find piece
-	function finish()
-	end
-
-
-	-- variable grid 
-	l=12 
-	a={}
-	for i=0,100//l+1 do
-		a[i]={}
-		for j=0,100//l+1 do
-			a[i][j]=0
-				for p=0,100//l+1 do
-					a[i][p]=0
-				end
-		end
-	end
-
-	-- Musique 
-	
-	function musique()
-	end
-
-	function TIC()
-
-		-- Musique
-		musique()
-	
-		musicLoop = true
-
-		-- Extension souris
-		mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
-
-		cls(0)
-		print(mX, 215,100,12)
-		print(mY, 215,110,12)
-
-		if endPuzzle == x then 
-			print("Finish !!!", 195,130,12)
-		else
-			print("Progress", 187,123,12)
-			print(endPuzzle .. " / " .. tostring(x), 195,130,12)
-		end
-
-		local mvRect = listRect[numeroRect]
-			
-		-- Counter
-		if #listRect < x  then  
-			if accSecond == 0 then
-				count = count + 1 
-				counter()
-			elseif accSecond ~= 0 then
-				count = count + 1 * accSecond
-				counter()
-			end	
-		elseif #listRect == x then
-			startCount = false
-		end
-		
-		if count > 66 and #listRect < x then
-			-- config des rectangle en dynamique
-			local r = {}
-			
-			r.larg = pieceS
-			r.haut = pieceS
-			r.x = math.random(0,55 - r.larg)
-			r.y = math.random(0,135 - r.haut)
-			r.color = math.random(1,15)
-			r.nb = numberRect
-			r.autoPut = false
-			r.find = false
-			r.lock = false
-			r.answerX = 58
-			r.answerY = 10
-		
-			-- ajustement taille piece / number
-			if numberRect >= 100  then
-				r.larg = pieceS + 6
-				r.haut = pieceS
-			end	
-		
-			-- Collision rectangle
-			local ok = true
-				
-			-- fonction collision
-			--[[
-			for i,v in ipairs(listRect) do
-			if CheckCollision(r.x,r.y,r.larg,r.haut,v.x,v.y,v.larg,v.haut) then
-			ok = false
-			boxC = boxC + 1
-			end
-			end	
-			--]]
-		
-			-- ajouter les rectangle dans la liste
-			if ok then   
-				numberRect = numberRect + 1
-				table.insert(listRect, r)
-			end
-			count = 0
-		end 
-	
-		-- Show grid
-		for i=0,100//l+1 do
-			-- Show Answer piece
-			if showAnswer == false and Lock then
-				local aX = 0
-				local aY = 0
-				if numeroRect >= 1 and numeroRect <= 10 then
-					aX = (numeroRect - 1) * 12
-				elseif numeroRect >= 11 and numeroRect <= 20 then
-					-- !!! REPRENDRE ICI !!! --
-					aX = (numeroRect - 1) * 12
-					aY = 12
-				else
-					aX = (numeroRect - 1) * 12
-				end
-				rectb(58+aX,10+aY,l,l,3)
-				print(58+aX, 195,100,12)
-				print(mvRect.answerY, 195,110,12)
-			end
-
-			-- Focus grid put piece
-			if Lock and mX >= 60 and mX <= 175
-					and mY >= 12 and mY <= 130  then
-					rectb((l*(mX//l)-2),(l*(mY//l)-2),l,l,5)
-			end
-
-			-- autofocus put on grid
-			if Lock and lb == false and mvRect.autoPut == false
-					and mvRect.x >= 54 and mvRect.x <= 173
-					and mvRect.y >= 5 and mvRect.y <= 123  then
-					mvRect.x = l*(mX//l)-2
-					mvRect.y = l*(mY//l)-2
-					mvRect.autoPut = true
-		
-				-- grid answer
-				local grid_X = 58
-				local grid_Y = 10
-				local adjust_mX = mX - grid_X
-				local adjust_mY = mY - grid_Y
-				local ligne = adjust_mX//l+1
-				local colonne = (adjust_mY//l*10) 
-				local resultat = ligne+colonne
-					
-				-- Count puzzle
-				if ((mvRect.x-grid_X)//l+1)+((mvRect.y-grid_Y)//l*10) == mvRect.nb and mvRect.autoPut == true then
-					mvRect.find = true
-					endPuzzle = endPuzzle + 1
-					mvRect.lock = true
-				end
-			end
-
-			-- draw grid
-			for j=0,100//l+1  do
-				local nbCase = (i + 1) + (j * 10)
-
-				if a[i][j]==0 then
-					rect(58+(l*i),10+(l*j),l,l,8)
-					rectb(58+(l*i),10+(l*j),l,l,13)
-						for p=0,100//l+1  do
-							rect(63+(l*i),15+(l*p),2,2,13)
-						end
-				elseif a[i][j]==1 then
-					rect(58+(l*i),10+(l*j),l,l,10)
-					rectb(58+(l*i),10+(l*j),l,l,9)
-				end
-
-				print(nbCase,58+(l*i),10+(l*j),12)
-			end
-		end		
-	
-		-- Afficher les rectangle
-		for i,v in ipairs(listRect) do
-			rect(v.x, v.y, v.larg, v.haut, v.color)
-			-- gestion numero et couleur
-			if v.nb < 10  then
-				if v.color == 8 or v.color == 15 then
-					print(v.nb,v.x+4,v.y+3,12)
-				else
-					print(v.nb,v.x+4,v.y+3)
-				end
-			end
-			if v.nb >= 10 then 
-				if v.color == 8 or v.color == 15 then
-					print(v.nb,v.x+1,v.y+3,12)
-				else
-					print(v.nb,v.x+1,v.y+3)
-				end
-			end
-		end
-	
-		-- Message fin de tache
-
-		if stop == false then
-			countM = countM + 1
-		end
-	
-		if #listRect == x and flash == 0 then
-				rect(80,50,76,21,12)
-				print("PUZZLE READY",84,58)
-				if countM > 400 then
-					flash = flash + 1
-					readyMessage = true
-					countM = 0
-				end
-		end
-	
-		if flash >= 1 then				
-			if countM < 30 and readyMessage then	
-				print("DO THE PUZZLE",82,2,12)
-			elseif countM == 40 then
-				readyMessage = false				
-			elseif countM == 45 then
-				readyMessage = true
-				countM = 0
-				flash = flash + 1
-			elseif flash == 4 then
-				stop = true
-				readyMessage = false
-				print("DO THE PUZZLE",82,2,12)
-				moveRect = true
-			end
+	if #listRect < x  then  
+		if accSecond == 0 then
+			count = count + 1 
+			counter()
+		elseif accSecond ~= 0 then
+			count = count + 1 * accSecond
+			counter()
 		end	
+	elseif #listRect == x then
+		startCount = false
+	end
 	
-		-- menu deplacement Rectangle 
-		if moveRect then
-					
-
-			-- how to play
-			rect(180,2,60,20,12)
-			if Lock == false then
-				print("Select",192,4)
-				print("use ",200,34,12)
-				print("keyboard",186,42,12)
-				print("arrow",195,50,12)
-				print("then",199,63,12)
-				print("L or K",194,71,12)
-				print("for move",187,79,12)
-			else
-				print("Move",198,4)
-				print("use ",200,34,12)
-				print("mouse",194,42,12)
-				print("then switch",180,55,12)
-				print("with",199,63,12)
-				print("L or K",194,71,12)
-			end
-
-			-- Selection rectangle  
-			if mvRect.nb >= 1 and mvRect.nb <= 9 then
-				print("piece n' " .. listRect[numeroRect].nb
-																				,186,14)
-			elseif mvRect.nb >= 10 and mvRect.nb <= 99 then
-				print("piece n' " .. listRect[numeroRect].nb
-																				,183,14)
-			elseif mvRect.nb >= 100 then
-				print("piece n' " .. listRect[numeroRect].nb
-																				,180,14)
-			end														
-				rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
-				rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
+	if count > 66 and #listRect < x then
+		-- config des rectangle en dynamique
+		local r = {}
 		
-			if mvRect.nb < 10  then
-						print(mvRect.nb,mvRect.x+4,mvRect.y+3,0)
+		r.larg = pieceS
+		r.haut = pieceS
+		r.x = math.random(0,55 - r.larg)
+		r.y = math.random(0,135 - r.haut)
+		-- r.color = math.random(1,15)
+		r.nb = numberRect
+		r.autoPut = false
+		r.find = false
+		r.lock = false
+		r.answerX = 58
+		r.answerY = 10
+	
+		-- ajustement taille piece en corélation de la grille
+		if sizeGrid == 100  then
+			r.larg = pieceS + 6
+			r.haut = pieceS
+		end	
+
+		-- Attribuer la couleur en fonction des compteurs
+		if blackCount < maxBlack then
+			r.color = 0 -- Noir
+			blackCount = blackCount + 1
+		elseif purleCount < maxPurple then
+			r.color = 1 -- Violet
+			purleCount = purleCount + 1
+		elseif redCount < maxRed then
+			r.color = 2 -- Rouge
+			redCount = redCount + 1
+		elseif orangeCount < maxOrange then
+			r.color = 3 -- Orange
+			orangeCount = orangeCount + 1
+		elseif yellowCount < maxYellow then
+			r.color = 4 -- Rouge
+			yellowCount = yellowCount + 1
+		elseif green1Count < maxGreen1 then
+			r.color = 5 -- Vert claire
+			green1Count = green1Count + 1
+		elseif green2Count < maxGreen1 then
+			r.color = 6 -- Vert normal
+			green2Count = green2Count + 1
+		elseif green3Count < maxGreen3 then
+			r.color = 7 -- Vert foncé
+			green3Count = green3Count + 1
+		elseif blue1Count < maxBlue1 then
+			r.color = 8 -- Bleu foncé
+			blue1Count = blue1Count + 1
+		elseif blue2Count < maxBlue2 then
+			r.color = 9 -- Bleu marine
+			blue2Count = blue2Count + 1
+		elseif blue3Count < maxBlue3 then
+			r.color = 10 -- Bleu foncé
+			blue3Count = blue3Count + 1
+		elseif blue4Count < maxBlue4 then
+			r.color = 11 -- Bleu clair
+			blue4Count = blue4Count + 1
+		elseif whiteCount < maxWhite then
+			r.color = 12 -- Blanc
+			whiteCount = whiteCount + 1
+		elseif grey1Count < maxGrey1 then
+			r.color = 13 -- Gris clair
+			grey1Count = grey1Count + 1
+		elseif grey2Count < maxGrey2 then
+			r.color = 14 -- Gris normal
+			grey2Count = grey2Count + 1
+		elseif grey3Count < maxGrey3 then
+			r.color = 15 -- Gris foncé
+			grey3Count = grey3Count + 1
+		else
+			r.color = 12
+		end
+	
+        -- Ajouter le rectangle à la liste
+        numberRect = numberRect + 1
+        table.insert(listRect, r)
+
+        -- Réinitialiser le compteur
+        count = 0
+	end 
+	
+
+	-- Afficher les rectangle
+	for i,v in ipairs(listRect) do
+		rect(v.x, v.y, v.larg, v.haut, v.color)
+		-- gestion numero et couleur
+		if v.nb < 10  then
+			if v.color == 8 or v.color == 15 then
+				print(v.nb,v.x+4,v.y+3,12)
 			else
-					print(mvRect.nb,mvRect.x+1,mvRect.y+3,0)
-			end	
-	
-			-- deplacement rectangle
-			if mvRect.nb and Lock then
-				rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
-				rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,12)
-				if mvRect.nb < 10  then
-						print(mvRect.nb,mvRect.x+4,mvRect.y+3,12)
-				else
-				print(mvRect.nb,mvRect.x+1,mvRect.y+3,12)
-			end
-			
-			-- déplacement mouse 
-			if Lock and lb and mvRect.lock == false  then
-				mvRect.y = mY - 7
-				mvRect.x = mX - 6
-				mvRect.autoPut = false
-			
-			elseif Lock and lb and mvRect.lock == true then
-				mvRect.y = mvRect.y
-				mvRect.x = mvRect.x
+				print(v.nb,v.x+4,v.y+3)
 			end
 		end
-	
-	end  
-	
-	-- Cadre du puzzle
-	--[[
-	rectb(Cadre.x,
-							Cadre.y,
-		Cadre.larg,
-		Cadre.haut,
-		12)
-	--]]
-		
-	-- Menu Debug
-	if about then
-		rect(0,0,87,37,12)
-		print("Frame : " .. tostring(accSecond)
-																		.. " x " 
-																			.. tostring(count)
-																			,1,1)
-		print("Time : " .. second
-																		.. " sec"
-																		,1,8)
-		print("Rectangle : " .. #listRect,1,15)
-		print("Collision : " .. boxC,1,23)
-		print("limite : " .. x
-																						.. " rect ",1,31)	
-	end
-	
-	-- touche Espace
-	if (keyp(48)) then
-		if about == true then
-			about = false
-		else
-			about = true
-		end
-	end		
-	
-	-- touche M
-	--[[
-	if (keyp(13)) then
-		if moveRect == true then
-			moveRect = false
-		else
-			moveRect = true
+		if v.nb >= 10 then 
+			if v.color == 8 or v.color == 15 then
+				print(v.nb,v.x+1,v.y+3,12)
+			else
+				print(v.nb,v.x+1,v.y+3)
+			end
 		end
 	end
-	--]]
-	
-	-- touche gauche/droite
-	if Lock == false then
-		if (keyp(60)) and numeroRect > 1
-		or (key(59)) and numeroRect > 1 then
-			numeroRect = numeroRect - 1
-		elseif (keyp(61	)) and numeroRect < #listRect
-		or (key(58)) and numeroRect < #listRect then
-			numeroRect = numeroRect + 1
-		end
-	end
-	
-	-- touche L
-	if (keyp(12)) or rb then
-		if Lock == true then
-			Lock = false
-		else
-			Lock = true
-		end
-	end
-	
-end 
+
+end
