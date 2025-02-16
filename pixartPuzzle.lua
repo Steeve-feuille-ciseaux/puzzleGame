@@ -97,10 +97,12 @@ function completePuzzle()
     print(endPuzzle .. " / " .. tostring(x), 190,130 - 5,12)
 end
 
+selectedColor = nil  -- Stocke la couleur actuellement sélectionnée
+
 function TIC()
     cls(0) -- Efface l'écran
 
-    -- Dessiner la carte
+    -- Dessiner la grille
     for y = 1, #GRID do
         for x = 1, #GRID[y] do
             local color = GRID[y][x]
@@ -108,53 +110,45 @@ function TIC()
             local posY = GRID.POS_Y + (y - 1) * GRID.CELL_SIZE
 
             if color == 99 then
-                -- Si la valeur est 99, dessiner avec une bordure
                 rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 8) 
                 rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
             else
-                -- Sinon, dessiner normalement
                 rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
             end
         end
     end
 
-    -- Affiche les pixels à placer sur le puzzle
+    -- Affiche les pixels à placer
     for i, color in ipairs(MAP.COLOR) do
         local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
-        -- Aligné avec MAP.POS_Y
         rect(200, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
         rectb(200, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
-        print("x".. 5, 209, yPos + 1,12)
-    end
+        print("x".. 5, 209, yPos + 1, 12)
 
-    -- Affiche les coordonné X et Y de la souris
-	mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
-	print(mX, 20,100,12)
-	print(mY, 20,110,12)
-	print(GRID.TYPE, 20,120,12)
-
-    -- Affiche la progression
-    if endPuzzle == x then 
-        print("Finish !!!", 195,130 - 5,12)
-        completePuzzle()
-    else
-        print("Complete", 187,123 - 5,12)
-        print(endPuzzle .. " / " .. tostring(x), 195,130 - 5,12)
-    end
-
-    -- Récupère la position de la souris et l'état du clic gauche
-    mX, mY, lb, _, _, _, _ = mouse()
-
-    -- Vérifier si la souris est dans la grille et si on clique
-    if lb then
-        -- Calculer l'index de la case sélectionnée
-        local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
-        local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
-
-        -- Vérifier si les coordonnées sont dans les limites de la grille
-        if gridX > 0 and gridX <= #GRID[1] and gridY > 0 and gridY <= #GRID then
-            GRID[gridY][gridX] = 9 -- Change la couleur à 6 (tu peux mettre une variable pour la couleur sélectionnée)
+        -- Vérifier si la souris clique sur une couleur
+        if mousePressed and mX >= 200 and mX <= 200 + MAP.CELL_SIZE and mY >= yPos and mY <= yPos + MAP.CELL_SIZE then
+            selectedColor = color  -- Stocke la couleur sélectionnée
         end
     end
 
+    -- Récupère la position et état du clic
+    mX, mY, lb, _, _, _, _ = mouse()
+    mousePressed = lb  -- Stocke l'état du bouton gauche
+
+    -- Affiche la couleur sous la souris si un bouton est maintenu
+    if selectedColor and mousePressed then
+        rect(mX - MAP.CELL_SIZE // 2, mY - MAP.CELL_SIZE // 2, MAP.CELL_SIZE, MAP.CELL_SIZE, selectedColor)
+    end
+
+    -- Quand on relâche, applique la couleur si dans la grille
+    if selectedColor and not mousePressed then
+        local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
+        local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
+
+        if gridX > 0 and gridX <= #GRID[1] and gridY > 0 and gridY <= #GRID then
+            GRID[gridY][gridX] = selectedColor
+        end
+
+        selectedColor = nil  -- Réinitialise après le relâchement
+    end
 end
