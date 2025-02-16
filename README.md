@@ -27,4 +27,8 @@ Le projet est codé en **LUA**, un langage simple que j'ai choisi pour sa facili
 
 - **à venir**
 
+## Patch Note du projet
+
+Suivi des patch note dans le fichier **version PixArt Puzzle**
+
 readMe v.1

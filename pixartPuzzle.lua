@@ -31,10 +31,13 @@ MAP = {
 }
 
 -- Info sur la grille
-CELL_SIZE = 7
-CELL_X = 50
-CELL_Y = 5
+MAP.CELL_SIZE = 7
+MAP.POS_X = 50
+MAP.POS_Y = 5
+MAP.COLOR = {00,02,03,04,05,06,09,10,11}
 
+PIXEL = {}
+PIXEL.COLOR = {}
 
 function TIC()
     cls(0) -- Efface l'écran
@@ -43,18 +46,26 @@ function TIC()
     for y = 1, #MAP do
         for x = 1, #MAP[y] do
             local color = MAP[y][x]
-            local posX = CELL_X + (x - 1) * CELL_SIZE
-            local posY = CELL_Y + (y - 1) * CELL_SIZE
+            local posX = MAP.POS_X + (x - 1) * MAP.CELL_SIZE
+            local posY = MAP.POS_Y + (y - 1) * MAP.CELL_SIZE
 
             if color == 99 then
-                -- Si la valeur est 10, dessiner avec une bordure
-                rect(posX, posY, CELL_SIZE, CELL_SIZE, 8)  -- Remplissage en couleur 8
-                rectb(posX, posY, CELL_SIZE, CELL_SIZE, 13) -- Bordure en couleur 13
+                -- Si la valeur est 99, dessiner avec une bordure
+                rect(posX, posY, MAP.CELL_SIZE, MAP.CELL_SIZE, 8) 
+                rectb(posX, posY, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
             else
                 -- Sinon, dessiner normalement
-                rect(posX, posY, CELL_SIZE, CELL_SIZE, color)
+                rect(posX, posY, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
             end
         end
+    end
+
+    -- Affiche les pixels à placer sur le puzzle
+    for i, color in ipairs(MAP.COLOR) do
+        local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  -- Aligné avec MAP.POS_Y
+        rect(200, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
+        rectb(200, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
+        print("x".. 5, 209, yPos + 1,12)
     end
 
     -- Affiche les coordonné X et Y de la souris
