@@ -10,7 +10,7 @@
 x = 100
 endPuzzle = 0
 
--- Définition de la carte MAP
+-- Dessin sur la carte 
 MAP = {
     {99,99,99,99,99,99,99,99,99,00,99,99,99,99,99,99,99,99,99},
     {99,99,99,99,99,99,99,99,00,02,00,99,99,99,99,99,99,99,99},
@@ -34,14 +34,12 @@ MAP = {
 
 -- Info sur MAP
 MAP.CELL_SIZE = 7
-MAP.POS_X = 50
+MAP.POS_X = 70
 MAP.POS_Y = 5
 MAP.COLOR = {00,02,03,04,05,06,09,10,11}
 
 
--- Info sur la grille
-
-
+-- Grille vierge
 GRID = {
     {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
     {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
@@ -63,12 +61,36 @@ GRID = {
     {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
 }
 
+-- Info sur la grille
 GRID.CELL_SIZE = MAP.CELL_SIZE
 GRID.POS_X = MAP.POS_X
 GRID.POS_Y = MAP.POS_Y
 GRID.COLOR = MAP.COLOR
 GRID.COLOR.NB = {}
 GRID.TYPE = 0
+
+-- Info sur la mini grille
+MINI = {}
+MINI.CELL_SIZE = 3
+MINI.POS_X = 2  -- Position à gauche
+MINI.POS_Y = 35  -- Position en bas
+
+function drawMiniGrid()
+    for y = 1, #MAP do
+        for x = 1, #MAP[y] do
+            local color = MAP[y][x]
+            local posX = MINI.POS_X + (x - 1) * MINI.CELL_SIZE
+            local posY = MINI.POS_Y + (y - 1) * MINI.CELL_SIZE
+
+            if color ~= 99 then
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)
+            else
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 13) 
+                rectb(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8)
+            end
+        end
+    end
+end
 
 PIXEL = {}
 PIXEL.COLOR = {}
@@ -78,7 +100,7 @@ function completePuzzle()
     -- Efface l'écran  
     cls(0) 
 
-    -- Dessiner la carte
+    -- Affiche le dessin sans grille
     for y = 1, #MAP do
         for x = 1, #MAP[y] do
             local color = MAP[y][x]
@@ -102,6 +124,9 @@ selectedColor = nil  -- Stocke la couleur actuellement sélectionnée
 function TIC()
     cls(0) -- Efface l'écran
 
+    -- Affiche la mini-grille
+    drawMiniGrid()
+
     -- Dessiner la grille
     for y = 1, #GRID do
         for x = 1, #GRID[y] do
@@ -115,15 +140,18 @@ function TIC()
             else
                 rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
             end
+
+            -- Ajouter un point gris au centre de chaque cellule
+            -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
         end
     end
 
     -- Affiche les pixels à placer
     for i, color in ipairs(MAP.COLOR) do
         local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
-        rect(200, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
-        rectb(200, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
-        print("x".. 5, 209, yPos + 1, 12)
+        rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
+        rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
+        print("x".. 5, 224, yPos + 1, 12)
 
         -- Vérifier si la souris clique sur une couleur
         if mousePressed and mX >= 200 and mX <= 200 + MAP.CELL_SIZE and mY >= yPos and mY <= yPos + MAP.CELL_SIZE then
@@ -139,6 +167,9 @@ function TIC()
     if selectedColor and mousePressed then
         rect(mX - MAP.CELL_SIZE // 2, mY - MAP.CELL_SIZE // 2, MAP.CELL_SIZE, MAP.CELL_SIZE, selectedColor)
     end
+
+    -- Affiche les limites de l'écran 
+    -- rectb(1,1,239,135,13)
 
     -- Quand on relâche, applique la couleur si dans la grille
     if selectedColor and not mousePressed then

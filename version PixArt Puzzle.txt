@@ -9,3 +9,10 @@ v0.04.0 -> SUCCESS : lorsque le puzzle est fini, il est mis en valeur
 v0.05.0 -> SUCCESS : selectionner un pixel de couleur
 v0.06.0 -> SUCCESS : changement de logique, comparer deux tableau et changer les valeur du tableau vierge pour être completer au tableau final
 v0.07.0 -> SUCCESS : choix des couleurs en prenant une piece sur la droite puis la poser sur la grille
+v0.08.0 -> SUCCESS : mini dessin afficher à gauche pour guider le joueur
+
+-- A FAIRE
+- Modifier le changement de couleur en cliquant sur le bouton droit
+
+-- A TESTER
+- remplacer le repère de la grille par des points comme des pieces à clipser
