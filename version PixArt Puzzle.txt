@@ -4,4 +4,5 @@ v0.01.1 -> Afficher la quantité de pixel selon la couleur
 v0.01.2 -> Reflexion nom de variable
 v0.01.3 -> Reflexion boucle
 v0.02.0 -> Refonte des fondations, on commence par la grille
-v0.03.0 -> Grille, Couleur, légende de couleur FINI !
+v0.03.0 -> SUCCESS : Grille, Couleur, légende de couleur
+v0.04.0 -> SUCCESS : lorsque le puzzle est fini, il est mis en valeur
