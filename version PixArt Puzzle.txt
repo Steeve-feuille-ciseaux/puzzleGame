@@ -6,3 +6,4 @@ v0.01.3 -> Reflexion boucle
 v0.02.0 -> Refonte des fondations, on commence par la grille
 v0.03.0 -> SUCCESS : Grille, Couleur, légende de couleur
 v0.04.0 -> SUCCESS : lorsque le puzzle est fini, il est mis en valeur
+v0.05.0 -> SUCCESS : selectionner un pixel de couleur
