@@ -128,6 +128,8 @@ local prev_rb = false
 function TIC()
     cls(0) -- Efface l'écran
 
+    
+
     -- Affiche la mini-grille
     drawMiniGrid()
 
@@ -167,6 +169,22 @@ function TIC()
                 selectedColor = MAP.COLOR[indexColor]  -- Change la couleur sélectionnée
             end
         end
+    end
+
+    -- Position de la croix en bas à droite
+    local crossPosX = 220
+    local crossPosY = 120
+    local crossSize = 3  -- Taille de la croix (longueur des lignes)
+    local crossLarg = 2  -- Largeur de la croix (épaisseur des lignes)
+    -- Dessiner la croix (deux lignes croisées) avec une épaisseur simulée
+    local lineThickness = 1  -- Épaisseur de la ligne (en nombre de pixels)
+    -- Diagonale 1 (haut-gauche à bas-droit)
+    for i = -lineThickness, lineThickness do
+        line(crossPosX - crossSize - crossLarg + i, crossPosY - crossSize, crossPosX + crossSize + crossLarg + i, crossPosY + crossSize, 2)  -- Couleur rouge (2)
+    end
+    -- Diagonale 2 (haut-droit à bas-gauche)
+    for i = -lineThickness, lineThickness do
+        line(crossPosX - crossSize - crossLarg + i, crossPosY + crossSize, crossPosX + crossSize + crossLarg + i, crossPosY - crossSize, 2)  -- Couleur rouge (2)
     end
 
     -- Dessiner la flèche pour indiquer la couleur sélectionnée
