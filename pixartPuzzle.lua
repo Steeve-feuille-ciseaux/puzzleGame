@@ -119,7 +119,11 @@ function completePuzzle()
     print(endPuzzle .. " / " .. tostring(x), 190,130 - 5,12)
 end
 
-selectedColor = nil  -- Stocke la couleur actuellement sélectionnée
+indexColor = 1
+selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
+
+-- bouton droit relaché
+local prev_rb = false
 
 function TIC()
     cls(0) -- Efface l'écran
@@ -146,6 +150,9 @@ function TIC()
         end
     end
 
+    -- Récupère la position et état du clic
+    mX, mY, lb, _, rb, _, _ = mouse()
+
     -- Affiche les pixels à placer
     for i, color in ipairs(MAP.COLOR) do
         local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
@@ -153,33 +160,53 @@ function TIC()
         rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
         print("x".. 5, 224, yPos + 1, 12)
 
-        -- Vérifier si la souris clique sur une couleur
-        if mousePressed and mX >= 200 and mX <= 200 + MAP.CELL_SIZE and mY >= yPos and mY <= yPos + MAP.CELL_SIZE then
-            selectedColor = color  -- Stocke la couleur sélectionnée
+        -- Vérification du clic gauche sur les carrés de couleurs
+        if lb then
+            if mX >= 215 and mX <= 215 + MAP.CELL_SIZE and mY >= yPos and mY <= yPos + MAP.CELL_SIZE then
+                indexColor = i  -- Met à jour l'index de couleur en fonction du carré cliqué
+                selectedColor = MAP.COLOR[indexColor]  -- Change la couleur sélectionnée
+            end
         end
     end
 
-    -- Récupère la position et état du clic
-    mX, mY, lb, _, _, _, _ = mouse()
-    mousePressed = lb  -- Stocke l'état du bouton gauche
+    -- Dessiner la flèche pour indiquer la couleur sélectionnée
+    local arrowPosY = (MAP.POS_Y + 3) + (MAP.CELL_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
+    local arrowPosX = 212  -- Position X de la flèche (fixe, juste à gauche des carrés de couleur)
 
-    -- Affiche la couleur sous la souris si un bouton est maintenu
-    if selectedColor and mousePressed then
-        rect(mX - MAP.CELL_SIZE // 2, mY - MAP.CELL_SIZE // 2, MAP.CELL_SIZE, MAP.CELL_SIZE, selectedColor)
-    end
+    -- Dessiner une flèche pointant vers le carré de couleur sélectionné
+    tri(arrowPosX, arrowPosY, arrowPosX - 4, arrowPosY - 4, arrowPosX - 4, arrowPosY + 4, 12)
 
     -- Affiche les limites de l'écran 
     -- rectb(1,1,239,135,13)
 
-    -- Quand on relâche, applique la couleur si dans la grille
-    if selectedColor and not mousePressed then
+    -- Carre cursor
+    -- Afficher un carré de la couleur sélectionnée qui suit la souris
+    rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
+    rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
+
+
+    -- Si le bouton droite est pressé
+    if prev_rb and not rb then
+        indexColor = indexColor + 1
+        if indexColor > #MAP.COLOR then
+            indexColor = 1 -- Revenir au début si on dépasse la liste
+        end
+        selectedColor = MAP.COLOR[indexColor]
+    end
+
+    -- Mettre à jour l'état précédent du bouton droit
+    prev_rb = rb
+
+    -- Si le bouton gauche est pressé
+    if lb then 
+        -- Convertir les coordonnées de la souris en indices de la grille
         local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
         local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
 
-        if gridX > 0 and gridX <= #GRID[1] and gridY > 0 and gridY <= #GRID then
-            GRID[gridY][gridX] = selectedColor
+        -- Vérifier si les indices sont dans les limites de la grille
+        if gridX >= 1 and gridX <= #GRID[1] and gridY >= 1 and gridY <= #GRID then
+            GRID[gridY][gridX] = selectedColor -- Changer la valeur de la cellule en 5
         end
-
-        selectedColor = nil  -- Réinitialise après le relâchement
     end
+
 end
