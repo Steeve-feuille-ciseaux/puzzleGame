@@ -78,8 +78,8 @@ function resetGrid(g1)
     end
 end
 
+-- Vérifier si les dimensions sont les mêmes
 function watchEqual(t1, t2)
-    -- Vérifier si les dimensions sont les mêmes
     if #t1 ~= #t2 then return false end  
 
     for i = 1, #t1 do
@@ -94,6 +94,30 @@ function watchEqual(t1, t2)
 
     return true  -- Si toutes les cases sont identiques, renvoyer true
 end
+
+-- Nombre de pixel à placer
+function countDifferences(t1, t2)
+    local count = 0
+
+    -- Vérifier si les dimensions sont les mêmes
+    if #t1 ~= #t2 then return -1 end  
+
+    for i = 1, #t1 do
+        if #t1[i] ~= #t2[i] then return -1 end  -- Vérifier la largeur de chaque ligne
+
+        for j = 1, #t1[i] do
+            if t1[i][j] ~= t2[i][j] then
+                count = count + 1  -- Incrémenter le compteur si la valeur est différente
+            end
+        end
+    end
+
+    return count
+end
+
+-- Nombre maximum de piece
+pixTotal = countDifferences(GRID, MAP)
+
 
 -- Info sur la mini grille
 MINI = {}
@@ -151,7 +175,10 @@ function TIC()
     cls(0) -- Efface l'écran
 
     -- Récupère la position et état du clic
-    mX, mY, lb, _, rb, _, _ = mouse()
+	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
+    -- Affiche les coordonné X et Y de la souris
+	-- print(mX, 10,100,12)
+	-- print(mY, 10,110,12)
 
     -- ## BUILDING PUZZLE
     if endPuzzle == false then
@@ -183,7 +210,7 @@ function TIC()
             local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
             rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
             rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
-            print("x".. 5, 224, yPos + 1, 12)
+            print("x".. "?", 224, yPos + 1, 12)
         end
 
         -- Dessine le carré qui sera l'icone delete pixel de la grille
@@ -203,6 +230,16 @@ function TIC()
         -- Dessiner une flèche pointant vers le carré de couleur sélectionné
         tri(arrowPosX, arrowPosY, arrowPosX - 4, arrowPosY - 4, arrowPosX - 4, arrowPosY + 4, 12)
 
+        -- Calculer le nombre de différences
+        pixCount = countDifferences(GRID, MAP)
+
+        -- Afficher le résultat
+        print(pixCount, 210, 93, 12)
+        -- Tracer une ligne diagonale entre les deux textes
+        line(210, 108, 235, 94, 12)
+        -- Afficher le résultat
+        print(pixTotal, 220, 105, 12)
+
         -- Affiche les limites de l'écran 
         -- rectb(1,1,239,135,13)
 
@@ -217,7 +254,6 @@ function TIC()
             rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
             rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
         end
-
 
         -- Si le bouton droite est pressé
         if prev_rb and not rb and cellDelete == false then

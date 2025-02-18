@@ -20,8 +20,11 @@ v0.11.0 -> SUCCESS : Feature Delete pixel
 v0.12.1 -> ACTUALLY : Mis en place du dialogue selection
 v0.12.2 -> ACTUALLY : preparatif pour changer la couleur si on survole la souris
 v0.13.0 -> SUCCESS : Boucle de endgame "Refaire le puzzle" où "Quitter en remerciant"
+v0.14.0 -> SUCCESS : Indiquez le nombre de pixel restant et le nombre de pixel total
 
-EN COURS : refaire le puzzle puis changer de puzzle
+EN COURS : 
+
+A FAIRE : affichez les pixels mal-placé via un booster, booster optenu tout les Xsecondes
 
 -- A TESTER
 - remplacer le repère de la grille par des points comme des pieces à clipser
