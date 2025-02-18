@@ -17,6 +17,9 @@ v0.10.0 -> ACTUALLY : ajout la feature retirer un pixel placer dans la grille
 v0.10.1 -> ACTUALLY : Icone delete finis, feature en codage
 v0.10.2 -> ACTUALLY : lorsque l'icone delete est activé, retirer le carre de couleur en remplaçant la variable par 99
 v0.11.0 -> SUCCESS : Feature Delete pixel 
+v0.12.1 -> ACTUALLY : Mis en place du dialogue selection
+
+EN COURS : refaire le puzzle puis changer de puzzle
 
 -- A TESTER
 - remplacer le repère de la grille par des points comme des pieces à clipser
