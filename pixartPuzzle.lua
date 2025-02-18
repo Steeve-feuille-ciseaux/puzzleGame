@@ -213,7 +213,7 @@ function TIC()
 
 
     -- Si le bouton droite est pressé
-    if prev_rb and not rb then
+    if prev_rb and not rb and cellDelete == false then
         indexColor = indexColor + 1
         if indexColor > #MAP.COLOR then
             indexColor = 1 -- Revenir au début si on dépasse la liste
@@ -232,7 +232,11 @@ function TIC()
 
         -- Vérifier si les indices sont dans les limites de la grille
         if gridX >= 1 and gridX <= #GRID[1] and gridY >= 1 and gridY <= #GRID then
-            GRID[gridY][gridX] = selectedColor -- Changer la valeur de la cellule en 5
+            if cellDelete == false then
+                GRID[gridY][gridX] = selectedColor -- Changer la valeur de la cellule pour dessiner dans la grille
+            else
+                GRID[gridY][gridX] = 99 -- Changer la valeur de la cellule pour dessiner dans la grille
+            end
         end
 
         -- Vérifier si le bouton gauche est pressé sur l'icône de suppression
