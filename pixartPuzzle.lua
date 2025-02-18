@@ -123,7 +123,23 @@ indexColor = 1
 selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
 
 -- bouton droit relaché
-local prev_rb = false
+prev_rb = false
+
+-- Delete variable
+cellDelete = false
+
+-- ICONE DELETE 1/2
+-- Position du carré icone en bas à droite
+squarePosX = 222
+squarePosY = 120
+squareSize = 7  -- Taille du carré (ajustez selon vos besoins)
+
+-- ICONE DELETE 2/2
+-- Position de la croix en bas à gauche
+crossPosX = 222
+crossPosY = 120
+crossSize = 3  -- Taille de la croix
+crossLarg = 0.5 -- Largeur des lignes
 
 function TIC()
     cls(0) -- Efface l'écran
@@ -161,35 +177,21 @@ function TIC()
         rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
         rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
         print("x".. 5, 224, yPos + 1, 12)
-
-        -- Vérification du clic gauche sur les carrés de couleurs
-        if lb then
-            if mX >= 215 and mX <= 215 + MAP.CELL_SIZE and mY >= yPos and mY <= yPos + MAP.CELL_SIZE then
-                indexColor = i  -- Met à jour l'index de couleur en fonction du carré cliqué
-                selectedColor = MAP.COLOR[indexColor]  -- Change la couleur sélectionnée
-            end
-        end
     end
 
-    -- Position de la croix en bas à droite
-    local crossPosX = 220
-    local crossPosY = 120
-    local crossSize = 3  -- Taille de la croix (longueur des lignes)
-    local crossLarg = 2  -- Largeur de la croix (épaisseur des lignes)
-    -- Dessiner la croix (deux lignes croisées) avec une épaisseur simulée
-    local lineThickness = 1  -- Épaisseur de la ligne (en nombre de pixels)
-    -- Diagonale 1 (haut-gauche à bas-droit)
-    for i = -lineThickness, lineThickness do
-        line(crossPosX - crossSize - crossLarg + i, crossPosY - crossSize, crossPosX + crossSize + crossLarg + i, crossPosY + crossSize, 2)  -- Couleur rouge (2)
-    end
-    -- Diagonale 2 (haut-droit à bas-gauche)
-    for i = -lineThickness, lineThickness do
-        line(crossPosX - crossSize - crossLarg + i, crossPosY + crossSize, crossPosX + crossSize + crossLarg + i, crossPosY - crossSize, 2)  -- Couleur rouge (2)
-    end
+    -- Dessine le carré qui sera l'icone delete pixel de la grille
+    rect(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 8)
+    rectb(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 13)
 
-    -- Dessiner la flèche pour indiquer la couleur sélectionnée
-    local arrowPosY = (MAP.POS_Y + 3) + (MAP.CELL_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
-    local arrowPosX = 212  -- Position X de la flèche (fixe, juste à gauche des carrés de couleur)
+    -- Dessine la croix rouge dans l'icone delete
+    for i = -crossLarg, crossLarg do
+        line(crossPosX - crossSize + i, crossPosY - crossSize, crossPosX + crossSize + i, crossPosY + crossSize, 2)
+        line(crossPosX - crossSize + i, crossPosY + crossSize, crossPosX + crossSize + i, crossPosY - crossSize, 2)
+    end
+    
+    -- Positionne la flèche pour indiquer la couleur sélectionnée
+    arrowPosY = (MAP.POS_Y + 3) + (MAP.CELL_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
+    arrowPosX = 212  -- Position X de la flèche (fixe, juste à gauche des carrés de couleur)
 
     -- Dessiner une flèche pointant vers le carré de couleur sélectionné
     tri(arrowPosX, arrowPosY, arrowPosX - 4, arrowPosY - 4, arrowPosX - 4, arrowPosY + 4, 12)
@@ -199,8 +201,15 @@ function TIC()
 
     -- Carre cursor
     -- Afficher un carré de la couleur sélectionnée qui suit la souris
-    rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
-    rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
+    if cellDelete then
+        for i = -crossLarg, crossLarg do
+            line(mX - crossSize + i, mY - crossSize, mX + crossSize + i, mY + crossSize, 2)
+            line(mX - crossSize + i, mY + crossSize, mX + crossSize + i, mY - crossSize, 2)
+        end
+    else
+        rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
+        rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
+    end
 
 
     -- Si le bouton droite est pressé
@@ -224,6 +233,23 @@ function TIC()
         -- Vérifier si les indices sont dans les limites de la grille
         if gridX >= 1 and gridX <= #GRID[1] and gridY >= 1 and gridY <= #GRID then
             GRID[gridY][gridX] = selectedColor -- Changer la valeur de la cellule en 5
+        end
+
+        -- Vérifier si le bouton gauche est pressé sur l'icône de suppression
+        if mX >= (squarePosX - squareSize) and mX <= (squarePosX + squareSize) and 
+            mY >= (squarePosY - squareSize) and mY <= (squarePosY + squareSize) then
+            cellDelete = true -- Basculer entre true et false
+        end
+        -- Vérifier si un carré de couleur est cliqué
+        if mX >= 215 and mX <= 215 + GRID.CELL_SIZE then
+            for i, color in ipairs(MAP.COLOR) do
+                local yPos = MAP.POS_Y + (GRID.CELL_SIZE + 2) * (i - 1)  
+                if mY >= yPos and mY <= yPos + GRID.CELL_SIZE then
+                    indexColor = i  -- Met à jour l'index de couleur
+                    selectedColor = MAP.COLOR[indexColor]  
+                    cellDelete = false -- Désactiver le mode suppression
+                end
+            end
         end
     end
 

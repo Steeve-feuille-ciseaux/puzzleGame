@@ -14,6 +14,8 @@ v0.09.0 -> SUCCESS : Modifier le changement de couleur en cliquant sur le bouton
 v0.09.1 -> UPGRADE : réglage d'un bug où la couleur ne correspondait pas à l'indexColor
 v0.09.2 -> UPGRADE : Ajout du flèche pour IU
 v0.10.0 -> ACTUALLY : ajout la feature retirer un pixel placer dans la grille
+v0.10.1 -> ACTUALLY : Icone delete finis, feature en codage
+v0.10.2 -> ACTUALLY : lorsque l'icone delete est activé, retirer le carre de couleur en remplaçant la variable par 99
 
 -- EN COURS
 - retirer un carre de la grille, en cliquand sur l'icone delete puis clique sur la grille pour remettre la variable de la grille à 99
