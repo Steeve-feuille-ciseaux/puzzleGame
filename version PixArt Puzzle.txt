@@ -18,6 +18,7 @@ v0.10.1 -> ACTUALLY : Icone delete finis, feature en codage
 v0.10.2 -> ACTUALLY : lorsque l'icone delete est activé, retirer le carre de couleur en remplaçant la variable par 99
 v0.11.0 -> SUCCESS : Feature Delete pixel 
 v0.12.1 -> ACTUALLY : Mis en place du dialogue selection
+v0.12.2 -> ACTUALLY : preparatif pour changer la couleur si on survole la souris
 
 EN COURS : refaire le puzzle puis changer de puzzle
 

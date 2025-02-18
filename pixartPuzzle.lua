@@ -269,15 +269,25 @@ function TIC()
             end
         end
         if endPuzzle then
-            local yesX = 15
-            local yesY = 76
-            local noX = 40 
-            local noY = 76
+            -- Afficher les messages
             print("BRAVO !!!", 10, 58, 12)
             print("One More", 10, 67, 12)
-            print("Yes", yesX, yesY, 12)
-            print("No", noX, noY, 12)
-            rect()
+
+            -- Positions des textes "Yes" et "No"
+            local yesX, yesY, colorY = 15, 76, 12
+            local noX, noY, colorN = 40, 76, 12
+
+            -- Bouton "Yes" 
+            -- rect(yesX - 2, yesY - 2, 21, 10, 8)  -- Rectangle autour de "Yes"
+            -- rectb(yesX - 2, yesY - 2, 21, 10, 13)  -- Rectangle autour de "Yes"
+
+            -- Bouton "No" 
+            -- rect(noX - 2, noY - 2, 15, 10, 8)   -- Rectangle autour de "No"
+            -- rectb(noX - 2, noY - 2, 15, 10, 13)   -- Rectangle autour de "No"
+
+            -- Afficher les textes "Yes" et "No"
+            print("Yes", yesX, yesY, colorY)
+            print("No", noX, noY, colorN)
         end
     end
 
