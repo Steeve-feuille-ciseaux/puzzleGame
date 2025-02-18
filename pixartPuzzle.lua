@@ -9,6 +9,9 @@
 -- Script: Affichage de la grille uniquement
 x = 100
 endPuzzle = false
+titlePage = false
+thxPage = false
+GameplayZone = 1
 
 -- Dessin sur la carte 
 MAP = {
@@ -40,24 +43,24 @@ MAP.COLOR = {00,02,03,04,05,06,09,10,11}
 
 -- Grille vierge
 GRID = {
-    {99,99,99,99,99,99,99,99,99,00,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,00,02,00,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,00,02,02,03,00,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,00,02,03,03,00,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,00,02,03,03,03,04,00,99,99,99,99,99,99},
-    {99,99,99,99,99,99,00,03,03,03,04,04,00,99,99,99,99,99,99},
-    {00,00,00,00,00,00,03,03,03,04,04,04,05,00,00,00,00,00,00},
-    {00,02,02,02,02,03,03,00,04,04,04,00,05,05,06,06,06,09,00},
-    {99,00,02,02,03,03,03,00,04,04,05,00,05,06,06,06,09,00,99},
-    {99,99,00,03,03,03,04,00,04,05,05,00,06,06,06,09,00,99,99},
-    {99,99,99,00,03,04,04,04,05,05,05,06,06,06,09,00,99,99,99},
-    {99,99,99,99,00,04,04,05,05,05,06,06,06,09,00,99,99,99,99},
-    {99,99,99,99,00,04,05,05,05,06,06,06,09,09,00,99,99,99,99},
-    {99,99,99,00,04,05,05,05,06,06,06,09,09,09,10,00,99,99,99},
-    {99,99,99,00,05,05,05,06,00,00,00,09,09,10,10,00,99,99,99},
-    {99,99,00,05,05,05,00,00,99,99,99,00,00,10,10,11,00,99,99},
-    {99,99,00,05,05,00,99,99,99,99,99,99,99,00,11,11,00,99,99},
-    {99,99,00,00,00,99,99,99,99,99,99,99,99,99,00,00,00,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
 }
 
 -- Info sur la grille
@@ -65,6 +68,15 @@ GRID.CELL_SIZE = MAP.CELL_SIZE
 GRID.POS_X = MAP.POS_X
 GRID.POS_Y = MAP.POS_Y
 GRID.COLOR = MAP.COLOR
+
+function resetGrid(g1)    
+    endPuzzle = false
+    for i = 1, #g1 do
+        for j = 1, #g1[i] do
+            g1[i][j] = 99
+        end
+    end
+end
 
 function watchEqual(t1, t2)
     -- Vérifier si les dimensions sont les mêmes
@@ -132,118 +144,126 @@ crossPosY = 120
 crossSize = 3  -- Taille de la croix
 crossLarg = 0.5 -- Largeur des lignes
 
+function thxPlaying()
+end
+
 function TIC()
     cls(0) -- Efface l'écran
-
-    -- Affiche la mini-grille
-    drawMiniGrid()
-
-    -- Dessiner la grille
-    for y = 1, #GRID do
-        for x = 1, #GRID[y] do
-            local color = GRID[y][x]
-            local posX = GRID.POS_X + (x - 1) * GRID.CELL_SIZE
-            local posY = GRID.POS_Y + (y - 1) * GRID.CELL_SIZE
-
-            if color == 99 then
-                rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 8) 
-                rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
-            else
-                rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
-            end
-
-            -- Ajouter un point gris au centre de chaque cellule
-            -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
-        end
-    end
 
     -- Récupère la position et état du clic
     mX, mY, lb, _, rb, _, _ = mouse()
 
-    -- Affiche les pixels à placer
-    for i, color in ipairs(MAP.COLOR) do
-        local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
-        rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
-        rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
-        print("x".. 5, 224, yPos + 1, 12)
-    end
+    -- ## BUILDING PUZZLE
+    if endPuzzle == false then
 
-    -- Dessine le carré qui sera l'icone delete pixel de la grille
-    rect(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 8)
-    rectb(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 13)
-
-    -- Dessine la croix rouge dans l'icone delete
-    for i = -crossLarg, crossLarg do
-        line(crossPosX - crossSize + i, crossPosY - crossSize, crossPosX + crossSize + i, crossPosY + crossSize, 2)
-        line(crossPosX - crossSize + i, crossPosY + crossSize, crossPosX + crossSize + i, crossPosY - crossSize, 2)
-    end
+        -- Dessiner la grille
+        for y = 1, #GRID do
+            for x = 1, #GRID[y] do
+                local color = GRID[y][x]
+                local posX = GRID.POS_X + (x - 1) * GRID.CELL_SIZE
+                local posY = GRID.POS_Y + (y - 1) * GRID.CELL_SIZE
     
-    -- Positionne la flèche pour indiquer la couleur sélectionnée
-    arrowPosY = (MAP.POS_Y + 3) + (MAP.CELL_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
-    arrowPosX = 212  -- Position X de la flèche (fixe, juste à gauche des carrés de couleur)
-
-    -- Dessiner une flèche pointant vers le carré de couleur sélectionné
-    tri(arrowPosX, arrowPosY, arrowPosX - 4, arrowPosY - 4, arrowPosX - 4, arrowPosY + 4, 12)
-
-    -- Affiche les limites de l'écran 
-    -- rectb(1,1,239,135,13)
-
-    -- Carre cursor
-    -- Afficher un carré de la couleur sélectionnée qui suit la souris
-    if cellDelete then
-        for i = -crossLarg, crossLarg do
-            line(mX - crossSize + i, mY - crossSize, mX + crossSize + i, mY + crossSize, 2)
-            line(mX - crossSize + i, mY + crossSize, mX + crossSize + i, mY - crossSize, 2)
-        end
-    else
-        rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
-        rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
-    end
-
-
-    -- Si le bouton droite est pressé
-    if prev_rb and not rb and cellDelete == false then
-        indexColor = indexColor + 1
-        if indexColor > #MAP.COLOR then
-            indexColor = 1 -- Revenir au début si on dépasse la liste
-        end
-        selectedColor = MAP.COLOR[indexColor]
-    end
-
-    -- Mettre à jour l'état précédent du bouton droit
-    prev_rb = rb
-
-    -- Si le bouton gauche est pressé
-    if lb then 
-        -- Convertir les coordonnées de la souris en indices de la grille
-        local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
-        local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
-
-        -- Vérifier si les indices sont dans les limites de la grille
-        if gridX >= 1 and gridX <= #GRID[1] and gridY >= 1 and gridY <= #GRID then
-            if cellDelete == false then
-                GRID[gridY][gridX] = selectedColor -- Changer la valeur de la cellule pour dessiner dans la grille
-            else
-                GRID[gridY][gridX] = 99 -- Changer la valeur de la cellule pour dessiner dans la grille
+                if color == 99 then
+                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 8) 
+                    rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+                else
+                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
+                end
+    
+                -- Ajouter un point gris au centre de chaque cellule
+                -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
             end
         end
+        
+        -- Affiche la mini-grille
+        drawMiniGrid()
 
-        -- Vérifier si le bouton gauche est pressé sur l'icône de suppression
-        if mX >= (squarePosX - squareSize) and mX <= (squarePosX + squareSize) and 
-            mY >= (squarePosY - squareSize) and mY <= (squarePosY + squareSize) then
-            cellDelete = true -- Basculer entre true et false
+        -- Affiche les pixels à placer
+        for i, color in ipairs(MAP.COLOR) do
+            local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
+            rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
+            rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
+            print("x".. 5, 224, yPos + 1, 12)
         end
-        -- Vérifier si un carré de couleur est cliqué
-        if mX >= 215 and mX <= 215 + GRID.CELL_SIZE then
-            for i, color in ipairs(MAP.COLOR) do
-                local yPos = MAP.POS_Y + (GRID.CELL_SIZE + 2) * (i - 1)  
-                if mY >= yPos and mY <= yPos + GRID.CELL_SIZE then
-                    indexColor = i  -- Met à jour l'index de couleur
-                    selectedColor = MAP.COLOR[indexColor]  
-                    cellDelete = false -- Désactiver le mode suppression
+
+        -- Dessine le carré qui sera l'icone delete pixel de la grille
+        rect(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 8)
+        rectb(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 13)
+
+        -- Dessine la croix rouge dans l'icone delete
+        for i = -crossLarg, crossLarg do
+            line(crossPosX - crossSize + i, crossPosY - crossSize, crossPosX + crossSize + i, crossPosY + crossSize, 2)
+            line(crossPosX - crossSize + i, crossPosY + crossSize, crossPosX + crossSize + i, crossPosY - crossSize, 2)
+        end
+        
+        -- Positionne la flèche pour indiquer la couleur sélectionnée
+        arrowPosY = (MAP.POS_Y + 3) + (MAP.CELL_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
+        arrowPosX = 212  -- Position X de la flèche (fixe, juste à gauche des carrés de couleur)
+
+        -- Dessiner une flèche pointant vers le carré de couleur sélectionné
+        tri(arrowPosX, arrowPosY, arrowPosX - 4, arrowPosY - 4, arrowPosX - 4, arrowPosY + 4, 12)
+
+        -- Affiche les limites de l'écran 
+        -- rectb(1,1,239,135,13)
+
+        -- Carre cursor
+        -- Afficher un carré de la couleur sélectionnée qui suit la souris
+        if cellDelete then
+            for i = -crossLarg, crossLarg do
+                line(mX - crossSize + i, mY - crossSize, mX + crossSize + i, mY + crossSize, 2)
+                line(mX - crossSize + i, mY + crossSize, mX + crossSize + i, mY - crossSize, 2)
+            end
+        else
+            rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
+            rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
+        end
+
+
+        -- Si le bouton droite est pressé
+        if prev_rb and not rb and cellDelete == false then
+            indexColor = indexColor + 1
+            if indexColor > #MAP.COLOR then
+                indexColor = 1 -- Revenir au début si on dépasse la liste
+            end
+            selectedColor = MAP.COLOR[indexColor]
+        end
+
+        -- Mettre à jour l'état précédent du bouton droit
+        prev_rb = rb
+
+        -- Si le bouton gauche est pressé
+        if lb then 
+            -- Convertir les coordonnées de la souris en indices de la grille
+            local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
+            local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
+    
+            -- Vérifier si les indices sont dans les limites de la grille
+            if gridX >= 1 and gridX <= #GRID[1] and gridY >= 1 and gridY <= #GRID then
+                if cellDelete == false then
+                    GRID[gridY][gridX] = selectedColor -- Changer la valeur de la cellule pour dessiner dans la grille
+                else
+                    GRID[gridY][gridX] = 99 -- Changer la valeur de la cellule pour dessiner dans la grille
+                end
+            end
+    
+            -- Vérifier si le bouton gauche est pressé sur l'icône de suppression
+            if mX >= (squarePosX - squareSize) and mX <= (squarePosX + squareSize) and 
+                mY >= (squarePosY - squareSize) and mY <= (squarePosY + squareSize) then
+                cellDelete = true -- Basculer entre true et false
+            end
+            -- Vérifier si un carré de couleur est cliqué
+            if mX >= 215 and mX <= 215 + GRID.CELL_SIZE then
+                for i, color in ipairs(MAP.COLOR) do
+                    local yPos = MAP.POS_Y + (GRID.CELL_SIZE + 2) * (i - 1)  
+                    if mY >= yPos and mY <= yPos + GRID.CELL_SIZE then
+                        indexColor = i  -- Met à jour l'index de couleur
+                        selectedColor = MAP.COLOR[indexColor]  
+                        cellDelete = false -- Désactiver le mode suppression
+                    end
                 end
             end
         end
+
     end
 
     -- Condition de FIN    
@@ -251,7 +271,7 @@ function TIC()
     
     if watchEqual(MAP, GRID) then
         endPuzzle = true
-        cls(0)    -- Dessiner la grille
+        --cls(0)    -- Dessiner la grille
         for y = 1, #GRID do
             for x = 1, #GRID[y] do
                 local color = GRID[y][x]
@@ -268,26 +288,50 @@ function TIC()
                 -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
             end
         end
+
         if endPuzzle then
-            -- Afficher les messages
-            print("BRAVO !!!", 10, 58, 12)
-            print("One More", 10, 67, 12)
 
             -- Positions des textes "Yes" et "No"
             local yesX, yesY, colorY = 15, 76, 12
             local noX, noY, colorN = 40, 76, 12
 
-            -- Bouton "Yes" 
-            -- rect(yesX - 2, yesY - 2, 21, 10, 8)  -- Rectangle autour de "Yes"
-            -- rectb(yesX - 2, yesY - 2, 21, 10, 13)  -- Rectangle autour de "Yes"
+            -- Dimensions des boutons "Yes" et "No"
+            local yesWidth, yesHeight = 21, 10
+            local noWidth, noHeight = 15, 10
 
-            -- Bouton "No" 
-            -- rect(noX - 2, noY - 2, 15, 10, 8)   -- Rectangle autour de "No"
-            -- rectb(noX - 2, noY - 2, 15, 10, 13)   -- Rectangle autour de "No"
+            -- page de remerciement 
+            if thxPage then
+                print("Thanks", 10, 58, 12)
+                print("for", 18, 67, 12)
+                print("playing", 10, 76, colorN)
+            else            
+                -- Afficher les messages
+                print("BRAVO !!!", 10, 58, 12)
+                print("One More", 10, 67, 12)
+    
+                -- Afficher les textes "Yes" et "No" avec les couleurs mises à jour
+                print("Yes", yesX, yesY, colorY)
+                print("No", noX, noY, colorN)
+            end
 
-            -- Afficher les textes "Yes" et "No"
-            print("Yes", yesX, yesY, colorY)
-            print("No", noX, noY, colorN)
+            -- Récupérer la position de la souris et l'état des clics
+            --mX, mY, lb, _, rb, _, _ = mouse()
+
+            -- Si la souris survole "Yes"
+            if mX >= yesX and mX <= yesX + yesWidth and mY >= yesY and mY <= yesY + yesHeight then
+                colorY = 4  -- Changer la couleur de "Yes"
+                if lb then 
+                    resetGrid(GRID)
+                end
+            end
+
+            -- Si la souris survole "No"
+            if mX >= noX and mX <= noX + noWidth and mY >= noY and mY <= noY + noHeight then
+                colorN = 4  -- Changer la couleur de "No"
+                if lb then 
+                    thxPage = true
+                end
+            end
         end
     end
 
