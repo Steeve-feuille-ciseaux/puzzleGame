@@ -23,10 +23,17 @@ v0.13.0 -> SUCCESS : Boucle de endgame "Refaire le puzzle" où "Quitter en remer
 v0.14.0 -> SUCCESS : Indiquez le nombre de pixel restant et le nombre de pixel total
 v1.00.0 -> ACTUALLY : corriger la description et metadonné du jeu pour l'hébergeur TIC-80
 v1.01.0 -> ACTUALLY : les pixels mal placé devienne blanc avec la touche Q
+v1.01.1 -> SUCCESS : changement de couleur des pixel mal placé, bordure animé en arc-en-ciel
+v1.01.2 -> ACTUALLY : indiquer le nombre de couleur maximum, reprendre la soutraction pour obtenir le nombre dans GRID
 
 -- ALPHA
 
-EN COURS : Une icone loupe apparaît pour indiquer les pixel mal placé, usage limiter une toutes les 10 secondes
+EN COURS : Mode Soluce pour indiquer les pixel mal placé
+           Besoin de remttre la feature nombre de pixel par couleur -> soustraire par le nombre de variable dans GRID
+           Une icone loupe apparaît s'il reste peut de pixel à placer
+           le mode soluce reste actif 5 seconde affiche le décompte
+           usage limiter une toutes les 10 secondes affiche le décompte
+           si activé icone loupe devient arc-en-ciel 
 
 A FAIRE : 
 - choisir un puzzle parmi une sélection

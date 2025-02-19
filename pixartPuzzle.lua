@@ -40,6 +40,7 @@ MAP.CELL_SIZE = 7
 MAP.POS_X = 70
 MAP.POS_Y = 5
 MAP.COLOR = {00,02,03,04,05,06,09,10,11}
+MAP.COLOR.NB = {64,11,21,20,27,22,12,5,3}
 
 -- Grille vierge
 GRID = {
@@ -68,6 +69,7 @@ GRID.CELL_SIZE = MAP.CELL_SIZE
 GRID.POS_X = MAP.POS_X
 GRID.POS_Y = MAP.POS_Y
 GRID.COLOR = MAP.COLOR
+MAP.COLOR.NB = {64,11,21,20,27,22,12,5,3}
 
 function resetGrid(g1)    
     endPuzzle = false
@@ -171,6 +173,10 @@ crossLarg = 0.5 -- Largeur des lignes
 function thxPlaying()
 end
 
+rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
+rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
+rainbowTimer = 0 -- Timer pour l'animation
+
 function TIC()
     cls(0) -- Efface l'écran
     
@@ -178,7 +184,17 @@ function TIC()
 	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
     -- Affiche les coordonné X et Y de la souris
 	-- print(mX, 10,100,12)
-	-- print(mY, 10,110,12)
+	-- print(mY, 10,110,12)    
+    
+    -- Gestion de l'animation arc-en-ciel
+    rainbowTimer = rainbowTimer + 1
+    if rainbowTimer > 10 then -- Changer de couleur toutes les 10 frames
+        rainbowTimer = 0
+        rainbowIndex = rainbowIndex + 1
+        if rainbowIndex > #rainbowColors then
+            rainbowIndex = 1
+        end
+    end
 
     -- ## BUILDING PUZZLE
     if endPuzzle == false then
@@ -197,11 +213,11 @@ function TIC()
                     rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
                 end    
     
-                -- Indiquer sur la grille les pixel à placer
+                -- Mode Soluce
                 -- S'applique avec la touche Q 
                 if key(17) and GRID[y][x] ~= MAP[y][x] then
-                        rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 12)
-                        rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+                        rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, rainbowColors[rainbowIndex])
+                        --rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
                 end
 
                 -- Ajouter un point gris au centre de chaque cellule
@@ -217,7 +233,8 @@ function TIC()
             local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
             rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
             rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
-            print("x".. "?", 224, yPos + 1, 12)
+            print("x".. MAP.COLOR.NB[i], 224, yPos + 1, 12)
+            --print("x".. "?", 224, yPos + 1, 12)
         end
 
         -- Dessine le carré qui sera l'icone delete pixel de la grille
