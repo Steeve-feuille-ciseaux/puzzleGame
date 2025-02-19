@@ -69,7 +69,22 @@ GRID.CELL_SIZE = MAP.CELL_SIZE
 GRID.POS_X = MAP.POS_X
 GRID.POS_Y = MAP.POS_Y
 GRID.COLOR = MAP.COLOR
-MAP.COLOR.NB = {64,11,21,20,27,22,12,5,3}
+GRID.COLOR.Q = {14,11,21,20,27,22,12,5,3}
+
+-- Fonction pour compter les occurrences des valeurs dans MAP.COLOR.NB
+local function count_values_in_grid(grid, values)
+    local count = 0
+    for i = 1, #grid do
+        for j = 1, #grid[i] do
+            for _, value in ipairs(values) do
+                if grid[i][j] == value then
+                    count = count + 1
+                end
+            end
+        end
+    end
+    return count
+end
 
 function resetGrid(g1)    
     endPuzzle = false
@@ -179,7 +194,6 @@ rainbowTimer = 0 -- Timer pour l'animation
 
 function TIC()
     cls(0) -- Efface l'écran
-    
     -- Récupère la position et état du clic
 	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
     -- Affiche les coordonné X et Y de la souris
@@ -233,8 +247,11 @@ function TIC()
             local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
             rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
             rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
-            print("x".. MAP.COLOR.NB[i], 224, yPos + 1, 12)
-            --print("x".. "?", 224, yPos + 1, 12)
+            --print("x".. MAP.COLOR.NB[i], 224, yPos + 1, 12)
+            --print("x".. GRID.COLOR.NB[i], 224, yPos + 1, 12)
+            --print("x".. (MAP.COLOR.NB[i] - GRID.COLOR.Q[i]), 224, yPos + 1, 12)
+            
+            print("x".. "?", 224, yPos + 1, 12)
         end
 
         -- Dessine le carré qui sera l'icone delete pixel de la grille
