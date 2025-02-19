@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixArt Puzzle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(8, 40px);
+            grid-template-rows: repeat(8, 40px);
+            gap: 2px;
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border: 1px solid black;
+        }
+        .palette {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .color {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>PixArt Puzzle</h1>
+    <p>Nombre de pixels restants: <span id="remaining">64</span></p>
+    <div class="container">
+        <div id="playerGrid" class="grid"></div>
+        <div id="referenceGrid" class="grid"></div>
+    </div>
+    <div class="palette" id="palette"></div>
+    <button onclick="selectedColor = null">Effacer</button>
+    
+    <script>
+        const colors = ["red", "blue", "green", "yellow", "black"];
+        let selectedColor = null;
+        const referencePattern = [
+            "white", "red", "white", "red", "white", "red", "white", "red",
+            "red", "white", "red", "white", "red", "white", "red", "white",
+            "white", "red", "white", "red", "white", "red", "white", "red",
+            "red", "white", "red", "white", "red", "white", "red", "white",
+            "white", "red", "white", "red", "white", "red", "white", "red",
+            "red", "white", "red", "white", "red", "white", "red", "white",
+            "white", "red", "white", "red", "white", "red", "white", "red",
+            "red", "white", "red", "white", "red", "white", "red", "white"
+        ];
+        
+        function createGrid(elementId, editable) {
+            const grid = document.getElementById(elementId);
+            for (let i = 0; i < 64; i++) {
+                const cell = document.createElement("div");
+                cell.classList.add("cell");
+                if (editable) {
+                    cell.addEventListener("click", () => {
+                        if (selectedColor !== null) {
+                            cell.style.backgroundColor = selectedColor;
+                            updateRemaining();
+                        }
+                    });
+                } else {
+                    cell.style.backgroundColor = referencePattern[i];
+                }
+                grid.appendChild(cell);
+            }
+        }
+
+        function createPalette() {
+            const palette = document.getElementById("palette");
+            colors.forEach(color => {
+                const colorBox = document.createElement("div");
+                colorBox.classList.add("color");
+                colorBox.style.backgroundColor = color;
+                colorBox.addEventListener("click", () => {
+                    selectedColor = color;
+                });
+                palette.appendChild(colorBox);
+            });
+        }
+        
+        function updateRemaining() {
+            const playerCells = document.querySelectorAll("#playerGrid .cell");
+            let remaining = 64;
+            playerCells.forEach((cell, index) => {
+                if (cell.style.backgroundColor === referencePattern[index]) {
+                    remaining--;
+                }
+            });
+            document.getElementById("remaining").textContent = remaining;
+        }
+        
+        createGrid("playerGrid", true);
+        createGrid("referenceGrid", false);
+        createPalette();
+    </script>
+</body>
+</html>

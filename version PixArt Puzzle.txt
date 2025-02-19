@@ -1,4 +1,4 @@
--- ALPHA 
+-- DEVELLOPPEUMENT 
 v0.01.0 -> Définir le nombre de pixel ainsi que leur couleur
 v0.01.1 -> Afficher la quantité de pixel selon la couleur
 v0.01.2 -> Reflexion nom de variable
@@ -21,13 +21,30 @@ v0.12.1 -> ACTUALLY : Mis en place du dialogue selection
 v0.12.2 -> ACTUALLY : preparatif pour changer la couleur si on survole la souris
 v0.13.0 -> SUCCESS : Boucle de endgame "Refaire le puzzle" où "Quitter en remerciant"
 v0.14.0 -> SUCCESS : Indiquez le nombre de pixel restant et le nombre de pixel total
+v1.00.0 -> ACTUALLY : corriger la description et metadonné du jeu pour l'hébergeur TIC-80
+v1.01.0 -> ACTUALLY : les pixels mal placé devienne blanc avec la touche Q
 
-EN COURS : 
+-- ALPHA
 
-A FAIRE : affichez les pixels mal-placé via un booster, booster optenu tout les Xsecondes
+EN COURS : Une icone loupe apparaît pour indiquer les pixel mal placé, usage limiter une toutes les 10 secondes
+
+A FAIRE : 
+- choisir un puzzle parmi une sélection
+- changer les tailles selon le puzzle
+- musique et animation
 
 -- A TESTER
 - remplacer le repère de la grille par des points comme des pieces à clipser
+
+REFONTE :
+- Prendre un pixel disponible puis le glisser sur la grille 
+feature : afficher tous les pixel en bazar puis les placer sur la grille
+probleme : UX désastreux car très pénible prendre et mettre les plieces une par une du bazar à la grille, sensation de répétition
+solution : afficher les pixel de couleur disponible pour cliquer une fois dessus pour placer plusieur pixel de mettre couleur
+
+ABONDONNE : 
+- nombre de pixel restant par couleur
+motif : Assiste trop le jeu, reduit la reflexion du joueur et l'impact de récompense
 
 Note de grille
 

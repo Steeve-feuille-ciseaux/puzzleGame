@@ -3,7 +3,7 @@
 -- desc:    Puzzle in Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: 0.1
+-- version: 1.00.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -173,7 +173,7 @@ end
 
 function TIC()
     cls(0) -- Efface l'écran
-
+    
     -- Récupère la position et état du clic
 	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
     -- Affiche les coordonné X et Y de la souris
@@ -195,8 +195,15 @@ function TIC()
                     rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
                 else
                     rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
-                end
+                end    
     
+                -- Indiquer sur la grille les pixel à placer
+                -- S'applique avec la touche Q 
+                if key(17) and GRID[y][x] ~= MAP[y][x] then
+                        rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 12)
+                        rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+                end
+
                 -- Ajouter un point gris au centre de chaque cellule
                 -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
             end
