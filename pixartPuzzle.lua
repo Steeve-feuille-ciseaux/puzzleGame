@@ -75,16 +75,16 @@ selectMAP = {
 		{00,13,00,99,99,00,02,02,02,02,02,13,02,13,13,13,13,00,99},
 		{00,13,13,00,99,00,13,13,13,13,02,13,02,13,13,13,13,00,99},
 		{99,00,13,13,00,13,13,13,13,13,13,13,13,13,13,13,13,00,99},
-		{99,99,00,13,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99}, -- limite pour le puzzle 1
+		{99,99,00,13,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
 		{99,99,99,00,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
 		{99,99,99,99,00,00,13,13,13,00,13,13,00,13,13,00,99,99,99},
-		{99,99,99,99,99,99,00,00,00,00,00,00,99,00,00,99,99,99,99}, -- limite pour le puzzle 2
+		{99,99,99,99,99,99,00,00,00,00,00,00,99,00,00,99,99,99,99}, 
 	}
 }
 
 infoMAP = {
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR"}, -- ETOILE | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB}
-	{ 7, 70, 5, {99,00,13,04,2}, {64,11,21,20,27,22,12,5,3}, "CAT1"}, -- CAT1 | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB}
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18}, -- ETOILE | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | LARGEUR | HAUTEUR
+	{ 6, 75, 3, {00,13,04,2}, {64,11,21,20,27,22,12,5,3}, "CAT", 19, 21}, -- CAT1 | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | LARGEUR | HAUTEUR
 }
 
 -- Dessin à réaliser 
@@ -97,31 +97,24 @@ MAP.POS_Y = infoMAP[indexMap][3]
 MAP.COLOR = infoMAP[indexMap][4]
 MAP.COLOR.NB = infoMAP[indexMap][5]
 MAP.NAME = infoMAP[indexMap][6]
+MAP.LARG = infoMAP[indexMap][7]
+MAP.HAUT = infoMAP[indexMap][8]
 
--- Grille vierge
-GRID = {
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-}
+
+-- Création de la grille en Lua pour TIC-80
+function create_grid(rows, cols, value)
+    local grid = {}
+    for i = 1, rows do
+        grid[i] = {}
+        for j = 1, cols do
+            grid[i][j] = value
+        end
+    end
+    return grid
+end
+
+-- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
+GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
 
 -- Info sur la grille
 GRID.CELL_SIZE = MAP.CELL_SIZE
@@ -199,7 +192,7 @@ pixTotal = countDifferences(GRID, MAP)
 MINI = {}
 MINI.CELL_SIZE = 3
 MINI.POS_X = 2  -- Position à gauche
-MINI.POS_Y = 35  -- Position en bas
+MINI.POS_Y = 20  -- Position en bas
 
 function drawMiniGrid()
     for y = 1, #MAP do
@@ -224,12 +217,12 @@ selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélec
 
 function TIC()
     cls(0) -- Efface l'écran
-	print("#".. infoMAP[1][6], 10, 20, 12)
     -- Récupère la position et état du clic
 	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
+
     -- Affiche les coordonné X et Y de la souris
-	-- print(mX, 10,100,12)
-	-- print(mY, 10,110,12)    
+	-- print(mX, 1,5,12)
+	-- print(mY, 1,15,12)    
 
     -- Changer de carte avec les touches fléchées
     if btnp(2) then  -- Flèche gauche
@@ -323,7 +316,12 @@ function TIC()
         print(pixTotal, 220, 105, 12)
 
 		-- Affiche le numéro et nom du puzzle
-        print("#".. indexMap, 10, 10, 12)
+        print("#".. indexMap, 15, 86, 12)
+        print(infoMAP[1][6], 15, 96, 12)
+
+        -- Icone Mode Soluce
+        rect(16, 105, 25, 25, 8)
+        rectb(16, 105, 25, 25, 13)
 
         -- Affiche les limites de l'écran 
         -- rectb(1,1,239,135,13)

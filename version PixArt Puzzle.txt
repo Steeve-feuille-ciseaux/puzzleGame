@@ -31,21 +31,21 @@ v1.01.5 -> SUCCESS : Ajoute d'un seconde puzzle
 v1.01.5.1 -> HOTFIX : corrigé le nombre de pixel selon le puzzle
 v1.01.5.2 -> SUCCESS : corrigé le nombre de pixel selon le puzzle
 v1.01.6 -> SUCCESS : icone carre du mode soluce
+v1.02.0 -> SUCCESS : Changer la taille de la grille selon le puzzle
 
 -- ALPHA
 
 EN COURS : choisir un puzzle parmi une sélection
-A REPRENDRE : mettre GRID en dynamique pour résoudre le soucis
 
 A FAIRE : 
-- changer les tailles selon le puzzle
-- musique et animation
 - Mode Soluce pour indiquer les pixel mal placé
            Besoin de remttre la feature nombre de pixel par couleur -> soustraire par le nombre de variable dans GRID
            Une icone loupe apparaît s'il reste peut de pixel à placer
            le mode soluce reste actif 5 seconde affiche le décompte
            usage limiter une toutes les 10 secondes affiche le décompte
            si activé icone loupe devient arc-en-ciel 
+- musique et animation
+- reprendre la documention du doc via gitbook
 
 -- A TESTER
 - remplacer le repère de la grille par des points comme des pieces à clipser
@@ -64,27 +64,3 @@ solution : au bout de X temps après le début de la partie, le mode soluce s'ac
 ABONDONNE : 
 - nombre de pixel restant par couleur
 motif : Assiste trop le jeu, reduit la reflexion du joueur et l'impact de récompense
-
-Note de grille
-
--- Grille vierge
-GRID = {
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
-}
