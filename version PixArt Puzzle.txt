@@ -25,7 +25,8 @@ v1.00.0 -> ACTUALLY : corriger la description et metadonné du jeu pour l'héber
 v1.01.0 -> ACTUALLY : les pixels mal placé devienne blanc avec la touche Q
 v1.01.1 -> SUCCESS : changement de couleur des pixel mal placé, bordure animé en arc-en-ciel
 v1.01.2 -> FAIL : indiquer le nombre de couleur maximum, reprendre la soutraction pour obtenir le nombre dans GRID
-v1.01.3 -> ACTUALLY : clean du code pour la suite 
+v1.01.3 -> ACTUALLY : clean du code pour réutilisé le mode soluce 
+v1.01.4 -> ACTUALLY : clean du code pour une meilleur lisibilité des variable globale
 
 -- ALPHA
 

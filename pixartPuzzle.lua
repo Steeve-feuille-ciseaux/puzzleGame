@@ -7,13 +7,35 @@
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
-x = 100
 endPuzzle = false
 titlePage = false
 thxPage = false
 GameplayZone = 1
 
--- Dessin sur la carte 
+-- bouton droit relaché
+prev_rb = false
+
+-- Delete variable
+cellDelete = false
+
+-- ICONE DELETE 
+-- Position du carré icone en bas à droite
+squarePosX = 222
+squarePosY = 120
+-- Taille du carré 
+squareSize = 7  
+-- Position de la croix en bas à gauche
+crossPosX = 222
+crossPosY = 120
+crossSize = 3  -- Taille de la croix
+crossLarg = 0.5 -- Largeur des lignes
+
+-- Animation Mode Soluce
+rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
+rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
+rainbowTimer = 0 -- Timer pour l'animation
+
+-- Dessin à réaliser 
 MAP = {
     {99,99,99,99,99,99,99,99,99,00,99,99,99,99,99,99,99,99,99},
     {99,99,99,99,99,99,99,99,00,02,00,99,99,99,99,99,99,99,99},
@@ -159,38 +181,9 @@ function drawMiniGrid()
     end
 end
 
-PIXEL = {}
-PIXEL.COLOR = {}
-
 -- Identifie la couleur
 indexColor = 1
 selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
-
--- bouton droit relaché
-prev_rb = false
-
--- Delete variable
-cellDelete = false
-
--- ICONE DELETE 1/2
--- Position du carré icone en bas à droite
-squarePosX = 222
-squarePosY = 120
-squareSize = 7  -- Taille du carré (ajustez selon vos besoins)
-
--- ICONE DELETE 2/2
--- Position de la croix en bas à gauche
-crossPosX = 222
-crossPosY = 120
-crossSize = 3  -- Taille de la croix
-crossLarg = 0.5 -- Largeur des lignes
-
-function thxPlaying()
-end
-
-rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
-rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
-rainbowTimer = 0 -- Timer pour l'animation
 
 function TIC()
     cls(0) -- Efface l'écran
@@ -274,11 +267,11 @@ function TIC()
         -- Calculer le nombre de différences
         pixCount = countDifferences(GRID, MAP)
 
-        -- Afficher le résultat
+        -- Affiche les pixel restant
         print(pixCount, 210, 93, 12)
-        -- Tracer une ligne diagonale entre les deux textes
+        -- Place le Slash entre le restant sur le total
         line(210, 108, 235, 94, 12)
-        -- Afficher le résultat
+        -- Affiche le total de pixel
         print(pixTotal, 220, 105, 12)
 
         -- Affiche les limites de l'écran 
