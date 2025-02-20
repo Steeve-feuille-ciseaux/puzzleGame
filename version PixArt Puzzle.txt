@@ -27,20 +27,21 @@ v1.01.1 -> SUCCESS : changement de couleur des pixel mal placé, bordure animé 
 v1.01.2 -> FAIL : indiquer le nombre de couleur maximum, reprendre la soutraction pour obtenir le nombre dans GRID
 v1.01.3 -> ACTUALLY : clean du code pour réutilisé le mode soluce 
 v1.01.4 -> ACTUALLY : clean du code pour une meilleur lisibilité des variable globale
+v1.01.5 -> SUCCESS : Ajoute d'un seconde puzzle
 
 -- ALPHA
 
-EN COURS : Mode Soluce pour indiquer les pixel mal placé
+EN COURS : choisir un puzzle parmi une sélection
+
+A FAIRE : 
+- changer les tailles selon le puzzle
+- musique et animation
+- Mode Soluce pour indiquer les pixel mal placé
            Besoin de remttre la feature nombre de pixel par couleur -> soustraire par le nombre de variable dans GRID
            Une icone loupe apparaît s'il reste peut de pixel à placer
            le mode soluce reste actif 5 seconde affiche le décompte
            usage limiter une toutes les 10 secondes affiche le décompte
            si activé icone loupe devient arc-en-ciel 
-
-A FAIRE : 
-- choisir un puzzle parmi une sélection
-- changer les tailles selon le puzzle
-- musique et animation
 
 -- A TESTER
 - remplacer le repère de la grille par des points comme des pieces à clipser

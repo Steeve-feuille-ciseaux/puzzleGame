@@ -1,290 +1,456 @@
--- title:   pixArt Puzzle fail
+-- title:   pixArt Puzzle
 -- author:  Steeve-feuille-ciseaux
 -- desc:    Puzzle in Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
--- license: 
--- version: 0.1
+-- license: MIT License (change this to your license of choice)
+-- version: 1.00.0
 -- script:  lua
--- Thanks to HaPiter and maniek207 for sharing tool!
 
--- Variable
-accSecond = 30
-count = 00
-listRect = {}
-numberRect = 1
-pieceS = 12
-second = 0
-sizeGrid = 0
-startCount = false
-x = 100
+-- Script: Affichage de la grille uniquement
+endPuzzle = false
+titlePage = false
+thxPage = false
+GameplayZone = 1
 
--- Nombre de rectangles par couleurs 
-blackCount = 0
-purleCount = 0
-redCount = 0
-orangeCount = 0
-yellowCount = 0
-green1Count = 0
-green2Count = 0
-green3Count = 0
-blue1Count = 0
-blue2Count = 0
-blue3Count = 0
-blue4Count = 0
-whiteCount = 0
-grey1Count = 0
-grey2Count = 0
-grey3Count = 0
+-- bouton droit relaché
+prev_rb = false
 
--- Nombre maximum de rectangles par couleur
-maxBlack = 0 
-maxPurple = 0
-maxRed = 10
-maxOrange = 0
-maxYellow = 0
-maxGreen1 = 10
-maxGreen2 = 0
-maxGreen3 = 0
-maxBlue1 = 0
-maxBlue2 = 10
-maxBlue3 = 0
-maxBlue4 = 0
-maxWhite = 10
-maxGrey1 = 10
-maxGrey2 = 0
-maxGrey3 = 10
+-- Delete variable
+cellDelete = false
 
--- Initialisation de drawGrid
-local drawGrid = {}
+-- ICONE DELETE 
+-- Position du carré icone en bas à droite
+squarePosX = 222
+squarePosY = 120
+-- Taille du carré 
+squareSize = 7  
+-- Position de la croix en bas à gauche
+crossPosX = 222
+crossPosY = 120
+crossSize = 3  -- Taille de la croix
+crossLarg = 0.5 -- Largeur des lignes
 
--- Ajouter les variables avec des valeurs > 0 dans le tableau
-if maxBlack > 0 then
-    table.insert(drawGrid, {up = true, color = 0, value = blackCount})
-end
-if maxPurple > 0 then
-    table.insert(drawGrid, {up = true, color = 1, value = purleCount})
-end
-if maxRed > 0 then
-    table.insert(drawGrid, {up = true, color = 2, value = redCount})
-end
-if maxOrange > 0 then
-    table.insert(drawGrid, {up = true, color = 3, value = orangeCount})
-end
-if maxYellow > 0 then
-    table.insert(drawGrid, {up = true, color = 4, value = yellowCount})
-end
-if maxGreen1 > 0 then
-    table.insert(drawGrid, {up = true, color = 5, value = green1Count})
-end
-if maxGreen2 > 0 then
-    table.insert(drawGrid, {up = true, color = 6, value = green2Count})
-end
-if maxGreen3 > 0 then
-    table.insert(drawGrid, {up = true, color = 7, value = green3Count})
-end
-if maxBlue1 > 0 then
-    table.insert(drawGrid, {up = true, color = 8, value = blue1Count})
-end
-if maxBlue2 > 0 then
-    table.insert(drawGrid, {up = true, color = 9, value = blue2Count})
-end
-if maxBlue3 > 0 then
-    table.insert(drawGrid, {up = true, color = 10, value = blue3Count})
-end
-if maxBlue4 > 0 then
-    table.insert(drawGrid, {up = true, color = 11, value = blue4Count})
-end
-if maxWhite > 0 then
-    table.insert(drawGrid, {up = true, color = 12, value = whiteCount})
-end
-if maxGrey1 > 0 then
-    table.insert(drawGrid, {up = true, color = 13, value = grey1Count})
-end
-if maxGrey2 > 0 then
-    table.insert(drawGrid, {up = true, color = 14, value = grey2Count})
-end
-if maxGrey3 > 0 then
-    table.insert(drawGrid, {up = true, color = 15, value = grey3Count})
+-- Animation Mode Soluce
+rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
+rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
+rainbowTimer = 0 -- Timer pour l'animation
+
+indexMap = 2
+selectMAP = {
+	{
+		{99,99,99,99,99,99,99,99,99,00,99,99,99,99,99,99,99,99,99},
+		{99,99,99,99,99,99,99,99,00,02,00,99,99,99,99,99,99,99,99},
+		{99,99,99,99,99,99,99,00,02,02,03,00,99,99,99,99,99,99,99},
+		{99,99,99,99,99,99,99,00,02,03,03,00,99,99,99,99,99,99,99},
+		{99,99,99,99,99,99,00,02,03,03,03,04,00,99,99,99,99,99,99},
+		{99,99,99,99,99,99,00,03,03,03,04,04,00,99,99,99,99,99,99},
+		{00,00,00,00,00,00,03,03,03,04,04,04,05,00,00,00,00,00,00},
+		{00,02,02,02,02,03,03,00,04,04,04,00,05,05,06,06,06,09,00},
+		{99,00,02,02,03,03,03,00,04,04,05,00,05,06,06,06,09,00,99},
+		{99,99,00,03,03,03,04,00,04,05,05,00,06,06,06,09,00,99,99},
+		{99,99,99,00,03,04,04,04,05,05,05,06,06,06,09,00,99,99,99},
+		{99,99,99,99,00,04,04,05,05,05,06,06,06,09,00,99,99,99,99},
+		{99,99,99,99,00,04,05,05,05,06,06,06,09,09,00,99,99,99,99},
+		{99,99,99,00,04,05,05,05,06,06,06,09,09,09,10,00,99,99,99},
+		{99,99,99,00,05,05,05,06,00,00,00,09,09,10,10,00,99,99,99},
+		{99,99,00,05,05,05,00,00,99,99,99,00,00,10,10,11,00,99,99},
+		{99,99,00,05,05,00,99,99,99,99,99,99,99,00,11,11,00,99,99},
+		{99,99,00,00,00,99,99,99,99,99,99,99,99,99,00,00,00,99,99},    
+	},
+	{
+		{99,99,99,99,99,99,99,99,99,99,99,00,00,00,00,99,99,99,99},
+		{99,99,99,99,99,99,99,99,00,00,00,13,13,13,13,00,99,99,99},
+		{99,99,99,99,99,99,00,00,13,13,13,13,13,13,00,00,99,99,99},
+		{99,99,99,99,99,00,13,13,13,13,13,13,13,13,13,00,99,99,99},
+		{99,99,99,00,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,99,00,13,13,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,00,13,13,13,13,13,13,13,13,13,13,00,00,13,13,13,00,00},
+		{99,00,13,13,00,13,13,13,13,13,13,13,00,00,04,04,13,00,99},
+		{99,99,00,00,13,13,00,00,13,13,13,13,13,13,04,04,00,00,00},
+		{99,99,00,13,13,13,00,00,13,13,00,13,13,13,13,13,13,00,99},
+		{99,00,00,00,13,04,04,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,99,00,13,13,04,04,13,13,13,13,13,13,13,00,00,99,99,99},
+		{99,99,99,00,13,13,13,13,13,13,13,02,02,02,02,02,00,99,99},
+		{99,00,99,99,00,00,00,02,02,02,02,02,02,02,02,13,00,99,99},
+		{00,13,00,99,99,00,02,02,02,02,02,13,02,13,13,13,13,00,99},
+		{00,13,13,00,99,00,13,13,13,13,02,13,02,13,13,13,13,00,99},
+		{99,00,13,13,00,13,13,13,13,13,13,13,13,13,13,13,13,00,99},
+		{99,99,00,13,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,99,99,00,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,99,99,99,00,00,13,13,13,00,13,13,00,13,13,00,99,99,99},
+		{99,99,99,99,99,99,00,00,00,00,00,00,99,00,00,99,99,99,99},
+	}
+}
+
+infoMAP = {
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR"}, -- ETOILE | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB}
+	{ 7, 70, 5, {99,00,13,04,2}, {64,11,21,20,27,22,12,5,3}, "CAT1"}, -- CAT1 | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB}
+}
+
+-- Dessin à réaliser 
+MAP = selectMAP[indexMap]
+
+-- Info sur MAP
+MAP.CELL_SIZE = infoMAP[indexMap][1]
+MAP.POS_X = infoMAP[indexMap][2]
+MAP.POS_Y = infoMAP[indexMap][3]
+MAP.COLOR = infoMAP[indexMap][4]
+MAP.COLOR.NB = infoMAP[indexMap][5]
+MAP.NAME = infoMAP[indexMap][6]
+
+-- Grille vierge
+GRID = {
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99},
+}
+
+-- Info sur la grille
+GRID.CELL_SIZE = MAP.CELL_SIZE
+GRID.POS_X = MAP.POS_X
+GRID.POS_Y = MAP.POS_Y
+GRID.COLOR = MAP.COLOR
+GRID.COLOR.Q = {14,11,21,20,27,22,12,5,3}
+
+-- Fonction pour compter les occurrences des valeurs dans MAP.COLOR.NB
+local function count_values_in_grid(grid, values)
+    local count = 0
+    for i = 1, #grid do
+        for j = 1, #grid[i] do
+            for _, value in ipairs(values) do
+                if grid[i][j] == value then
+                    count = count + 1
+                end
+            end
+        end
+    end
+    return count
 end
 
--- Affichage compteur rectangle par couleur et le nombre
-for i, v in ipairs(drawGrid) do
-	print("Valid max value: " .. #drawGrid)
+function resetGrid(g1)    
+    endPuzzle = false
+    for i = 1, #g1 do
+        for j = 1, #g1[i] do
+            g1[i][j] = 99
+        end
+    end
 end
 
--- formule collision
-function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
-return x1 < x2+w2 and
-		x2 < x1+w1 and
-		y1 < y2+h2 and
-		y2 < y1+h1
+-- Vérifier si les dimensions sont les mêmes
+function watchEqual(t1, t2)
+    if #t1 ~= #t2 then return false end  
+
+    for i = 1, #t1 do
+        if #t1[i] ~= #t2[i] then return false end  -- Vérifier la largeur de chaque ligne
+
+        for j = 1, #t1[i] do
+            if t1[i][j] ~= t2[i][j] then
+                return false  -- Dès qu'une cellule est différente, renvoyer false
+            end
+        end
+    end
+
+    return true  -- Si toutes les cases sont identiques, renvoyer true
 end
 
--- Remise a zero
-function init()
-	listRect = {}	
+-- Nombre de pixel à placer
+function countDifferences(t1, t2)
+    local count = 0
+
+    -- Vérifier si les dimensions sont les mêmes
+    if #t1 ~= #t2 then return -1 end  
+
+    for i = 1, #t1 do
+        if #t1[i] ~= #t2[i] then return -1 end  -- Vérifier la largeur de chaque ligne
+
+        for j = 1, #t1[i] do
+            if t1[i][j] ~= t2[i][j] then
+                count = count + 1  -- Incrémenter le compteur si la valeur est différente
+            end
+        end
+    end
+
+    return count
 end
 
--- Counter
-function counter()
-	if count > 66 then
-		second = second +1 
-	end		
+-- Nombre maximum de piece
+pixTotal = countDifferences(GRID, MAP)
+
+
+-- Info sur la mini grille
+MINI = {}
+MINI.CELL_SIZE = 3
+MINI.POS_X = 2  -- Position à gauche
+MINI.POS_Y = 35  -- Position en bas
+
+function drawMiniGrid()
+    for y = 1, #MAP do
+        for x = 1, #MAP[y] do
+            local color = MAP[y][x]
+            local posX = MINI.POS_X + (x - 1) * MINI.CELL_SIZE
+            local posY = MINI.POS_Y + (y - 1) * MINI.CELL_SIZE
+
+            if color ~= 99 then
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)
+            else
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 13) 
+                rectb(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8)
+            end
+        end
+    end
 end
+
+-- Identifie la couleur
+indexColor = 1
+selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
 
 function TIC()
+    cls(0) -- Efface l'écran
+	print("#".. infoMAP[1][6], 10, 20, 12)
+    -- Récupère la position et état du clic
+	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
+    -- Affiche les coordonné X et Y de la souris
+	-- print(mX, 10,100,12)
+	-- print(mY, 10,110,12)    
 
-	cls(0)
+    -- Changer de carte avec les touches fléchées
+    if btnp(2) then  -- Flèche gauche
+        indexMap = indexMap - 1
+        if indexMap < 1 then indexMap = #selectMAP end
+    end
+    if btnp(3) then  -- Flèche droite
+        indexMap = indexMap + 1
+        if indexMap > #selectMAP then indexMap = 1 end
+    end
+    
+    -- Gestion de l'animation arc-en-ciel
+    rainbowTimer = rainbowTimer + 1
+    if rainbowTimer > 10 then -- Changer de couleur toutes les 10 frames
+        rainbowTimer = 0
+        rainbowIndex = rainbowIndex + 1
+        if rainbowIndex > #rainbowColors then
+            rainbowIndex = 1
+        end
+    end
 
-	-- Counter
-	if #listRect < x  then  
-		if accSecond == 0 then
-			count = count + 1 
-			counter()
-		elseif accSecond ~= 0 then
-			count = count + 1 * accSecond
-			counter()
-		end	
-	elseif #listRect == x then
-		startCount = false
-	end
-	
-	if count > 66 and #listRect < x then
-		-- config des rectangle en dynamique
-		local r = {}
-		
-		r.larg = pieceS
-		r.haut = pieceS
-		r.x = math.random(0,55 - r.larg)
-		r.y = math.random(0,135 - r.haut)
-		-- r.color = math.random(1,15)
-		r.nb = numberRect
-		r.autoPut = false
-		r.find = false
-		r.lock = false
-		r.answerX = 58
-		r.answerY = 10
-	
-		-- ajustement taille piece en corélation de la grille
-		if sizeGrid == 100  then
-			r.larg = pieceS + 6
-			r.haut = pieceS
-		end	
+    -- ## BUILDING PUZZLE
+    if endPuzzle == false then
 
-		-- Attribuer la couleur en fonction des compteurs
-		if blackCount < maxBlack then
-			r.color = 0 -- Noir
-			blackCount = blackCount + 1
-		elseif purleCount < maxPurple then
-			r.color = 1 -- Violet
-			purleCount = purleCount + 1
-		elseif redCount < maxRed then
-			r.color = 2 -- Rouge
-			redCount = redCount + 1
-		elseif orangeCount < maxOrange then
-			r.color = 3 -- Orange
-			orangeCount = orangeCount + 1
-		elseif yellowCount < maxYellow then
-			r.color = 4 -- Rouge
-			yellowCount = yellowCount + 1
-		elseif green1Count < maxGreen1 then
-			r.color = 5 -- Vert claire
-			green1Count = green1Count + 1
-		elseif green2Count < maxGreen1 then
-			r.color = 6 -- Vert normal
-			green2Count = green2Count + 1
-		elseif green3Count < maxGreen3 then
-			r.color = 7 -- Vert foncé
-			green3Count = green3Count + 1
-		elseif blue1Count < maxBlue1 then
-			r.color = 8 -- Bleu foncé
-			blue1Count = blue1Count + 1
-		elseif blue2Count < maxBlue2 then
-			r.color = 9 -- Bleu marine
-			blue2Count = blue2Count + 1
-		elseif blue3Count < maxBlue3 then
-			r.color = 10 -- Bleu foncé
-			blue3Count = blue3Count + 1
-		elseif blue4Count < maxBlue4 then
-			r.color = 11 -- Bleu clair
-			blue4Count = blue4Count + 1
-		elseif whiteCount < maxWhite then
-			r.color = 12 -- Blanc
-			whiteCount = whiteCount + 1
-		elseif grey1Count < maxGrey1 then
-			r.color = 13 -- Gris clair
-			grey1Count = grey1Count + 1
-		elseif grey2Count < maxGrey2 then
-			r.color = 14 -- Gris normal
-			grey2Count = grey2Count + 1
-		elseif grey3Count < maxGrey3 then
-			r.color = 15 -- Gris foncé
-			grey3Count = grey3Count + 1
-		else
-			r.color = 12
-		end
-	
-        -- Ajouter le rectangle à la liste
-        numberRect = numberRect + 1
-        table.insert(listRect, r)
+        -- Dessiner la grille
+        for y = 1, #GRID do
+            for x = 1, #GRID[y] do
+                local color = GRID[y][x]
+                local posX = GRID.POS_X + (x - 1) * GRID.CELL_SIZE
+                local posY = GRID.POS_Y + (y - 1) * GRID.CELL_SIZE
+    
+                if color == 99 then
+                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 8) 
+                    rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+                else
+                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
+                end    
+    
+                -- Mode Soluce
+                -- S'applique avec la touche Q 
+                if key(17) and GRID[y][x] ~= MAP[y][x] then
+                        rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, rainbowColors[rainbowIndex])
+                        --rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+                end
 
-        -- Réinitialiser le compteur
-        count = 0
-	end 
-	
+                -- Ajouter un point gris au centre de chaque cellule
+                -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
+            end
+        end
+        
+        -- Affiche la mini-grille
+        drawMiniGrid()
 
-	-- Afficher les rectangle
-	for i,v in ipairs(listRect) do
-		rect(v.x, v.y, v.larg, v.haut, v.color)
-	end	
-
--- Ajuster la position du chiffre selon le nombre restant
-
-		-- Affiche le nombre de rectangle noir
-		if blackCount < 10 then
-			rect(57, 0 , 12, 12, 0)
-			rectb(57, 0 , 12, 12, 12)
-			print(blackCount, 57 + 4, 5 * 1 + 3, 12)
-		else
-			-- Ajuste la position si supérieur à 10
-			rect(57, 15 * 1, 12, 12, 0)
-			rectb(57, 15 * 1, 12, 12, 12)
-			print(blackCount, 57 + 1, 5 * 1 + 3, 12)
-		end
-
-		-- Affiche le nombre de rectangle purple
-		if purleCount < 10 then
-			rect(57, 15 * 2, 12, 12, 1)
-			print(purleCount, 57 + 4, 15 * 1 + 3, 12)
-		else
-			-- Ajuste la position si supérieur à 10
-			rect(57, 15 * 2, 12, 12, 1)
-			print(purleCount, 57 + 1, 15 * 1 + 3, 12)
-		end
-
-		-- Affiche le nombre de rectangle rouge
-		if redCount < 10 then
-			rect(57, 15 * 3, 12, 12, 2)
-			print(redCount, 57 + 4, 15 * 3 + 3, 12)
-		else
-			-- Ajuste la position si supérieur à 10
-			rect(57, 15 * 3, 12, 12, 2)
-			print(redCount, 57 + 1, 15 * 3 + 3, 12)
-		end
-
-		-- Affiche le nombre de rectangle gris foncé
-        if grey3Count < 10 then
-			rect(57, 15 * 2, 12, 12, 15)
-            print(grey3Count, 57 + 4, 15 * 2 + 3, 12)
-        else
-			-- Ajuste la position si supérieur à 10
-			rect(57, 15 * 2, 12, 12, 15)
-            print(grey3Count, 57 + 1, 15 * 2 + 3, 12)
+        -- Affiche les pixels à placer
+        for i, color in ipairs(MAP.COLOR) do
+            local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
+            rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
+            rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
+            --print("x".. MAP.COLOR.NB[i], 224, yPos + 1, 12)
+            --print("x".. GRID.COLOR.NB[i], 224, yPos + 1, 12)
+            --print("x".. (MAP.COLOR.NB[i] - GRID.COLOR.Q[i]), 224, yPos + 1, 12)
+            
+            print("x".. "?", 224, yPos + 1, 12)
         end
 
-	-- Affiche les coordonné X et Y de la souris
-	mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
-	print(mX, 215,100,12)
-	print(mY, 215,110,12)
+        -- Dessine le carré qui sera l'icone delete pixel de la grille
+        rect(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 8)
+        rectb(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 13)
+
+        -- Dessine la croix rouge dans l'icone delete
+        for i = -crossLarg, crossLarg do
+            line(crossPosX - crossSize + i, crossPosY - crossSize, crossPosX + crossSize + i, crossPosY + crossSize, 2)
+            line(crossPosX - crossSize + i, crossPosY + crossSize, crossPosX + crossSize + i, crossPosY - crossSize, 2)
+        end
+        
+        -- Positionne la flèche pour indiquer la couleur sélectionnée
+        arrowPosY = (MAP.POS_Y + 3) + (MAP.CELL_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
+        arrowPosX = 212  -- Position X de la flèche (fixe, juste à gauche des carrés de couleur)
+
+        -- Dessiner une flèche pointant vers le carré de couleur sélectionné
+        tri(arrowPosX, arrowPosY, arrowPosX - 4, arrowPosY - 4, arrowPosX - 4, arrowPosY + 4, 12)
+
+        -- Calculer le nombre de différences
+        pixCount = countDifferences(GRID, MAP)
+
+        -- Affiche les pixel restant
+        print(pixCount, 210, 93, 12)
+        -- Place le Slash entre le restant sur le total
+        line(210, 108, 235, 94, 12)
+        -- Affiche le total de pixel
+        print(pixTotal, 220, 105, 12)
+
+		-- Affiche le numéro et nom du puzzle
+        print("#".. indexMap, 10, 10, 12)
+
+        -- Affiche les limites de l'écran 
+        -- rectb(1,1,239,135,13)
+
+        -- Carre cursor
+        -- Afficher un carré de la couleur sélectionnée qui suit la souris
+        if cellDelete then
+            for i = -crossLarg, crossLarg do
+                line(mX - crossSize + i, mY - crossSize, mX + crossSize + i, mY + crossSize, 2)
+                line(mX - crossSize + i, mY + crossSize, mX + crossSize + i, mY - crossSize, 2)
+            end
+        else
+            rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
+            rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
+        end
+
+        -- Si le bouton droite est pressé
+        if prev_rb and not rb and cellDelete == false then
+            indexColor = indexColor + 1
+            if indexColor > #MAP.COLOR then
+                indexColor = 1 -- Revenir au début si on dépasse la liste
+            end
+            selectedColor = MAP.COLOR[indexColor]
+        end
+
+        -- Mettre à jour l'état précédent du bouton droit
+        prev_rb = rb
+
+        -- Si le bouton gauche est pressé
+        if lb then 
+            -- Convertir les coordonnées de la souris en indices de la grille
+            local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
+            local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
+    
+            -- Vérifier si les indices sont dans les limites de la grille
+            if gridX >= 1 and gridX <= #GRID[1] and gridY >= 1 and gridY <= #GRID then
+                if cellDelete == false then
+                    GRID[gridY][gridX] = selectedColor -- Changer la valeur de la cellule pour dessiner dans la grille
+                else
+                    GRID[gridY][gridX] = 99 -- Changer la valeur de la cellule pour dessiner dans la grille
+                end
+            end
+    
+            -- Vérifier si le bouton gauche est pressé sur l'icône de suppression
+            if mX >= (squarePosX - squareSize) and mX <= (squarePosX + squareSize) and 
+                mY >= (squarePosY - squareSize) and mY <= (squarePosY + squareSize) then
+                cellDelete = true -- Basculer entre true et false
+            end
+            -- Vérifier si un carré de couleur est cliqué
+            if mX >= 215 and mX <= 215 + GRID.CELL_SIZE then
+                for i, color in ipairs(MAP.COLOR) do
+                    local yPos = MAP.POS_Y + (GRID.CELL_SIZE + 2) * (i - 1)  
+                    if mY >= yPos and mY <= yPos + GRID.CELL_SIZE then
+                        indexColor = i  -- Met à jour l'index de couleur
+                        selectedColor = MAP.COLOR[indexColor]  
+                        cellDelete = false -- Désactiver le mode suppression
+                    end
+                end
+            end
+        end
+
+    end
+
+    -- Condition de FIN    
+    -- Vérifier si MAP et GRID sont identiques avant d'appeler completePuzzle
+    
+    if watchEqual(MAP, GRID) then
+        endPuzzle = true
+        --cls(0)    -- Dessiner la grille
+        for y = 1, #GRID do
+            for x = 1, #GRID[y] do
+                local color = GRID[y][x]
+                local posX = GRID.POS_X + (x - 1) * GRID.CELL_SIZE
+                local posY = GRID.POS_Y + (y - 1) * GRID.CELL_SIZE
+    
+                if color == 99 then
+                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 0) 
+                else
+                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
+                end
+    
+                -- Ajouter un point gris au centre de chaque cellule
+                -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
+            end
+        end
+
+        if endPuzzle then
+
+            -- Positions des textes "Yes" et "No"
+            local yesX, yesY, colorY = 15, 76, 12
+            local noX, noY, colorN = 40, 76, 12
+
+            -- Dimensions des boutons "Yes" et "No"
+            local yesWidth, yesHeight = 21, 10
+            local noWidth, noHeight = 15, 10
+
+            -- page de remerciement 
+            if thxPage then
+                print("Thanks", 10, 58, 12)
+                print("for", 18, 67, 12)
+                print("playing", 10, 76, colorN)
+            else            
+                -- Afficher les messages
+                print("BRAVO !!!", 10, 58, 12)
+                print("One More", 10, 67, 12)
+    
+                -- Afficher les textes "Yes" et "No" avec les couleurs mises à jour
+                print("Yes", yesX, yesY, colorY)
+                print("No", noX, noY, colorN)
+            end
+
+            -- Récupérer la position de la souris et l'état des clics
+            --mX, mY, lb, _, rb, _, _ = mouse()
+
+            -- Si la souris survole "Yes"
+            if mX >= yesX and mX <= yesX + yesWidth and mY >= yesY and mY <= yesY + yesHeight then
+                colorY = 4  -- Changer la couleur de "Yes"
+                if lb then 
+                    resetGrid(GRID)
+                end
+            end
+
+            -- Si la souris survole "No"
+            if mX >= noX and mX <= noX + noWidth and mY >= noY and mY <= noY + noHeight then
+                colorN = 4  -- Changer la couleur de "No"
+                if lb then 
+                    thxPage = true
+                end
+            end
+        end
+    end
 
 end
