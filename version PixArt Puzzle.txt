@@ -32,6 +32,7 @@ v1.01.5.1 -> HOTFIX : corrigé le nombre de pixel selon le puzzle
 v1.01.5.2 -> SUCCESS : corrigé le nombre de pixel selon le puzzle
 v1.01.6 -> SUCCESS : icone carre du mode soluce
 v1.02.0 -> SUCCESS : Changer la taille de la grille selon le puzzle
+v1.03.0 -> SUCCESS : lancement aléatoire d'un puzzle
 
 -- ALPHA
 
@@ -46,6 +47,7 @@ A FAIRE :
            si activé icone loupe devient arc-en-ciel 
 - musique et animation
 - reprendre la documention du doc via gitbook
+- Affichez le niveau de difficulter du puzzle
 
 -- A TESTER
 - remplacer le repère de la grille par des points comme des pieces à clipser

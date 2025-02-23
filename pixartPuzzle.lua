@@ -7,10 +7,12 @@
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
-endPuzzle = false
 titlePage = false
+selectPuzzle = false
+buildingPuzzle = true
+endPuzzle = false
 thxPage = false
-GameplayZone = 1
+GameplayPhase = 1
 
 -- bouton droit relaché
 prev_rb = false
@@ -35,7 +37,7 @@ rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
 rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
 rainbowTimer = 0 -- Timer pour l'animation
 
-indexMap = 2
+-- Collection de puzzle
 selectMAP = {
 	{
 		{99,99,99,99,99,99,99,99,99,00,99,99,99,99,99,99,99,99,99},
@@ -82,9 +84,20 @@ selectMAP = {
 	}
 }
 
+-- Variable très important pour choisir un puzzle parmi la collection 
+indexMap = 2
+
+-- Définis aléatoirement un puzzle
+function rdmSelectPuzzle(minR, maxR)
+    indexMap = math.random(minR, maxR)
+end
+-- Execution aléatoire d'un puzzle
+rdmSelectPuzzle(1, 2)
+
+-- Paramètre de l'ensemble des puzzles
 infoMAP = {
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18}, -- ETOILE | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | LARGEUR | HAUTEUR
-	{ 6, 75, 3, {00,13,04,2}, {64,11,21,20,27,22,12,5,3}, "CAT", 19, 21}, -- CAT1 | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | LARGEUR | HAUTEUR
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18}, -- ETOILE | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | NOM | LARGEUR | HAUTEUR
+	{ 6, 75, 3, {00,13,04,2}, {64,11,21,20,27,22,12,5,3}, "CAT", 19, 21}, -- CAT1 | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | NOM | LARGEUR | HAUTEUR
 }
 
 -- Dessin à réaliser 
@@ -215,6 +228,12 @@ end
 indexColor = 1
 selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
 
+-- Affiche la selection du puzzle
+function puzzleSelect()
+    -- reset l'ecran
+    cls(0)
+end
+
 function TIC()
     cls(0) -- Efface l'écran
     -- Récupère la position et état du clic
@@ -244,8 +263,11 @@ function TIC()
         end
     end
 
+    -- ## SELECTION PUZZLE
+
+
     -- ## BUILDING PUZZLE
-    if endPuzzle == false then
+    if buildingPuzzle then
 
         -- Dessiner la grille
         for y = 1, #GRID do
@@ -317,7 +339,7 @@ function TIC()
 
 		-- Affiche le numéro et nom du puzzle
         print("#".. indexMap, 15, 86, 12)
-        print(infoMAP[1][6], 15, 96, 12)
+        print(infoMAP[indexMap][6], 15, 96, 12)
 
         -- Icone Mode Soluce
         rect(16, 105, 25, 25, 8)
@@ -382,12 +404,15 @@ function TIC()
                 end
             end
         end
+        
+        if selectPuzzle then
+            puzzleSelect()
+        end
 
     end
 
-    -- Condition de FIN    
-    -- Vérifier si MAP et GRID sont identiques avant d'appeler completePuzzle
-    
+    -- ## Condition de FIN    
+    -- Vérifier si MAP et GRID sont identiques avant d'appeler completePuzzle    
     if watchEqual(MAP, GRID) then
         endPuzzle = true
         --cls(0)    -- Dessiner la grille
