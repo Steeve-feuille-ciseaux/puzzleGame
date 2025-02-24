@@ -20,6 +20,9 @@ prev_rb = false
 -- Delete variable
 cellDelete = false
 
+-- soluce Puzzle
+solucePuzzle = false
+
 -- ICONE DELETE 
 -- Position du carré icone en bas à droite
 squarePosX = 222
@@ -113,6 +116,21 @@ MAP.NAME = infoMAP[indexMap][6]
 MAP.LARG = infoMAP[indexMap][7]
 MAP.HAUT = infoMAP[indexMap][8]
 
+-- Initialiser la puzzle 
+function initPuzzle()
+    MAP = selectMAP[indexMap]
+
+    -- Info sur MAP
+    MAP.CELL_SIZE = infoMAP[indexMap][1]
+    MAP.POS_X = infoMAP[indexMap][2]
+    MAP.POS_Y = infoMAP[indexMap][3]
+    MAP.COLOR = infoMAP[indexMap][4]
+    MAP.COLOR.NB = infoMAP[indexMap][5]
+    MAP.NAME = infoMAP[indexMap][6]
+    MAP.LARG = infoMAP[indexMap][7]
+    MAP.HAUT = infoMAP[indexMap][8]
+end
+
 
 -- Création de la grille en Lua pour TIC-80
 function create_grid(rows, cols, value)
@@ -135,6 +153,33 @@ GRID.POS_X = MAP.POS_X
 GRID.POS_Y = MAP.POS_Y
 GRID.COLOR = MAP.COLOR
 GRID.COLOR.Q = {14,11,21,20,27,22,12,5,3}
+
+-- Dessiner la grille
+function drawGrid()
+    for y = 1, #GRID do
+        for x = 1, #GRID[y] do
+            local color = GRID[y][x]
+            local posX = GRID.POS_X + (x - 1) * GRID.CELL_SIZE
+            local posY = GRID.POS_Y + (y - 1) * GRID.CELL_SIZE
+
+            if color == 99 then
+                rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 8) 
+                rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+            else
+                rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
+            end    
+
+            -- Mode Soluce
+            if solucePuzzle and GRID[y][x] ~= MAP[y][x] then
+                    rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, rainbowColors[rainbowIndex])
+                    --rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+            end
+
+            -- Ajouter un point gris au centre de chaque cellule
+            -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
+        end
+    end
+end
 
 -- Fonction pour compter les occurrences des valeurs dans MAP.COLOR.NB
 local function count_values_in_grid(grid, values)
@@ -228,12 +273,6 @@ end
 indexColor = 1
 selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
 
--- Affiche la selection du puzzle
-function puzzleSelect()
-    -- reset l'ecran
-    cls(0)
-end
-
 function TIC()
     cls(0) -- Efface l'écran
     -- Récupère la position et état du clic
@@ -263,37 +302,34 @@ function TIC()
         end
     end
 
-    -- ## SELECTION PUZZLE
+    if key(20) then
+        selectPuzzle = true
+        buildingPuzzle = false
+    end
+
+    if key(21) then
+        cls(0)
+        indexMap = 2
+        initPuzzle()
+        buildingPuzzle = true
+        selectPuzzle = false
+    end
+
+    if key(17) then
+        solucePuzzle = true
+    end
+
+    -- ## SELECTION PUZZLE        
+    if selectPuzzle then
+        cls(0)
+        print("SELECT NEXT PUZZLE", 10, 10, 12)
+    end
 
 
     -- ## BUILDING PUZZLE
     if buildingPuzzle then
-
-        -- Dessiner la grille
-        for y = 1, #GRID do
-            for x = 1, #GRID[y] do
-                local color = GRID[y][x]
-                local posX = GRID.POS_X + (x - 1) * GRID.CELL_SIZE
-                local posY = GRID.POS_Y + (y - 1) * GRID.CELL_SIZE
-    
-                if color == 99 then
-                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 8) 
-                    rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
-                else
-                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
-                end    
-    
-                -- Mode Soluce
-                -- S'applique avec la touche Q 
-                if key(17) and GRID[y][x] ~= MAP[y][x] then
-                        rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, rainbowColors[rainbowIndex])
-                        --rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
-                end
-
-                -- Ajouter un point gris au centre de chaque cellule
-                -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
-            end
-        end
+        -- Affiche la grille
+        drawGrid()
         
         -- Affiche la mini-grille
         drawMiniGrid()
@@ -403,10 +439,6 @@ function TIC()
                     end
                 end
             end
-        end
-        
-        if selectPuzzle then
-            puzzleSelect()
         end
 
     end
