@@ -12,7 +12,32 @@ selectPuzzle = false
 buildingPuzzle = true
 endPuzzle = false
 thxPage = false
-GameplayPhase = 1
+GameplayPhase = 0
+
+-- DECOUPAGE DU JEU
+function updatePhase(GameplayPhase)
+    -- Réinitialiser toutes les variables
+    selectPuzzle = false
+    buildingPuzzle = false
+    endPuzzle = false
+    thxPage = false
+
+    -- Activer la bonne variable en fonction de GameplayPhase
+    if GameplayPhase == 1 then
+        cls(0)
+        indexMap = 2
+        initPuzzle()
+        buildingPuzzle = true       -- building Puzzle
+    elseif GameplayPhase == 2 then
+        GRID = MAP
+        endPuzzle = true            -- end Puzzle
+    elseif GameplayPhase == 3 then   
+        --resetGrid(GRID)   
+        selectPuzzle = true         -- select Puzzle
+    elseif GameplayPhase == 4 then
+        thxPage = true
+    end
+end
 
 -- bouton droit relaché
 prev_rb = false
@@ -120,7 +145,7 @@ MAP.HAUT = infoMAP[indexMap][8]
 function initPuzzle()
     MAP = selectMAP[indexMap]
 
-    -- Info sur MAP
+    -- Info sur MAP !! A AMELIORER !!
     MAP.CELL_SIZE = infoMAP[indexMap][1]
     MAP.POS_X = infoMAP[indexMap][2]
     MAP.POS_Y = infoMAP[indexMap][3]
@@ -129,6 +154,19 @@ function initPuzzle()
     MAP.NAME = infoMAP[indexMap][6]
     MAP.LARG = infoMAP[indexMap][7]
     MAP.HAUT = infoMAP[indexMap][8]
+
+    -- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
+    GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
+    
+    -- Info sur la grille !! A AMELIORER !!
+    GRID.CELL_SIZE = MAP.CELL_SIZE
+    GRID.POS_X = MAP.POS_X
+    GRID.POS_Y = MAP.POS_Y
+    GRID.COLOR = MAP.COLOR
+    GRID.COLOR.Q = {14,11,21,20,27,22,12,5,3}
+
+    
+    pixTotal = countDifferences(GRID, MAP)
 end
 
 
@@ -225,6 +263,7 @@ end
 -- Nombre de pixel à placer
 function countDifferences(t1, t2)
     local count = 0
+    local total = 0
 
     -- Vérifier si les dimensions sont les mêmes
     if #t1 ~= #t2 then return -1 end  
@@ -301,23 +340,27 @@ function TIC()
             rainbowIndex = 1
         end
     end
-
+    ----------------------------- CHEAT KEY ------------------------
+    -- RESET GRID touche T
     if key(20) then
-        selectPuzzle = true
-        buildingPuzzle = false
+        updatePhase(1)
     end
 
+    -- SWAP PUZZLE touche U
     if key(21) then
-        cls(0)
-        indexMap = 2
-        initPuzzle()
-        buildingPuzzle = true
-        selectPuzzle = false
+        updatePhase(3)
     end
 
+    -- MODE SOLUCE touche Q
     if key(17) then
         solucePuzzle = true
     end
+
+    -- FIN DE PUZZLE touche E
+    if key(5) then
+        updatePhase(2)
+    end
+    ----------------------------- CHEAT KEY ------------------------
 
     -- ## SELECTION PUZZLE        
     if selectPuzzle then
@@ -428,6 +471,7 @@ function TIC()
                 mY >= (squarePosY - squareSize) and mY <= (squarePosY + squareSize) then
                 cellDelete = true -- Basculer entre true et false
             end
+
             -- Vérifier si un carré de couleur est cliqué
             if mX >= 215 and mX <= 215 + GRID.CELL_SIZE then
                 for i, color in ipairs(MAP.COLOR) do
@@ -445,9 +489,10 @@ function TIC()
 
     -- ## Condition de FIN    
     -- Vérifier si MAP et GRID sont identiques avant d'appeler completePuzzle    
-    if watchEqual(MAP, GRID) then
-        endPuzzle = true
-        --cls(0)    -- Dessiner la grille
+    if watchEqual(MAP, GRID) and endPuzzle then
+        cls(0)
+
+        -- Dessiner la grille
         for y = 1, #GRID do
             for x = 1, #GRID[y] do
                 local color = GRID[y][x]
@@ -465,48 +510,47 @@ function TIC()
             end
         end
 
-        if endPuzzle then
+        -- Positions des textes "Yes" et "No"
+        local yesX, yesY, colorY = 15, 76, 12
+        local noX, noY, colorN = 40, 76, 12
 
-            -- Positions des textes "Yes" et "No"
-            local yesX, yesY, colorY = 15, 76, 12
-            local noX, noY, colorN = 40, 76, 12
+        -- Dimensions des boutons "Yes" et "No"
+        local yesWidth, yesHeight = 21, 10
+        local noWidth, noHeight = 15, 10
 
-            -- Dimensions des boutons "Yes" et "No"
-            local yesWidth, yesHeight = 21, 10
-            local noWidth, noHeight = 15, 10
+        -- page de remerciement 
+        if thxPage then
+            print("Thanks", 10, 58, 12)
+            print("for", 18, 67, 12)
+            print("playing", 10, 76, colorN)
+        else            
+            -- Afficher les messages
+            print("BRAVO !!!", 10, 58, 12)
+            print("One More", 10, 67, 12)
 
-            -- page de remerciement 
-            if thxPage then
-                print("Thanks", 10, 58, 12)
-                print("for", 18, 67, 12)
-                print("playing", 10, 76, colorN)
-            else            
-                -- Afficher les messages
-                print("BRAVO !!!", 10, 58, 12)
-                print("One More", 10, 67, 12)
-    
-                -- Afficher les textes "Yes" et "No" avec les couleurs mises à jour
-                print("Yes", yesX, yesY, colorY)
-                print("No", noX, noY, colorN)
+            -- Afficher les textes "Yes" et "No" avec les couleurs mises à jour
+            print("Yes", yesX, yesY, colorY)
+            print("No", noX, noY, colorN)
+        end
+
+        -- Récupérer la position de la souris et l'état des clics
+        --mX, mY, lb, _, rb, _, _ = mouse()
+
+        -- Si la souris survole "Yes"
+        if mX >= yesX and mX <= yesX + yesWidth and mY >= yesY and mY <= yesY + yesHeight then
+            colorY = 5  -- Changer la couleur de "Yes"
+            print("Yes", yesX, yesY, colorY)
+            if lb then 
+                updatePhase(3)
             end
+        end
 
-            -- Récupérer la position de la souris et l'état des clics
-            --mX, mY, lb, _, rb, _, _ = mouse()
-
-            -- Si la souris survole "Yes"
-            if mX >= yesX and mX <= yesX + yesWidth and mY >= yesY and mY <= yesY + yesHeight then
-                colorY = 4  -- Changer la couleur de "Yes"
-                if lb then 
-                    resetGrid(GRID)
-                end
-            end
-
-            -- Si la souris survole "No"
-            if mX >= noX and mX <= noX + noWidth and mY >= noY and mY <= noY + noHeight then
-                colorN = 4  -- Changer la couleur de "No"
-                if lb then 
-                    thxPage = true
-                end
+        -- Si la souris survole "No"
+        if mX >= noX and mX <= noX + noWidth and mY >= noY and mY <= noY + noHeight then
+            colorN = 4  -- Changer la couleur de "No"
+            print("No", noX, noY, colorN)
+            if lb then 
+                updatePhase(4)
             end
         end
     end

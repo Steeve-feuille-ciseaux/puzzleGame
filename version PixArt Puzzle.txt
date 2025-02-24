@@ -34,6 +34,7 @@ v1.01.6 -> SUCCESS : icone carre du mode soluce
 v1.02.0 -> SUCCESS : Changer la taille de la grille selon le puzzle
 v1.03.0 -> SUCCESS : lancement aléatoire d'un puzzle
 v1.03.1 -> ACTUALLY : la progression du puzzle bug lors d'un changement de puzzle
+v1.03.2 -> HOTFIX : changement de phase + progression
 
 -- ALPHA
 

@@ -1,424 +1,558 @@
-	-- title:   Puzzle Game Children
-	-- author:  Steeve-feuille-ciseaux
-	-- desc:    Game for learn count from 1 to 100
-	-- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
-	-- license: 
-	-- version: 0.1
-	-- script:  lua
-	-- Thanks to HaPiter and maniek207 for sharing tool!
+-- title:   pixArt Puzzle
+-- author:  Steeve-feuille-ciseaux
+-- desc:    Puzzle in Pixel
+-- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
+-- license: MIT License (change this to your license of choice)
+-- version: 1.00.0
+-- script:  lua
 
-	-- Variable
-	endPuzzle = 0
-	countM = 0
-	pieceS = 12
-	x = 100
-	count = 0
-	second = 0
-	accSecond = 30
-	boxC = 0
-	numberRect = 1
-	numeroRect = 1
-	flash = 0
-	showAnswer = false
-	about = false
-	startCount = false
-	moveRect = false
-	Lock = false
-	readyMessage = false
-	stop = false
-	placePiece = false
-	goalPuzzle = false
-	listRect = {}
-	Cadre = {}
-		Cadre.x = 60
-		Cadre.y = 10
-		Cadre.larg = 70
-		Cadre.haut = 70
+-- Script: Affichage de la grille uniquement
+titlePage = false
+selectPuzzle = false
+buildingPuzzle = true
+endPuzzle = false
+thxPage = false
+GameplayPhase = 0
 
-	-- formule collision
-	function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
-	return x1 < x2+w2 and
-			x2 < x1+w1 and
-			y1 < y2+h2 and
-			y2 < y1+h1
-	end
+-- DECOUPAGE DU JEU
+function updatePhase(GameplayPhase)
+    -- Réinitialiser toutes les variables
+    selectPuzzle = false
+    buildingPuzzle = false
+    endPuzzle = false
+    thxPage = false
 
-	-- Remise a zero
-	function init()
-		listRect = {}	
-	end
+    -- Activer la bonne variable en fonction de GameplayPhase
+    if GameplayPhase == 1 then
+        cls(0)
+        indexMap = 2
+        initPuzzle()
+        buildingPuzzle = true       -- building Puzzle
+    elseif GameplayPhase == 2 then
+        GRID = MAP
+        endPuzzle = true            -- end Puzzle
+    elseif GameplayPhase == 3 then   
+        --resetGrid(GRID)   
+        selectPuzzle = true         -- select Puzzle
+    elseif GameplayPhase == 4 then
+        thxPage = true
+    end
+end
 
-	-- TEST RATER
-	function endgoal()
-		for i,v in ipairs(listRect) do
-			if listRect[x].find == true then
-				endPuzzle = endPuzzle + 1
-			end
-		end
-	end	
+-- bouton droit relaché
+prev_rb = false
 
-	-- Counter
-	function counter()
-		if count > 66 then
-			second = second +1 
-		end		
-	end
+-- Delete variable
+cellDelete = false
 
-	-- find piece
-	function finish()
-	end
+-- soluce Puzzle
+solucePuzzle = false
+
+-- ICONE DELETE 
+-- Position du carré icone en bas à droite
+squarePosX = 222
+squarePosY = 120
+-- Taille du carré 
+squareSize = 7  
+-- Position de la croix en bas à gauche
+crossPosX = 222
+crossPosY = 120
+crossSize = 3  -- Taille de la croix
+crossLarg = 0.5 -- Largeur des lignes
+
+-- Animation Mode Soluce
+rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
+rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
+rainbowTimer = 0 -- Timer pour l'animation
+
+-- Collection de puzzle
+selectMAP = {
+	{
+		{99,99,99,99,99,99,99,99,99,00,99,99,99,99,99,99,99,99,99},
+		{99,99,99,99,99,99,99,99,00,02,00,99,99,99,99,99,99,99,99},
+		{99,99,99,99,99,99,99,00,02,02,03,00,99,99,99,99,99,99,99},
+		{99,99,99,99,99,99,99,00,02,03,03,00,99,99,99,99,99,99,99},
+		{99,99,99,99,99,99,00,02,03,03,03,04,00,99,99,99,99,99,99},
+		{99,99,99,99,99,99,00,03,03,03,04,04,00,99,99,99,99,99,99},
+		{00,00,00,00,00,00,03,03,03,04,04,04,05,00,00,00,00,00,00},
+		{00,02,02,02,02,03,03,00,04,04,04,00,05,05,06,06,06,09,00},
+		{99,00,02,02,03,03,03,00,04,04,05,00,05,06,06,06,09,00,99},
+		{99,99,00,03,03,03,04,00,04,05,05,00,06,06,06,09,00,99,99},
+		{99,99,99,00,03,04,04,04,05,05,05,06,06,06,09,00,99,99,99},
+		{99,99,99,99,00,04,04,05,05,05,06,06,06,09,00,99,99,99,99},
+		{99,99,99,99,00,04,05,05,05,06,06,06,09,09,00,99,99,99,99},
+		{99,99,99,00,04,05,05,05,06,06,06,09,09,09,10,00,99,99,99},
+		{99,99,99,00,05,05,05,06,00,00,00,09,09,10,10,00,99,99,99},
+		{99,99,00,05,05,05,00,00,99,99,99,00,00,10,10,11,00,99,99},
+		{99,99,00,05,05,00,99,99,99,99,99,99,99,00,11,11,00,99,99},
+		{99,99,00,00,00,99,99,99,99,99,99,99,99,99,00,00,00,99,99},    
+	},
+	{
+		{99,99,99,99,99,99,99,99,99,99,99,00,00,00,00,99,99,99,99},
+		{99,99,99,99,99,99,99,99,00,00,00,13,13,13,13,00,99,99,99},
+		{99,99,99,99,99,99,00,00,13,13,13,13,13,13,00,00,99,99,99},
+		{99,99,99,99,99,00,13,13,13,13,13,13,13,13,13,00,99,99,99},
+		{99,99,99,00,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,99,00,13,13,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,00,13,13,13,13,13,13,13,13,13,13,00,00,13,13,13,00,00},
+		{99,00,13,13,00,13,13,13,13,13,13,13,00,00,04,04,13,00,99},
+		{99,99,00,00,13,13,00,00,13,13,13,13,13,13,04,04,00,00,00},
+		{99,99,00,13,13,13,00,00,13,13,00,13,13,13,13,13,13,00,99},
+		{99,00,00,00,13,04,04,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,99,00,13,13,04,04,13,13,13,13,13,13,13,00,00,99,99,99},
+		{99,99,99,00,13,13,13,13,13,13,13,02,02,02,02,02,00,99,99},
+		{99,00,99,99,00,00,00,02,02,02,02,02,02,02,02,13,00,99,99},
+		{00,13,00,99,99,00,02,02,02,02,02,13,02,13,13,13,13,00,99},
+		{00,13,13,00,99,00,13,13,13,13,02,13,02,13,13,13,13,00,99},
+		{99,00,13,13,00,13,13,13,13,13,13,13,13,13,13,13,13,00,99},
+		{99,99,00,13,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,99,99,00,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
+		{99,99,99,99,00,00,13,13,13,00,13,13,00,13,13,00,99,99,99},
+		{99,99,99,99,99,99,00,00,00,00,00,00,99,00,00,99,99,99,99}, 
+	}
+}
+
+-- Variable très important pour choisir un puzzle parmi la collection 
+indexMap = 2
+
+-- Définis aléatoirement un puzzle
+function rdmSelectPuzzle(minR, maxR)
+    indexMap = math.random(minR, maxR)
+end
+-- Execution aléatoire d'un puzzle
+rdmSelectPuzzle(1, 2)
+
+-- Paramètre de l'ensemble des puzzles
+infoMAP = {
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18}, -- ETOILE | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | NOM | LARGEUR | HAUTEUR
+	{ 6, 75, 3, {00,13,04,2}, {64,11,21,20,27,22,12,5,3}, "CAT", 19, 21}, -- CAT1 | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | NOM | LARGEUR | HAUTEUR
+}
+
+-- Dessin à réaliser 
+MAP = selectMAP[indexMap]
+
+-- Info sur MAP
+MAP.CELL_SIZE = infoMAP[indexMap][1]
+MAP.POS_X = infoMAP[indexMap][2]
+MAP.POS_Y = infoMAP[indexMap][3]
+MAP.COLOR = infoMAP[indexMap][4]
+MAP.COLOR.NB = infoMAP[indexMap][5]
+MAP.NAME = infoMAP[indexMap][6]
+MAP.LARG = infoMAP[indexMap][7]
+MAP.HAUT = infoMAP[indexMap][8]
+
+-- Initialiser la puzzle 
+function initPuzzle()
+    MAP = selectMAP[indexMap]
+
+    -- Info sur MAP !! A AMELIORER !!
+    MAP.CELL_SIZE = infoMAP[indexMap][1]
+    MAP.POS_X = infoMAP[indexMap][2]
+    MAP.POS_Y = infoMAP[indexMap][3]
+    MAP.COLOR = infoMAP[indexMap][4]
+    MAP.COLOR.NB = infoMAP[indexMap][5]
+    MAP.NAME = infoMAP[indexMap][6]
+    MAP.LARG = infoMAP[indexMap][7]
+    MAP.HAUT = infoMAP[indexMap][8]
+
+    -- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
+    GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
+    
+    -- Info sur la grille !! A AMELIORER !!
+    GRID.CELL_SIZE = MAP.CELL_SIZE
+    GRID.POS_X = MAP.POS_X
+    GRID.POS_Y = MAP.POS_Y
+    GRID.COLOR = MAP.COLOR
+    GRID.COLOR.Q = {14,11,21,20,27,22,12,5,3}
+
+    
+    pixTotal = countDifferences(GRID, MAP)
+end
 
 
-	-- variable grid 
-	l=12 
-	a={}
-	for i=0,100//l+1 do
-		a[i]={}
-		for j=0,100//l+1 do
-			a[i][j]=0
-				for p=0,100//l+1 do
-					a[i][p]=0
-				end
-		end
-	end
+-- Création de la grille en Lua pour TIC-80
+function create_grid(rows, cols, value)
+    local grid = {}
+    for i = 1, rows do
+        grid[i] = {}
+        for j = 1, cols do
+            grid[i][j] = value
+        end
+    end
+    return grid
+end
 
-	-- Musique 
-	
-	function musique()
-	end
+-- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
+GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
 
-	function TIC()
+-- Info sur la grille
+GRID.CELL_SIZE = MAP.CELL_SIZE
+GRID.POS_X = MAP.POS_X
+GRID.POS_Y = MAP.POS_Y
+GRID.COLOR = MAP.COLOR
+GRID.COLOR.Q = {14,11,21,20,27,22,12,5,3}
 
-		-- Musique
-		musique()
-	
-		musicLoop = true
+-- Dessiner la grille
+function drawGrid()
+    for y = 1, #GRID do
+        for x = 1, #GRID[y] do
+            local color = GRID[y][x]
+            local posX = GRID.POS_X + (x - 1) * GRID.CELL_SIZE
+            local posY = GRID.POS_Y + (y - 1) * GRID.CELL_SIZE
 
-		-- Extension souris
-		mX,mY,lb,mb,rb,scrollX,scrollY= mouse()
+            if color == 99 then
+                rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 8) 
+                rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+            else
+                rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
+            end    
 
-		cls(0)
-		print(mX, 215,100,12)
-		print(mY, 215,110,12)
+            -- Mode Soluce
+            if solucePuzzle and GRID[y][x] ~= MAP[y][x] then
+                    rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, rainbowColors[rainbowIndex])
+                    --rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+            end
 
-		if endPuzzle == x then 
-			print("Finish !!!", 195,130,12)
-		else
-			print("Progress", 187,123,12)
-			print(endPuzzle .. " / " .. tostring(x), 195,130,12)
-		end
+            -- Ajouter un point gris au centre de chaque cellule
+            -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
+        end
+    end
+end
 
-		local mvRect = listRect[numeroRect]
-			
-		-- Counter
-		if #listRect < x  then  
-			if accSecond == 0 then
-				count = count + 1 
-				counter()
-			elseif accSecond ~= 0 then
-				count = count + 1 * accSecond
-				counter()
-			end	
-		elseif #listRect == x then
-			startCount = false
-		end
-		
-		if count > 66 and #listRect < x then
-			-- config des rectangle en dynamique
-			local r = {}
-			
-			r.larg = pieceS
-			r.haut = pieceS
-			r.x = math.random(0,55 - r.larg)
-			r.y = math.random(0,135 - r.haut)
-			r.color = math.random(1,15)
-			r.nb = numberRect
-			r.autoPut = false
-			r.find = false
-			r.lock = false
-			r.answerX = 58
-			r.answerY = 10
-		
-			-- ajustement taille piece / number
-			if numberRect >= 100  then
-				r.larg = pieceS + 6
-				r.haut = pieceS
-			end	
-		
-			-- Collision rectangle
-			local ok = true
-				
-			-- fonction collision
-			--[[
-			for i,v in ipairs(listRect) do
-			if CheckCollision(r.x,r.y,r.larg,r.haut,v.x,v.y,v.larg,v.haut) then
-			ok = false
-			boxC = boxC + 1
-			end
-			end	
-			--]]
-		
-			-- ajouter les rectangle dans la liste
-			if ok then   
-				numberRect = numberRect + 1
-				table.insert(listRect, r)
-			end
-			count = 0
-		end 
-	
-		-- Show grid
-		for i=0,100//l+1 do
-			-- Show Answer piece
-			if showAnswer == false and Lock then
-				local aX = 0
-				local aY = 0
-				if numeroRect >= 1 and numeroRect <= 10 then
-					aX = (numeroRect - 1) * 12
-				elseif numeroRect >= 11 and numeroRect <= 20 then
-					-- !!! REPRENDRE ICI !!! --
-					aX = (numeroRect - 1) * 12
-					aY = 12
-				else
-					aX = (numeroRect - 1) * 12
-				end
-				rectb(58+aX,10+aY,l,l,3)
-				print(58+aX, 195,100,12)
-				print(mvRect.answerY, 195,110,12)
-			end
+-- Fonction pour compter les occurrences des valeurs dans MAP.COLOR.NB
+local function count_values_in_grid(grid, values)
+    local count = 0
+    for i = 1, #grid do
+        for j = 1, #grid[i] do
+            for _, value in ipairs(values) do
+                if grid[i][j] == value then
+                    count = count + 1
+                end
+            end
+        end
+    end
+    return count
+end
 
-			-- Focus grid put piece
-			if Lock and mX >= 60 and mX <= 175
-					and mY >= 12 and mY <= 130  then
-					rectb((l*(mX//l)-2),(l*(mY//l)-2),l,l,5)
-			end
+function resetGrid(g1)    
+    endPuzzle = false
+    for i = 1, #g1 do
+        for j = 1, #g1[i] do
+            g1[i][j] = 99
+        end
+    end
+end
 
-			-- autofocus put on grid
-			if Lock and lb == false and mvRect.autoPut == false
-					and mvRect.x >= 54 and mvRect.x <= 173
-					and mvRect.y >= 5 and mvRect.y <= 123  then
-					mvRect.x = l*(mX//l)-2
-					mvRect.y = l*(mY//l)-2
-					mvRect.autoPut = true
-		
-				-- grid answer
-				local grid_X = 58
-				local grid_Y = 10
-				local adjust_mX = mX - grid_X
-				local adjust_mY = mY - grid_Y
-				local ligne = adjust_mX//l+1
-				local colonne = (adjust_mY//l*10) 
-				local resultat = ligne+colonne
-					
-				-- Count puzzle
-				if ((mvRect.x-grid_X)//l+1)+((mvRect.y-grid_Y)//l*10) == mvRect.nb and mvRect.autoPut == true then
-					mvRect.find = true
-					endPuzzle = endPuzzle + 1
-					mvRect.lock = true
-				end
-			end
+-- Vérifier si les dimensions sont les mêmes
+function watchEqual(t1, t2)
+    if #t1 ~= #t2 then return false end  
 
-			-- draw grid
-			for j=0,100//l+1  do
-				local nbCase = (i + 1) + (j * 10)
+    for i = 1, #t1 do
+        if #t1[i] ~= #t2[i] then return false end  -- Vérifier la largeur de chaque ligne
 
-				if a[i][j]==0 then
-					rect(58+(l*i),10+(l*j),l,l,8)
-					rectb(58+(l*i),10+(l*j),l,l,13)
-						for p=0,100//l+1  do
-							rect(63+(l*i),15+(l*p),2,2,13)
-						end
-				elseif a[i][j]==1 then
-					rect(58+(l*i),10+(l*j),l,l,10)
-					rectb(58+(l*i),10+(l*j),l,l,9)
-				end
+        for j = 1, #t1[i] do
+            if t1[i][j] ~= t2[i][j] then
+                return false  -- Dès qu'une cellule est différente, renvoyer false
+            end
+        end
+    end
 
-				print(nbCase,58+(l*i),10+(l*j),12)
-			end
-		end		
-	
-		-- Afficher les rectangle
-		for i,v in ipairs(listRect) do
-			rect(v.x, v.y, v.larg, v.haut, v.color)
-			-- gestion numero et couleur
-			if v.nb < 10  then
-				if v.color == 8 or v.color == 15 then
-					print(v.nb,v.x+4,v.y+3,12)
-				else
-					print(v.nb,v.x+4,v.y+3)
-				end
-			end
-			if v.nb >= 10 then 
-				if v.color == 8 or v.color == 15 then
-					print(v.nb,v.x+1,v.y+3,12)
-				else
-					print(v.nb,v.x+1,v.y+3)
-				end
-			end
-		end
-	
-		-- Message fin de tache
+    return true  -- Si toutes les cases sont identiques, renvoyer true
+end
 
-		if stop == false then
-			countM = countM + 1
-		end
-	
-		if #listRect == x and flash == 0 then
-				rect(80,50,76,21,12)
-				print("PUZZLE READY",84,58)
-				if countM > 400 then
-					flash = flash + 1
-					readyMessage = true
-					countM = 0
-				end
-		end
-	
-		if flash >= 1 then				
-			if countM < 30 and readyMessage then	
-				print("DO THE PUZZLE",82,2,12)
-			elseif countM == 40 then
-				readyMessage = false				
-			elseif countM == 45 then
-				readyMessage = true
-				countM = 0
-				flash = flash + 1
-			elseif flash == 4 then
-				stop = true
-				readyMessage = false
-				print("DO THE PUZZLE",82,2,12)
-				moveRect = true
-			end
-		end	
-	
-		-- menu deplacement Rectangle 
-		if moveRect then
-					
+-- Nombre de pixel à placer
+function countDifferences(t1, t2)
+    local count = 0
+    local total = 0
 
-			-- how to play
-			rect(180,2,60,20,12)
-			if Lock == false then
-				print("Select",192,4)
-				print("use ",200,34,12)
-				print("keyboard",186,42,12)
-				print("arrow",195,50,12)
-				print("then",199,63,12)
-				print("L or K",194,71,12)
-				print("for move",187,79,12)
-			else
-				print("Move",198,4)
-				print("use ",200,34,12)
-				print("mouse",194,42,12)
-				print("then switch",180,55,12)
-				print("with",199,63,12)
-				print("L or K",194,71,12)
-			end
+    -- Vérifier si les dimensions sont les mêmes
+    if #t1 ~= #t2 then return -1 end  
 
-			-- Selection rectangle  
-			if mvRect.nb >= 1 and mvRect.nb <= 9 then
-				print("piece n' " .. listRect[numeroRect].nb
-																				,186,14)
-			elseif mvRect.nb >= 10 and mvRect.nb <= 99 then
-				print("piece n' " .. listRect[numeroRect].nb
-																				,183,14)
-			elseif mvRect.nb >= 100 then
-				print("piece n' " .. listRect[numeroRect].nb
-																				,180,14)
-			end														
-				rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
-				rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,0)
-		
-			if mvRect.nb < 10  then
-						print(mvRect.nb,mvRect.x+4,mvRect.y+3,0)
-			else
-					print(mvRect.nb,mvRect.x+1,mvRect.y+3,0)
-			end	
-	
-			-- deplacement rectangle
-			if mvRect.nb and Lock then
-				rect(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut, mvRect.color)
-				rectb(mvRect.x, mvRect.y, mvRect.larg, mvRect.haut,12)
-				if mvRect.nb < 10  then
-						print(mvRect.nb,mvRect.x+4,mvRect.y+3,12)
-				else
-				print(mvRect.nb,mvRect.x+1,mvRect.y+3,12)
-			end
-			
-			-- déplacement mouse 
-			if Lock and lb and mvRect.lock == false  then
-				mvRect.y = mY - 7
-				mvRect.x = mX - 6
-				mvRect.autoPut = false
-			
-			elseif Lock and lb and mvRect.lock == true then
-				mvRect.y = mvRect.y
-				mvRect.x = mvRect.x
-			end
-		end
-	
-	end  
-	
-	-- Cadre du puzzle
-	--[[
-	rectb(Cadre.x,
-							Cadre.y,
-		Cadre.larg,
-		Cadre.haut,
-		12)
-	--]]
-		
-	-- Menu Debug
-	if about then
-		rect(0,0,87,37,12)
-		print("Frame : " .. tostring(accSecond)
-																		.. " x " 
-																			.. tostring(count)
-																			,1,1)
-		print("Time : " .. second
-																		.. " sec"
-																		,1,8)
-		print("Rectangle : " .. #listRect,1,15)
-		print("Collision : " .. boxC,1,23)
-		print("limite : " .. x
-																						.. " rect ",1,31)	
-	end
-	
-	-- touche Espace
-	if (keyp(48)) then
-		if about == true then
-			about = false
-		else
-			about = true
-		end
-	end		
-	
-	-- touche M
-	--[[
-	if (keyp(13)) then
-		if moveRect == true then
-			moveRect = false
-		else
-			moveRect = true
-		end
-	end
-	--]]
-	
-	-- touche gauche/droite
-	if Lock == false then
-		if (keyp(60)) and numeroRect > 1
-		or (key(59)) and numeroRect > 1 then
-			numeroRect = numeroRect - 1
-		elseif (keyp(61	)) and numeroRect < #listRect
-		or (key(58)) and numeroRect < #listRect then
-			numeroRect = numeroRect + 1
-		end
-	end
-	
-	-- touche L
-	if (keyp(12)) or rb then
-		if Lock == true then
-			Lock = false
-		else
-			Lock = true
-		end
-	end
-	
-end 
+    for i = 1, #t1 do
+        if #t1[i] ~= #t2[i] then return -1 end  -- Vérifier la largeur de chaque ligne
+
+        for j = 1, #t1[i] do
+            if t1[i][j] ~= t2[i][j] then
+                count = count + 1  -- Incrémenter le compteur si la valeur est différente
+            end
+        end
+    end
+
+    return count
+end
+
+-- Nombre maximum de piece
+pixTotal = countDifferences(GRID, MAP)
+
+
+-- Info sur la mini grille
+MINI = {}
+MINI.CELL_SIZE = 3
+MINI.POS_X = 2  -- Position à gauche
+MINI.POS_Y = 20  -- Position en bas
+
+function drawMiniGrid()
+    for y = 1, #MAP do
+        for x = 1, #MAP[y] do
+            local color = MAP[y][x]
+            local posX = MINI.POS_X + (x - 1) * MINI.CELL_SIZE
+            local posY = MINI.POS_Y + (y - 1) * MINI.CELL_SIZE
+
+            if color ~= 99 then
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)
+            else
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 13) 
+                rectb(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8)
+            end
+        end
+    end
+end
+
+-- Identifie la couleur
+indexColor = 1
+selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
+
+function TIC()
+    cls(0) -- Efface l'écran
+    -- Récupère la position et état du clic
+	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
+
+    -- Affiche les coordonné X et Y de la souris
+	-- print(mX, 1,5,12)
+	-- print(mY, 1,15,12)    
+
+    -- Changer de carte avec les touches fléchées
+    if btnp(2) then  -- Flèche gauche
+        indexMap = indexMap - 1
+        if indexMap < 1 then indexMap = #selectMAP end
+    end
+    if btnp(3) then  -- Flèche droite
+        indexMap = indexMap + 1
+        if indexMap > #selectMAP then indexMap = 1 end
+    end
+    
+    -- Gestion de l'animation arc-en-ciel
+    rainbowTimer = rainbowTimer + 1
+    if rainbowTimer > 10 then -- Changer de couleur toutes les 10 frames
+        rainbowTimer = 0
+        rainbowIndex = rainbowIndex + 1
+        if rainbowIndex > #rainbowColors then
+            rainbowIndex = 1
+        end
+    end
+    ----------------------------- CHEAT KEY ------------------------
+    -- RESET GRID touche T
+    if key(20) then
+        updatePhase(1)
+    end
+
+    -- SWAP PUZZLE touche U
+    if key(21) then
+        updatePhase(3)
+    end
+
+    -- MODE SOLUCE touche Q
+    if key(17) then
+        solucePuzzle = true
+    end
+
+    -- FIN DE PUZZLE touche E
+    if key(5) then
+        updatePhase(2)
+    end
+    ----------------------------- CHEAT KEY ------------------------
+
+    -- ## SELECTION PUZZLE        
+    if selectPuzzle then
+        cls(0)
+        print("SELECT NEXT PUZZLE", 10, 10, 12)
+    end
+
+
+    -- ## BUILDING PUZZLE
+    if buildingPuzzle then
+        -- Affiche la grille
+        drawGrid()
+        
+        -- Affiche la mini-grille
+        drawMiniGrid()
+
+        -- Affiche les pixels à placer
+        for i, color in ipairs(MAP.COLOR) do
+            local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
+            rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
+            rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
+            --print("x".. MAP.COLOR.NB[i], 224, yPos + 1, 12)
+            --print("x".. GRID.COLOR.NB[i], 224, yPos + 1, 12)
+            --print("x".. (MAP.COLOR.NB[i] - GRID.COLOR.Q[i]), 224, yPos + 1, 12)
+            
+            print("x".. "?", 224, yPos + 1, 12)
+        end
+
+        -- Dessine le carré qui sera l'icone delete pixel de la grille
+        rect(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 8)
+        rectb(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 13)
+
+        -- Dessine la croix rouge dans l'icone delete
+        for i = -crossLarg, crossLarg do
+            line(crossPosX - crossSize + i, crossPosY - crossSize, crossPosX + crossSize + i, crossPosY + crossSize, 2)
+            line(crossPosX - crossSize + i, crossPosY + crossSize, crossPosX + crossSize + i, crossPosY - crossSize, 2)
+        end
+        
+        -- Positionne la flèche pour indiquer la couleur sélectionnée
+        arrowPosY = (MAP.POS_Y + 3) + (MAP.CELL_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
+        arrowPosX = 212  -- Position X de la flèche (fixe, juste à gauche des carrés de couleur)
+
+        -- Dessiner une flèche pointant vers le carré de couleur sélectionné
+        tri(arrowPosX, arrowPosY, arrowPosX - 4, arrowPosY - 4, arrowPosX - 4, arrowPosY + 4, 12)
+
+        -- Calculer le nombre de différences
+        pixCount = countDifferences(GRID, MAP)
+
+        -- Affiche les pixel restant
+        print(pixCount, 210, 93, 12)
+        -- Place le Slash entre le restant sur le total
+        line(210, 108, 235, 94, 12)
+        -- Affiche le total de pixel
+        print(pixTotal, 220, 105, 12)
+
+		-- Affiche le numéro et nom du puzzle
+        print("#".. indexMap, 15, 86, 12)
+        print(infoMAP[indexMap][6], 15, 96, 12)
+
+        -- Icone Mode Soluce
+        rect(16, 105, 25, 25, 8)
+        rectb(16, 105, 25, 25, 13)
+
+        -- Affiche les limites de l'écran 
+        -- rectb(1,1,239,135,13)
+
+        -- Carre cursor
+        -- Afficher un carré de la couleur sélectionnée qui suit la souris
+        if cellDelete then
+            for i = -crossLarg, crossLarg do
+                line(mX - crossSize + i, mY - crossSize, mX + crossSize + i, mY + crossSize, 2)
+                line(mX - crossSize + i, mY + crossSize, mX + crossSize + i, mY - crossSize, 2)
+            end
+        else
+            rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
+            rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
+        end
+
+        -- Si le bouton droite est pressé
+        if prev_rb and not rb and cellDelete == false then
+            indexColor = indexColor + 1
+            if indexColor > #MAP.COLOR then
+                indexColor = 1 -- Revenir au début si on dépasse la liste
+            end
+            selectedColor = MAP.COLOR[indexColor]
+        end
+
+        -- Mettre à jour l'état précédent du bouton droit
+        prev_rb = rb
+
+        -- Si le bouton gauche est pressé
+        if lb then 
+            -- Convertir les coordonnées de la souris en indices de la grille
+            local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
+            local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
+    
+            -- Vérifier si les indices sont dans les limites de la grille
+            if gridX >= 1 and gridX <= #GRID[1] and gridY >= 1 and gridY <= #GRID then
+                if cellDelete == false then
+                    GRID[gridY][gridX] = selectedColor -- Changer la valeur de la cellule pour dessiner dans la grille
+                else
+                    GRID[gridY][gridX] = 99 -- Changer la valeur de la cellule pour dessiner dans la grille
+                end
+            end
+    
+            -- Vérifier si le bouton gauche est pressé sur l'icône de suppression
+            if mX >= (squarePosX - squareSize) and mX <= (squarePosX + squareSize) and 
+                mY >= (squarePosY - squareSize) and mY <= (squarePosY + squareSize) then
+                cellDelete = true -- Basculer entre true et false
+            end
+
+            -- Vérifier si un carré de couleur est cliqué
+            if mX >= 215 and mX <= 215 + GRID.CELL_SIZE then
+                for i, color in ipairs(MAP.COLOR) do
+                    local yPos = MAP.POS_Y + (GRID.CELL_SIZE + 2) * (i - 1)  
+                    if mY >= yPos and mY <= yPos + GRID.CELL_SIZE then
+                        indexColor = i  -- Met à jour l'index de couleur
+                        selectedColor = MAP.COLOR[indexColor]  
+                        cellDelete = false -- Désactiver le mode suppression
+                    end
+                end
+            end
+        end
+
+    end
+
+    -- ## Condition de FIN    
+    -- Vérifier si MAP et GRID sont identiques avant d'appeler completePuzzle    
+    if watchEqual(MAP, GRID) and endPuzzle then
+        cls(0)
+
+        -- Dessiner la grille
+        for y = 1, #GRID do
+            for x = 1, #GRID[y] do
+                local color = GRID[y][x]
+                local posX = GRID.POS_X + (x - 1) * GRID.CELL_SIZE
+                local posY = GRID.POS_Y + (y - 1) * GRID.CELL_SIZE
+    
+                if color == 99 then
+                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 0) 
+                else
+                    rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
+                end
+    
+                -- Ajouter un point gris au centre de chaque cellule
+                -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
+            end
+        end
+
+        -- Positions des textes "Yes" et "No"
+        local yesX, yesY, colorY = 15, 76, 12
+        local noX, noY, colorN = 40, 76, 12
+
+        -- Dimensions des boutons "Yes" et "No"
+        local yesWidth, yesHeight = 21, 10
+        local noWidth, noHeight = 15, 10
+
+        -- page de remerciement 
+        if thxPage then
+            print("Thanks", 10, 58, 12)
+            print("for", 18, 67, 12)
+            print("playing", 10, 76, colorN)
+        else            
+            -- Afficher les messages
+            print("BRAVO !!!", 10, 58, 12)
+            print("One More", 10, 67, 12)
+
+            -- Afficher les textes "Yes" et "No" avec les couleurs mises à jour
+            print("Yes", yesX, yesY, colorY)
+            print("No", noX, noY, colorN)
+        end
+
+        -- Récupérer la position de la souris et l'état des clics
+        --mX, mY, lb, _, rb, _, _ = mouse()
+
+        -- Si la souris survole "Yes"
+        if mX >= yesX and mX <= yesX + yesWidth and mY >= yesY and mY <= yesY + yesHeight then
+            colorY = 5  -- Changer la couleur de "Yes"
+            print("Yes", yesX, yesY, colorY)
+            if lb then 
+                updatePhase(3)
+            end
+        end
+
+        -- Si la souris survole "No"
+        if mX >= noX and mX <= noX + noWidth and mY >= noY and mY <= noY + noHeight then
+            colorN = 4  -- Changer la couleur de "No"
+            print("No", noX, noY, colorN)
+            if lb then 
+                updatePhase(4)
+            end
+        end
+    end
+
+end
