@@ -32,7 +32,6 @@ function updatePhase(GameplayPhase)
         GRID = MAP
         endPuzzle = true            -- end Puzzle
     elseif GameplayPhase == 3 then   
-        --resetGrid(GRID)   
         selectPuzzle = true         -- select Puzzle
     elseif GameplayPhase == 4 then
         thxPage = true
@@ -541,6 +540,7 @@ function TIC()
             colorY = 5  -- Changer la couleur de "Yes"
             print("Yes", yesX, yesY, colorY)
             if lb then 
+                endPuzzle = false -- !! INDISPENSABLE POUR QUITTER LA BOUCLE ET CHANGER DE PHASE !!
                 updatePhase(3)
             end
         end
