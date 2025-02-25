@@ -38,7 +38,8 @@ v1.02.0 -> SUCCESS : Changer la taille de la grille selon le puzzle
 v1.03.0 -> SUCCESS : lancement aléatoire d'un puzzle
 v1.03.1 -> ACTUALLY : la progression du puzzle bug lors d'un changement de puzzle
 v1.03.2 -> HOTFIX : changement de phase + progression
-v1.03.3 -> HOTFIX : Condition de victoire jamais réparé !! VIGILENCE !!
+v1.03.3 -> FAIL : Condition de victoire jamais réparé !! A REVENIR !!
+v1.03.4 -> SUCCESS : IU selection de puzzle
 
 EN COURS : choisir un puzzle parmi une sélection
 
@@ -53,6 +54,10 @@ A FAIRE :
 - reprendre la documention du doc via gitbook
 - Affichez le niveau de difficulter du puzzle
 - limité les pixel 
+
+REFAIRE ABSOLUMENT : 
+- bug sur la condition de victoire, en cheat mode ça fonction mais pas jouant normalement
+    revoir watchEqual() et endPuzzle
 
 -- A TESTER : 
 
