@@ -312,39 +312,76 @@ end
 indexColor = 1
 selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
 
--- Selection puzzle / level
+-- Sélection puzzle / niveau
 function nextPuzzle()        
     local ajustText = 20
     local iconSize = 60
     local ajustIcon = 15
     
-    -- Info sur la mini grille
-    ALLPUZZLES = {}
-    ALLPUZZLES.CELL_SIZE = 3
-    ALLPUZZLES.POS_X = 2  -- Position à gauche
-    ALLPUZZLES.POS_Y = 20  -- Position en bas
-
+    -- Position et contenu des puzzles
     local tablePuzzle = {
         {
-            {10, 10, selectMAP[1]}, {75, 10, selectMAP[2]}, {140, 10, selectMAP[1]}, -- ligne 1 | puzzle 1 à 3
-            {10, 75, selectMAP[1]}, {75, 75, selectMAP[1]}, {140, 75, selectMAP[1]}  -- ligne 2 | puzzle 4 à 6
+            {10, 10, selectMAP[1]}, {75, 10, selectMAP[2]}, {140, 10, selectMAP[3]}, -- Ligne 1 | Puzzle 1 à 3
+            {10, 75, selectMAP[4]}, {75, 75, selectMAP[5]}, {140, 75, selectMAP[6]}  -- Ligne 2 | Puzzle 4 à 6
         },
         {
-            {10, 10, selectMAP[1]}, {75, 10, selectMAP[2]}, {140, 10, selectMAP[1]}, -- ligne 1 | puzzle 7 à 9
-            {10, 75, selectMAP[1]}, {75, 75, selectMAP[1]}, {140, 75, selectMAP[1]}  -- ligne 2 | puzzle 10 à 12
+            {10, 10, selectMAP[7]}, {75, 10, selectMAP[8]}, {140, 10, selectMAP[9]}, -- Ligne 1 | Puzzle 7 à 9
+            {10, 75, selectMAP[10]}, {75, 75, selectMAP[11]}, {140, 75, selectMAP[12]}  -- Ligne 2 | Puzzle 10 à 12
         },
     }
-    
+
+    -- Vérifie que pagePuzzle est valide
+    if pagePuzzle < 1 or pagePuzzle > #tablePuzzle then
+        print("Erreur: pagePuzzle hors limites!", 30, 10, 12)
+        return
+    end
+
+    -- Dessine les cadres des puzzles
     for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
         local x, y = pos[1] + ajustIcon, pos[2]
         rect(x, y, iconSize, iconSize, 8)  -- Remplissage
         rectb(x, y, iconSize, iconSize, 13) -- Bordure
+
+        -- Récupère la MAP du puzzle actuel
+        local puzzleMAP = pos[3]
+
+        -- Vérifie que la MAP du puzzle existe
+        if puzzleMAP then
+            local rows = #puzzleMAP
+            local cols = #puzzleMAP[1]
+
+            -- Calcul de la taille des cellules pour qu'elles rentrent dans iconSize
+            local maxPuzzleSize = math.max(rows, cols)
+            local cellSize = math.floor((iconSize - 8) / maxPuzzleSize) -- -8 pour garder une marge
+
+            -- Calcul du point de départ pour centrer la miniature dans le cadre
+            local startX = x + (iconSize - (cols * cellSize)) / 2
+            local startY = y + (iconSize - (rows * cellSize)) / 2
+
+            -- Dessine la miniature du puzzle DANS le cadre sans dépasser
+            for py = 1, rows do
+                for px = 1, cols do
+                    local color = puzzleMAP[py][px]
+                    local posX = startX + (px - 1) * cellSize
+                    local posY = startY + (py - 1) * cellSize
+
+                    if color ~= 99 then
+                        rect(posX, posY, cellSize, cellSize, color)
+                    else
+                        rect(posX, posY, cellSize, cellSize, 8) 
+                    end
+                end
+            end
+        end
     end
-    
+
+    -- Affichage des infos
     print("SELECT NEXT PUZZLE", 30 + ajustText, 1, 12)
     print(pagePuzzle, 140 + ajustText, 1, 12)
-    print(" / ??", 145 + ajustText, 1, 12)
+    print(" / " .. #tablePuzzle, 145 + ajustText, 1, 12)
 end
+
+
 
 function TIC()
     cls(0) -- Efface l'écran

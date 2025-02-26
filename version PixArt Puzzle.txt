@@ -41,6 +41,7 @@ v1.03.2 -> HOTFIX : changement de phase + progression
 v1.03.3 -> FAIL : Condition de victoire jamais réparé !! A REVENIR !!
 v1.03.4 -> SUCCESS : IU selection de puzzle
 v1.03.5 -> ACTUALLY : préparation à l'algo pour dessiner les puzzle dans la selection
+v1.03.6 -> SUCCESS : Afficher les puzzles dispobible dans la collection !! A REVENIR SUR LES PUZZLES DE GRAND TAILLE !!
 
 EN COURS : choisir un puzzle parmi une sélection
 
