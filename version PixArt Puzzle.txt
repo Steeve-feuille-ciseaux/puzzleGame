@@ -40,6 +40,7 @@ v1.03.1 -> ACTUALLY : la progression du puzzle bug lors d'un changement de puzzl
 v1.03.2 -> HOTFIX : changement de phase + progression
 v1.03.3 -> FAIL : Condition de victoire jamais réparé !! A REVENIR !!
 v1.03.4 -> SUCCESS : IU selection de puzzle
+v1.03.5 -> ACTUALLY : préparation à l'algo pour dessiner les puzzle dans la selection
 
 EN COURS : choisir un puzzle parmi une sélection
 

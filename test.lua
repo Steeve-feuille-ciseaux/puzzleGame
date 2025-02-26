@@ -32,7 +32,6 @@ function updatePhase(GameplayPhase)
         GRID = MAP
         endPuzzle = true            -- end Puzzle
     elseif GameplayPhase == 3 then   
-        --resetGrid(GRID)   
         selectPuzzle = true         -- select Puzzle
     elseif GameplayPhase == 4 then
         thxPage = true
@@ -235,7 +234,6 @@ local function count_values_in_grid(grid, values)
 end
 
 function resetGrid(g1)    
-    endPuzzle = false
     for i = 1, #g1 do
         for j = 1, #g1[i] do
             g1[i][j] = 99
@@ -319,7 +317,10 @@ function TIC()
 
     -- Affiche les coordonné X et Y de la souris
 	-- print(mX, 1,5,12)
-	-- print(mY, 1,15,12)    
+	-- print(mY, 1,15,12)       
+
+    -- Affiche les limites de l'écran 
+    -- rectb(1,1,239,135,13) 
 
     -- Changer de carte avec les touches fléchées
     if btnp(2) then  -- Flèche gauche
@@ -365,7 +366,46 @@ function TIC()
     -- ## SELECTION PUZZLE        
     if selectPuzzle then
         cls(0)
-        print("SELECT NEXT PUZZLE", 10, 10, 12)
+        
+        local pagePuzzle = 1
+        local ajustText = 20
+        print("SELECT NEXT PUZZLE", 30 + ajustText, 1, 12)
+        print(pagePuzzle, 140 + ajustText, 1, 12)
+        print(" / ??", 145 + ajustText, 1, 12)
+
+        local iconSize = 60
+        local ajustIcon = 15
+        -- 1er colonne
+        rect(10 + ajustIcon, 10, iconSize, iconSize, 8) -- puzzle 1/6
+        rectb(10 + ajustIcon, 10, iconSize, iconSize, 13)
+        rect(75 + ajustIcon, 10, iconSize, iconSize, 8) -- puzzle 2/6
+        rectb(75 + ajustIcon, 10, iconSize, iconSize, 13)
+        rect(140 + ajustIcon, 10, iconSize, iconSize, 8) -- puzzle 3/6
+        rectb(140 + ajustIcon, 10, iconSize, iconSize, 13)
+        -- 2ième colonne
+        rect(10 + ajustIcon, 75, iconSize, iconSize, 8) -- puzzle 4/6
+        rectb(10 + ajustIcon, 75, iconSize, iconSize, 13)
+        rect(75 + ajustIcon, 75, iconSize, iconSize, 8) -- puzzle 5/6
+        rectb(75 + ajustIcon, 75, iconSize, iconSize, 13)
+        rect(140 + ajustIcon, 75, iconSize, iconSize, 8) -- puzzle 6/6
+        rectb(140 + ajustIcon, 75, iconSize, iconSize, 13)
+
+        -- next Page
+        -- Coordonnées de la flèche
+        local rightX, rightY = 225, 72
+        local size = 7  -- Taille de la flèche
+
+        -- Corps de la flèche (rectangle fait de deux triangles)
+        tri(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, 12) -- Triangle arrière
+        trib(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, 14) -- Triangle arrière
+        -- Tête de la flèche
+        --tri(x + size, y - size, x + size, y + size, x + 2 * size, y, 6) -- Triangle avant
+
+        -- before Page
+        local leftX, leftY = 15, 72
+        -- Corps de la flèche (rectangle fait de deux triangles)
+        tri(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, 12)  
+        trib(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, 14) 
     end
 
 
@@ -423,9 +463,6 @@ function TIC()
         -- Icone Mode Soluce
         rect(16, 105, 25, 25, 8)
         rectb(16, 105, 25, 25, 13)
-
-        -- Affiche les limites de l'écran 
-        -- rectb(1,1,239,135,13)
 
         -- Carre cursor
         -- Afficher un carré de la couleur sélectionnée qui suit la souris
@@ -487,7 +524,7 @@ function TIC()
 
     end
 
-    -- ## Condition de FIN    
+    -- ## Condition de VICTOIRE    
     -- Vérifier si MAP et GRID sont identiques avant d'appeler completePuzzle    
     if watchEqual(MAP, GRID) and endPuzzle then
         cls(0)
@@ -541,6 +578,7 @@ function TIC()
             colorY = 5  -- Changer la couleur de "Yes"
             print("Yes", yesX, yesY, colorY)
             if lb then 
+                endPuzzle = false -- !! INDISPENSABLE POUR QUITTER LA BOUCLE ET CHANGER DE PHASE !!
                 updatePhase(3)
             end
         end

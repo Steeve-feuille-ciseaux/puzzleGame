@@ -13,6 +13,7 @@ buildingPuzzle = true
 endPuzzle = false
 thxPage = false
 GameplayPhase = 0
+pagePuzzle = 1
 
 -- DECOUPAGE DU JEU
 function updatePhase(GameplayPhase)
@@ -123,8 +124,9 @@ rdmSelectPuzzle(1, 2)
 
 -- Paramètre de l'ensemble des puzzles
 infoMAP = {
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18}, -- ETOILE | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | NOM | LARGEUR | HAUTEUR
-	{ 6, 75, 3, {00,13,04,2}, {64,11,21,20,27,22,12,5,3}, "CAT", 19, 21}, -- CAT1 | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | NOM | LARGEUR | HAUTEUR
+    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18}, 
+	{ 6, 75, 3, {00,13,04,2}, {64,11,21,20,27,22,12,5,3}, "CAT", 19, 21},
 }
 
 -- Dessin à réaliser 
@@ -310,6 +312,40 @@ end
 indexColor = 1
 selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
 
+-- Selection puzzle / level
+function nextPuzzle()        
+    local ajustText = 20
+    local iconSize = 60
+    local ajustIcon = 15
+    
+    -- Info sur la mini grille
+    ALLPUZZLES = {}
+    ALLPUZZLES.CELL_SIZE = 3
+    ALLPUZZLES.POS_X = 2  -- Position à gauche
+    ALLPUZZLES.POS_Y = 20  -- Position en bas
+
+    local tablePuzzle = {
+        {
+            {10, 10, selectMAP[1]}, {75, 10, selectMAP[2]}, {140, 10, selectMAP[1]}, -- ligne 1 | puzzle 1 à 3
+            {10, 75, selectMAP[1]}, {75, 75, selectMAP[1]}, {140, 75, selectMAP[1]}  -- ligne 2 | puzzle 4 à 6
+        },
+        {
+            {10, 10, selectMAP[1]}, {75, 10, selectMAP[2]}, {140, 10, selectMAP[1]}, -- ligne 1 | puzzle 7 à 9
+            {10, 75, selectMAP[1]}, {75, 75, selectMAP[1]}, {140, 75, selectMAP[1]}  -- ligne 2 | puzzle 10 à 12
+        },
+    }
+    
+    for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
+        local x, y = pos[1] + ajustIcon, pos[2]
+        rect(x, y, iconSize, iconSize, 8)  -- Remplissage
+        rectb(x, y, iconSize, iconSize, 13) -- Bordure
+    end
+    
+    print("SELECT NEXT PUZZLE", 30 + ajustText, 1, 12)
+    print(pagePuzzle, 140 + ajustText, 1, 12)
+    print(" / ??", 145 + ajustText, 1, 12)
+end
+
 function TIC()
     cls(0) -- Efface l'écran
     -- Récupère la position et état du clic
@@ -366,40 +402,19 @@ function TIC()
     -- ## SELECTION PUZZLE        
     if selectPuzzle then
         cls(0)
-        
-        local pagePuzzle = 1
-        local ajustText = 20
-        print("SELECT NEXT PUZZLE", 30 + ajustText, 1, 12)
-        print(pagePuzzle, 140 + ajustText, 1, 12)
-        print(" / ??", 145 + ajustText, 1, 12)
 
-        local iconSize = 60
-        local ajustIcon = 15
-        -- 1er colonne
-        rect(10 + ajustIcon, 10, iconSize, iconSize, 8) -- puzzle 1/6
-        rectb(10 + ajustIcon, 10, iconSize, iconSize, 13)
-        rect(75 + ajustIcon, 10, iconSize, iconSize, 8) -- puzzle 2/6
-        rectb(75 + ajustIcon, 10, iconSize, iconSize, 13)
-        rect(140 + ajustIcon, 10, iconSize, iconSize, 8) -- puzzle 3/6
-        rectb(140 + ajustIcon, 10, iconSize, iconSize, 13)
-        -- 2ième colonne
-        rect(10 + ajustIcon, 75, iconSize, iconSize, 8) -- puzzle 4/6
-        rectb(10 + ajustIcon, 75, iconSize, iconSize, 13)
-        rect(75 + ajustIcon, 75, iconSize, iconSize, 8) -- puzzle 5/6
-        rectb(75 + ajustIcon, 75, iconSize, iconSize, 13)
-        rect(140 + ajustIcon, 75, iconSize, iconSize, 8) -- puzzle 6/6
-        rectb(140 + ajustIcon, 75, iconSize, iconSize, 13)
+        -- Affiche la collection de puzzle débloqué
+        nextPuzzle()
+
+        -- Taille de la flèche pour changer de page
+        local size = 7  
 
         -- next Page
-        -- Coordonnées de la flèche
         local rightX, rightY = 225, 72
-        local size = 7  -- Taille de la flèche
 
         -- Corps de la flèche (rectangle fait de deux triangles)
         tri(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, 12) -- Triangle arrière
         trib(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, 14) -- Triangle arrière
-        -- Tête de la flèche
-        --tri(x + size, y - size, x + size, y + size, x + 2 * size, y, 6) -- Triangle avant
 
         -- before Page
         local leftX, leftY = 15, 72
