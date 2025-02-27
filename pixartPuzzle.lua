@@ -47,16 +47,17 @@ cellDelete = false
 
 -- soluce Puzzle
 solucePuzzle = false
+ajuste2 = 20
 
 -- ICONE DELETE 
 -- Position du carré icone en bas à droite
-squarePosX = 222
-squarePosY = 120
+squarePosX = 222 
+squarePosY = 120 - ajuste2
 -- Taille du carré 
 squareSize = 7  
 -- Position de la croix en bas à gauche
 crossPosX = 222
-crossPosY = 120
+crossPosY = 120 - ajuste2
 crossSize = 3  -- Taille de la croix
 crossLarg = 0.5 -- Largeur des lignes
 
@@ -155,7 +156,7 @@ infoMAP = {
     -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE 
 	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3}, 
 	{ 6, 75, 3, {00,13,04,02}, {64,11,21,20,27,22,12,5,3}, "CAT1", 19, 21, 3},
-	{ 5, 75, 3, {00,02,03,04}, {64,11,21,20,27,22,12,5,3}, "CAT2", 24, 26, 2},
+	{ 5, 80, 3, {00,02,03,04}, {64,11,21,20,27,22,12,5,3}, "CAT2", 24, 26, 3},
 }
 
 -- Dessin à réaliser 
@@ -314,12 +315,11 @@ end
 -- Nombre maximum de piece
 pixTotal = countDifferences(GRID, MAP)
 
-
 -- Info sur la mini grille
 MINI = {}
 MINI.CELL_SIZE = MAP.MINI
 MINI.POS_X = 2  -- Position à gauche
-MINI.POS_Y = 20  -- Position en bas
+MINI.POS_Y = 13  -- Position en bas
 
 function drawMiniGrid()
     for y = 1, #MAP do
@@ -414,8 +414,6 @@ function nextPuzzle()
     print(pagePuzzle, 140 + ajustText, 1, 12)
     print(" / " .. #tablePuzzle, 145 + ajustText, 1, 12)
 end
-
-
 
 function TIC()
     cls(0) -- Efface l'écran
@@ -536,15 +534,15 @@ function TIC()
         pixCount = countDifferences(GRID, MAP)
 
         -- Affiche les pixel restant
-        print(pixCount, 210, 93, 12)
+        print(pixCount, 210, 113, 12)
         -- Place le Slash entre le restant sur le total
-        line(210, 108, 235, 94, 12)
+        line(210, 128, 235, 115, 12)
         -- Affiche le total de pixel
-        print(pixTotal, 220, 105, 12)
+        print(pixTotal, 220, 125, 12)
 
 		-- Affiche le numéro et nom du puzzle
-        print("#".. indexMap, 15, 86, 12)
-        print(infoMAP[indexMap][6], 15, 96, 12)
+        print("#".. indexMap, 2, 3, 12)
+        print(infoMAP[indexMap][6], 25, 3, 12)
 
         -- Icone Mode Soluce
         rect(16, 105, 25, 25, 8)
