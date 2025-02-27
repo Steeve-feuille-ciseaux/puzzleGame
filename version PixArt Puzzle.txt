@@ -45,8 +45,10 @@ v1.03.6 -> SUCCESS : Afficher les puzzles dispobible dans la collection !! A REV
 v1.03.7 -> UPGRADE : Nouvelle puzzle ajouter, modification des paramètres du mini-puzzle, taille du mini-puzzle ajouté dans le tableau selecMap
 v1.03.8 -> UPGRADE : IU Building, déplacement du nom et numéro de puzzle, la progression du puzzle ainsi que l'icone delete
 v1.03.9 -> SUCCESS : Bordure rouge lorsque la souris survole un élement pour choisir un puzzle + changer de page
+v1.03.10 -> HOTFIX : Bordure rouge lorsque la souris survole un élement pour choisir un puzzle + changer de page
+v1.04.0 -> SUCCESS : Choisir un puzzle parmi une sélection
 
-EN COURS : choisir un puzzle parmi une sélection
+EN COURS : 
 
 A FAIRE : 
 - Mode Soluce pour indiquer les pixel mal placé

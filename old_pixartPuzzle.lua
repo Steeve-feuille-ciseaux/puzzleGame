@@ -15,6 +15,7 @@ thxPage = false
 GameplayPhase = 0
 pagePuzzle = 1
 pageMax = 2
+indexMap = 0
 
 -- DECOUPAGE DU JEU
 function updatePhase(GameplayPhase)
@@ -27,7 +28,6 @@ function updatePhase(GameplayPhase)
     -- Activer la bonne variable en fonction de GameplayPhase
     if GameplayPhase == 1 then
         cls(0)
-        indexMap = 2
         initPuzzle()
         buildingPuzzle = true       -- building Puzzle
     elseif GameplayPhase == 2 then
@@ -359,15 +359,18 @@ function nextPuzzle()
     -- Récupère la position et état du clic
     local mX, mY, lb = mouse()
 
+    -- Initialiser prev_lb au début pour qu'il garde son état entre les cadres
+    if prev_lb == nil then prev_lb = false end  
+
     -- Position et contenu des puzzles
     local tablePuzzle = {
         {
-            {10, 10, selectMAP[1]}, {75, 10, selectMAP[2]}, {140, 10, selectMAP[3]}, -- Ligne 1 | Puzzle 1 à 3
-            {10, 75, selectMAP[4]}, {75, 75, selectMAP[5]}, {140, 75, selectMAP[6]}  -- Ligne 2 | Puzzle 4 à 6
+            {10, 10, selectMAP[1],1}, {75, 10, selectMAP[2],2}, {140, 10, selectMAP[3],3},
+            {10, 75, selectMAP[4],4}, {75, 75, selectMAP[5],5}, {140, 75, selectMAP[6],6}  
         },
         {
-            {10, 10, selectMAP[7]}, {75, 10, selectMAP[8]}, {140, 10, selectMAP[9]}, -- Ligne 1 | Puzzle 7 à 9
-            {10, 75, selectMAP[10]}, {75, 75, selectMAP[11]}, {140, 75, selectMAP[12]}  -- Ligne 2 | Puzzle 10 à 12
+            {10, 10, selectMAP[3],3}, {75, 10, selectMAP[8]}, {140, 10, selectMAP[2],2},
+            {10, 75, selectMAP[10]}, {75, 75, selectMAP[1],1}, {140, 75, selectMAP[12]}  
         },
     }
 
@@ -383,10 +386,17 @@ function nextPuzzle()
 
         -- Vérifie si la souris est sur le cadre
         local hover = mX >= x and mX <= x + iconSize and mY >= y and mY <= y + iconSize
-        local fillColor = hover and 3 or 13  -- Vert (11) si hover, sinon couleur normale (8)
+        local fillColor = hover and 3 or 13  
 
-        rect(x, y, iconSize, iconSize, 8)  -- Remplissage
-        rectb(x, y, iconSize, iconSize, fillColor) -- Bordure
+        rect(x, y, iconSize, iconSize, 8)  
+        rectb(x, y, iconSize, iconSize, fillColor)
+
+        -- Choisir le puzzle
+        if prev_lb and not lb and hover then
+           -- print(pos[4], 1, 1, 12)  -- Affiche le nom du cadre cliqué
+           indexMap = pos[4]
+            updatePhase(1)
+        end
 
         -- Récupère la MAP du puzzle actuel
         local puzzleMAP = pos[3]
@@ -396,15 +406,15 @@ function nextPuzzle()
             local rows = #puzzleMAP
             local cols = #puzzleMAP[1]
 
-            -- Calcul de la taille des cellules pour qu'elles rentrent dans iconSize
+            -- Calcul de la taille des cellules
             local maxPuzzleSize = math.max(rows, cols)
-            local cellSize = math.floor((iconSize - 8) / maxPuzzleSize) -- -8 pour garder une marge
+            local cellSize = math.floor((iconSize - 8) / maxPuzzleSize)
 
-            -- Calcul du point de départ pour centrer la miniature dans le cadre
+            -- Calcul du point de départ pour centrer
             local startX = x + (iconSize - (cols * cellSize)) / 2
             local startY = y + (iconSize - (rows * cellSize)) / 2
 
-            -- Dessine la miniature du puzzle DANS le cadre sans dépasser
+            -- Dessine la miniature du puzzle
             for py = 1, rows do
                 for px = 1, cols do
                     local color = puzzleMAP[py][px]
