@@ -14,6 +14,7 @@ endPuzzle = false
 thxPage = false
 GameplayPhase = 0
 pagePuzzle = 1
+pageMax = 2
 
 -- DECOUPAGE DU JEU
 function updatePhase(GameplayPhase)
@@ -41,6 +42,9 @@ end
 
 -- bouton droit relaché
 prev_rb = false
+
+-- bouton droit relaché
+prev_lb = false
 
 -- Delete variable
 cellDelete = false
@@ -351,7 +355,10 @@ function nextPuzzle()
     local ajustText = 20
     local iconSize = 60
     local ajustIcon = 15
-    
+
+    -- Récupère la position et état du clic
+    local mX, mY, lb = mouse()
+
     -- Position et contenu des puzzles
     local tablePuzzle = {
         {
@@ -366,15 +373,20 @@ function nextPuzzle()
 
     -- Vérifie que pagePuzzle est valide
     if pagePuzzle < 1 or pagePuzzle > #tablePuzzle then
-        print("Erreur: pagePuzzle hors limites!", 30, 10, 12)
+        print("Erreur: pagePuzzle hors limites!" .. pagePuzzle, 30, 10, 12)
         return
     end
 
     -- Dessine les cadres des puzzles
     for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
         local x, y = pos[1] + ajustIcon, pos[2]
+
+        -- Vérifie si la souris est sur le cadre
+        local hover = mX >= x and mX <= x + iconSize and mY >= y and mY <= y + iconSize
+        local fillColor = hover and 3 or 13  -- Vert (11) si hover, sinon couleur normale (8)
+
         rect(x, y, iconSize, iconSize, 8)  -- Remplissage
-        rectb(x, y, iconSize, iconSize, 13) -- Bordure
+        rectb(x, y, iconSize, iconSize, fillColor) -- Bordure
 
         -- Récupère la MAP du puzzle actuel
         local puzzleMAP = pos[3]
@@ -481,15 +493,50 @@ function TIC()
         -- next Page
         local rightX, rightY = 225, 72
 
+        -- Vérifie si la souris est sur le triangle droit
+        local hoverRight = mX >= rightX and mX <= rightX + size and mY >= rightY - size and mY <= rightY + size
+        local rightColor = hoverRight and 3 or 12  -- Rouge si survolé, sinon couleur normale
+        local rightBorderColor = 14  -- Rouge foncé pour la bordure
+
         -- Corps de la flèche (rectangle fait de deux triangles)
-        tri(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, 12) -- Triangle arrière
-        trib(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, 14) -- Triangle arrière
+        if pagePuzzle <= pageMax - 1 then
+            tri(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, rightColor) -- Triangle arrière
+            trib(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, rightBorderColor) -- Bordure
+        end
+
+        -- Aller à la page suivante 
+        if prev_lb and not lb and hoverRight then
+            pagePuzzle = pagePuzzle + 1
+            if pagePuzzle == pageMax + 1 then
+                pagePuzzle = pageMax 
+            end 
+        end
 
         -- before Page
         local leftX, leftY = 15, 72
+
+        -- Vérifie si la souris est sur le triangle gauche
+        local hoverLeft = mX >= leftX - size and mX <= leftX and mY >= leftY - size and mY <= leftY + size
+        local leftColor = hoverLeft and 3 or 12  -- Rouge si survolé, sinon couleur normale
+        local leftBorderColor = 14  -- Rouge foncé pour la bordure
+
         -- Corps de la flèche (rectangle fait de deux triangles)
-        tri(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, 12)  
-        trib(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, 14) 
+        if pagePuzzle >= 2 then
+            tri(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, leftColor)  
+            trib(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, leftBorderColor) 
+        end
+
+        -- Aller à la page précedente 
+        if prev_lb and not lb and hoverLeft and pagePuzzle >= 0 then
+            pagePuzzle = pagePuzzle - 1
+            if pagePuzzle == 0 then
+                pagePuzzle = 1
+            end 
+        end        
+
+        -- Mettre à jour l'état précédent du bouton droit
+        prev_lb = lb
+
     end
 
 
