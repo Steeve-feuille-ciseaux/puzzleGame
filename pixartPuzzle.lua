@@ -13,6 +13,7 @@ buildingPuzzle = true
 endPuzzle = false
 thxPage = false
 GameplayPhase = 0
+pagePuzzle = 1
 
 -- DECOUPAGE DU JEU
 function updatePhase(GameplayPhase)
@@ -108,7 +109,35 @@ selectMAP = {
 		{99,99,99,00,00,13,13,13,13,13,13,13,13,13,13,13,00,99,99},
 		{99,99,99,99,00,00,13,13,13,00,13,13,00,13,13,00,99,99,99},
 		{99,99,99,99,99,99,00,00,00,00,00,00,99,00,00,99,99,99,99}, 
-	}
+	},
+    {
+        {99,99,99,99,00,00,00,99,99,99,99,99,99,99,99,99,99,99,99,99,00,00,00,99},
+        {99,99,99,00,02,02,02,00,00,99,99,99,99,99,99,99,99,99,00,00,02,02,02,00},
+        {99,99,99,00,02,03,03,02,02,00,00,00,00,00,00,00,00,00,02,02,03,03,02,00},
+        {99,99,99,00,02,03,03,00,00,02,03,02,03,02,03,02,03,02,00,00,03,03,02,00},
+        {99,99,99,00,02,03,00,03,03,02,03,02,03,02,03,02,03,02,03,03,00,03,02,00},
+        {99,99,99,00,02,00,03,03,03,03,03,02,03,02,03,02,03,03,03,03,03,00,02,00},
+        {99,99,99,99,00,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,00,99},
+        {99,99,99,99,00,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,00,99},
+        {99,99,99,99,00,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,00,99},
+        {99,99,99,00,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,00},
+        {99,99,99,00,02,02,03,00,00,00,03,03,03,03,03,03,03,00,00,00,03,02,02,00},
+        {99,99,99,00,03,03,03,03,03,03,03,00,03,00,03,00,03,03,03,03,03,03,03,00},
+        {99,99,99,00,02,02,03,03,04,04,04,04,00,04,00,04,04,04,04,03,03,02,02,00},
+        {99,99,99,00,03,03,04,04,04,04,04,04,04,04,04,04,04,04,04,04,04,03,03,00},
+        {99,99,99,99,00,04,04,04,04,04,04,04,04,04,04,04,04,04,04,04,04,04,00,99},
+        {99,99,99,99,00,04,04,04,04,04,04,04,04,04,04,04,04,04,04,04,04,04,00,99},
+        {99,99,99,99,99,00,00,04,04,04,04,04,04,04,04,04,04,04,04,04,00,00,99,99},
+        {99,99,99,99,00,03,03,00,00,04,04,04,04,04,04,04,04,04,00,00,03,03,00,99},
+        {99,00,00,99,00,02,03,03,03,04,04,04,00,00,00,04,04,04,03,03,03,02,00,99},
+        {00,02,02,00,03,03,03,03,03,04,04,04,04,04,04,04,04,04,03,03,03,03,03,00},
+        {00,02,03,00,02,02,02,03,03,04,04,04,04,04,04,04,04,04,03,03,02,02,02,00},
+        {99,00,03,00,03,03,03,03,03,03,04,04,04,04,04,04,04,03,03,03,03,03,03,00},
+        {99,99,00,00,02,02,02,03,03,03,04,04,04,04,04,04,04,03,03,03,02,02,02,00},
+        {99,99,99,00,00,03,03,03,03,03,04,04,04,04,04,04,04,03,03,03,03,03,00,99},
+        {99,99,99,99,99,00,00,02,03,03,00,04,00,04,00,04,00,03,03,02,00,00,99,99},
+        {99,99,99,99,99,99,99,00,00,00,00,00,00,00,00,00,00,00,00,00,99,99,99,99},
+    }
 }
 
 -- Variable très important pour choisir un puzzle parmi la collection 
@@ -119,12 +148,14 @@ function rdmSelectPuzzle(minR, maxR)
     indexMap = math.random(minR, maxR)
 end
 -- Execution aléatoire d'un puzzle
-rdmSelectPuzzle(1, 2)
+rdmSelectPuzzle(1, 3)
 
 -- Paramètre de l'ensemble des puzzles
 infoMAP = {
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18}, -- ETOILE | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | NOM | LARGEUR | HAUTEUR
-	{ 6, 75, 3, {00,13,04,2}, {64,11,21,20,27,22,12,5,3}, "CAT", 19, 21}, -- CAT1 | SIZE | POS_X | POS_Y | {COLOR} | {COLOR.NB} | NOM | LARGEUR | HAUTEUR
+    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE 
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3}, 
+	{ 6, 75, 3, {00,13,04,02}, {64,11,21,20,27,22,12,5,3}, "CAT1", 19, 21, 3},
+	{ 5, 75, 3, {00,02,03,04}, {64,11,21,20,27,22,12,5,3}, "CAT2", 24, 26, 2},
 }
 
 -- Dessin à réaliser 
@@ -139,6 +170,7 @@ MAP.COLOR.NB = infoMAP[indexMap][5]
 MAP.NAME = infoMAP[indexMap][6]
 MAP.LARG = infoMAP[indexMap][7]
 MAP.HAUT = infoMAP[indexMap][8]
+MAP.MINI = infoMAP[indexMap][9]
 
 -- Initialiser la puzzle 
 function initPuzzle()
@@ -234,7 +266,6 @@ local function count_values_in_grid(grid, values)
 end
 
 function resetGrid(g1)    
-    endPuzzle = false
     for i = 1, #g1 do
         for j = 1, #g1[i] do
             g1[i][j] = 99
@@ -286,7 +317,7 @@ pixTotal = countDifferences(GRID, MAP)
 
 -- Info sur la mini grille
 MINI = {}
-MINI.CELL_SIZE = 3
+MINI.CELL_SIZE = MAP.MINI
 MINI.POS_X = 2  -- Position à gauche
 MINI.POS_Y = 20  -- Position en bas
 
@@ -296,12 +327,16 @@ function drawMiniGrid()
             local color = MAP[y][x]
             local posX = MINI.POS_X + (x - 1) * MINI.CELL_SIZE
             local posY = MINI.POS_Y + (y - 1) * MINI.CELL_SIZE
+                
+            -- Position du pixel au centre 
+            local centerX = posX + MINI.CELL_SIZE // 2
+            local centerY = posY + MINI.CELL_SIZE // 2
 
             if color ~= 99 then
                 rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)
             else
-                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 13) 
-                rectb(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8)
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8) 
+                pix(centerX, centerY, 13)
             end
         end
     end
@@ -311,6 +346,77 @@ end
 indexColor = 1
 selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
 
+-- Sélection puzzle / niveau
+function nextPuzzle()        
+    local ajustText = 20
+    local iconSize = 60
+    local ajustIcon = 15
+    
+    -- Position et contenu des puzzles
+    local tablePuzzle = {
+        {
+            {10, 10, selectMAP[1]}, {75, 10, selectMAP[2]}, {140, 10, selectMAP[3]}, -- Ligne 1 | Puzzle 1 à 3
+            {10, 75, selectMAP[4]}, {75, 75, selectMAP[5]}, {140, 75, selectMAP[6]}  -- Ligne 2 | Puzzle 4 à 6
+        },
+        {
+            {10, 10, selectMAP[7]}, {75, 10, selectMAP[8]}, {140, 10, selectMAP[9]}, -- Ligne 1 | Puzzle 7 à 9
+            {10, 75, selectMAP[10]}, {75, 75, selectMAP[11]}, {140, 75, selectMAP[12]}  -- Ligne 2 | Puzzle 10 à 12
+        },
+    }
+
+    -- Vérifie que pagePuzzle est valide
+    if pagePuzzle < 1 or pagePuzzle > #tablePuzzle then
+        print("Erreur: pagePuzzle hors limites!", 30, 10, 12)
+        return
+    end
+
+    -- Dessine les cadres des puzzles
+    for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
+        local x, y = pos[1] + ajustIcon, pos[2]
+        rect(x, y, iconSize, iconSize, 8)  -- Remplissage
+        rectb(x, y, iconSize, iconSize, 13) -- Bordure
+
+        -- Récupère la MAP du puzzle actuel
+        local puzzleMAP = pos[3]
+
+        -- Vérifie que la MAP du puzzle existe
+        if puzzleMAP then
+            local rows = #puzzleMAP
+            local cols = #puzzleMAP[1]
+
+            -- Calcul de la taille des cellules pour qu'elles rentrent dans iconSize
+            local maxPuzzleSize = math.max(rows, cols)
+            local cellSize = math.floor((iconSize - 8) / maxPuzzleSize) -- -8 pour garder une marge
+
+            -- Calcul du point de départ pour centrer la miniature dans le cadre
+            local startX = x + (iconSize - (cols * cellSize)) / 2
+            local startY = y + (iconSize - (rows * cellSize)) / 2
+
+            -- Dessine la miniature du puzzle DANS le cadre sans dépasser
+            for py = 1, rows do
+                for px = 1, cols do
+                    local color = puzzleMAP[py][px]
+                    local posX = startX + (px - 1) * cellSize
+                    local posY = startY + (py - 1) * cellSize
+
+                    if color ~= 99 then
+                        rect(posX, posY, cellSize, cellSize, color)
+                    else
+                        rect(posX, posY, cellSize, cellSize, 8) 
+                    end
+                end
+            end
+        end
+    end
+
+    -- Affichage des infos
+    print("SELECT NEXT PUZZLE", 30 + ajustText, 1, 12)
+    print(pagePuzzle, 140 + ajustText, 1, 12)
+    print(" / " .. #tablePuzzle, 145 + ajustText, 1, 12)
+end
+
+
+
 function TIC()
     cls(0) -- Efface l'écran
     -- Récupère la position et état du clic
@@ -318,7 +424,10 @@ function TIC()
 
     -- Affiche les coordonné X et Y de la souris
 	-- print(mX, 1,5,12)
-	-- print(mY, 1,15,12)    
+	-- print(mY, 1,15,12)       
+
+    -- Affiche les limites de l'écran 
+    -- rectb(1,1,239,135,13) 
 
     -- Changer de carte avec les touches fléchées
     if btnp(2) then  -- Flèche gauche
@@ -364,7 +473,25 @@ function TIC()
     -- ## SELECTION PUZZLE        
     if selectPuzzle then
         cls(0)
-        print("SELECT NEXT PUZZLE", 10, 10, 12)
+
+        -- Affiche la collection de puzzle débloqué
+        nextPuzzle()
+
+        -- Taille de la flèche pour changer de page
+        local size = 7  
+
+        -- next Page
+        local rightX, rightY = 225, 72
+
+        -- Corps de la flèche (rectangle fait de deux triangles)
+        tri(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, 12) -- Triangle arrière
+        trib(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, 14) -- Triangle arrière
+
+        -- before Page
+        local leftX, leftY = 15, 72
+        -- Corps de la flèche (rectangle fait de deux triangles)
+        tri(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, 12)  
+        trib(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, 14) 
     end
 
 
@@ -422,9 +549,6 @@ function TIC()
         -- Icone Mode Soluce
         rect(16, 105, 25, 25, 8)
         rectb(16, 105, 25, 25, 13)
-
-        -- Affiche les limites de l'écran 
-        -- rectb(1,1,239,135,13)
 
         -- Carre cursor
         -- Afficher un carré de la couleur sélectionnée qui suit la souris
@@ -486,7 +610,7 @@ function TIC()
 
     end
 
-    -- ## Condition de FIN    
+    -- ## Condition de VICTOIRE    
     -- Vérifier si MAP et GRID sont identiques avant d'appeler completePuzzle    
     if watchEqual(MAP, GRID) and endPuzzle then
         cls(0)
