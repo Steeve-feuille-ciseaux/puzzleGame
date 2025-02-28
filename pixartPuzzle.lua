@@ -447,6 +447,7 @@ function nextPuzzle()
     if prev_lb == nil then prev_lb = false end  
 
     -- Position et contenu des puzzles
+    -- X, Y, Choix du puzzle, Choix de la case
     local tablePuzzle = {
         {
             {10, 10, selectMAP[1],1}, {75, 10, selectMAP[2],2}, {140, 10, selectMAP[3],3},
