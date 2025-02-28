@@ -15,6 +15,7 @@ thxPage = false
 GameplayPhase = 0
 pagePuzzle = 1
 pageMax = 2
+indexMap = 0
 
 -- DECOUPAGE DU JEU
 function updatePhase(GameplayPhase)
@@ -27,7 +28,6 @@ function updatePhase(GameplayPhase)
     -- Activer la bonne variable en fonction de GameplayPhase
     if GameplayPhase == 1 then
         cls(0)
-        indexMap = 2
         initPuzzle()
         buildingPuzzle = true       -- building Puzzle
     elseif GameplayPhase == 2 then
@@ -142,25 +142,57 @@ selectMAP = {
         {99,99,99,00,00,03,03,03,03,03,04,04,04,04,04,04,04,03,03,03,03,03,00,99},
         {99,99,99,99,99,00,00,02,03,03,00,04,00,04,00,04,00,03,03,02,00,00,99,99},
         {99,99,99,99,99,99,99,00,00,00,00,00,00,00,00,00,00,00,00,00,99,99,99,99},
-    }
+    },
+    {
+        {99,99,99,99,99,99,00,00,00,00,00,00,99,99,99,99,99,00,00,00,00,00,00,99,99,99,99,99,99},
+        {99,99,99,99,99,00,00,10,06,04,03,00,00,99,99,99,00,00,03,04,06,10,00,00,99,99,99,99,99},
+        {99,99,99,99,99,00,10,06,04,03,02,01,00,00,99,00,00,01,02,03,04,06,10,00,99,99,99,99,99},
+        {99,99,99,99,99,00,06,04,00,00,00,09,10,00,99,00,10,09,00,00,00,04,06,00,99,99,99,99,99},
+        {99,99,99,99,99,00,04,03,00,99,00,10,06,00,99,00,06,10,00,99,00,03,04,00,99,99,99,99,99},
+        {99,00,00,00,00,00,00,00,00,00,00,06,04,00,00,00,00,00,00,00,00,02,03,00,00,00,00,00,99},
+        {00,00,10,06,04,03,02,01,09,10,00,04,03,00,09,02,03,04,06,10,00,01,02,00,04,06,10,00,00},
+        {00,10,06,04,03,02,01,09,10,06,00,03,02,00,10,01,02,03,04,06,00,09,01,00,03,04,06,10,00},
+        {00,06,04,00,00,00,00,00,00,00,00,02,01,00,00,00,00,00,00,00,00,10,09,00,00,00,04,06,00},
+        {00,04,03,00,99,00,10,06,00,99,00,01,09,00,99,00,09,01,00,99,00,06,10,00,99,00,03,04,00},
+        {00,03,02,00,00,00,06,04,00,00,00,09,10,00,99,00,10,09,00,00,00,00,00,00,00,00,02,03,00},
+        {00,00,01,09,10,00,04,03,00,01,09,10,06,00,99,00,06,10,09,01,02,03,04,06,10,09,01,00,00},
+        {99,00,00,10,06,00,03,02,00,09,10,06,04,00,99,00,04,06,10,09,01,02,03,04,06,10,00,00,99},
+        {99,99,00,00,00,00,02,01,00,00,00,00,00,00,99,00,00,00,00,00,00,00,00,00,00,00,00,99,99},
+        {99,99,99,99,99,00,01,09,00,99,99,99,99,99,99,99,99,99,99,99,00,09,01,00,99,99,99,99,99},
+        {99,99,00,00,00,00,00,00,00,00,00,00,00,00,99,00,00,00,00,00,00,01,02,00,00,00,00,99,99},
+        {99,00,00,10,06,04,03,02,01,09,10,06,04,00,99,00,04,06,10,09,00,02,03,00,06,10,00,00,99},
+        {00,00,01,09,10,06,04,03,02,01,09,10,06,00,99,00,06,10,09,01,00,03,04,00,10,09,01,00,00},
+        {00,03,02,00,00,00,00,00,00,00,00,09,10,00,99,00,10,09,00,00,00,04,06,00,00,00,02,03,00},
+        {00,04,03,00,99,00,10,06,00,99,00,01,09,00,99,00,09,01,00,99,00,06,10,00,99,00,03,04,00},
+        {00,06,04,00,00,00,09,10,00,00,00,00,00,00,00,00,01,02,00,00,00,00,00,00,00,00,04,06,00},
+        {00,10,06,04,03,00,01,09,00,06,04,03,02,01,09,00,02,03,00,06,10,09,01,02,03,04,06,10,00},
+        {00,00,10,06,04,00,02,01,00,10,06,04,03,02,01,00,03,04,00,10,09,01,02,03,04,06,10,00,00},
+        {99,00,00,00,00,00,03,02,00,00,00,00,00,00,00,00,04,06,00,00,00,00,00,00,00,00,00,00,99},
+        {99,99,99,99,99,00,04,03,00,99,00,10,06,00,99,00,06,10,00,99,00,03,04,00,99,99,99,99,99},
+        {99,99,99,99,99,00,06,04,00,00,00,09,10,00,99,00,10,09,00,00,00,04,06,00,99,99,99,99,99},
+        {99,99,99,99,99,00,10,06,04,03,02,01,00,00,99,00,00,01,02,03,04,06,10,00,99,99,99,99,99},
+        {99,99,99,99,99,00,00,10,06,04,03,00,00,99,99,99,00,00,03,04,06,10,00,00,99,99,99,99,99},
+        {99,99,99,99,99,99,00,00,00,00,00,00,99,99,99,99,99,00,00,00,00,00,00,99,99,99,99,99,99},
+    },
 }
 
 -- Variable très important pour choisir un puzzle parmi la collection 
-indexMap = 2
+indexMap = 4
 
 -- Définis aléatoirement un puzzle
 function rdmSelectPuzzle(minR, maxR)
     indexMap = math.random(minR, maxR)
 end
 -- Execution aléatoire d'un puzzle
-rdmSelectPuzzle(1, 3)
+--rdmSelectPuzzle(1, 4)
 
 -- Paramètre de l'ensemble des puzzles
 infoMAP = {
-    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE 
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3}, 
-	{ 6, 75, 3, {00,13,04,02}, {64,11,21,20,27,22,12,5,3}, "CAT1", 19, 21, 3},
-	{ 5, 80, 3, {00,02,03,04}, {64,11,21,20,27,22,12,5,3}, "CAT2", 24, 26, 3},
+    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE, MINI.PIXEL_MODE
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, false},
+	{ 6, 75, 3, {00,13,04,02}, {64,11,21,20,27,22,12,5,3}, "CAT1", 19, 21, 3, false},
+	{ 5, 80, 3, {00,02,03,04}, {64,11,21,20,27,22,12,5,3}, "CAT2", 24, 26, 3, false},
+	{ 4, 80, 8, {00,06,10,04,03,02,09,01}, {64,11,21,20,27,22,12,5,3}, "PUZZLE1", 29, 29, 2, false}
 }
 
 -- Dessin à réaliser 
@@ -176,6 +208,8 @@ MAP.NAME = infoMAP[indexMap][6]
 MAP.LARG = infoMAP[indexMap][7]
 MAP.HAUT = infoMAP[indexMap][8]
 MAP.MINI = infoMAP[indexMap][9]
+MAP.PIXEL_MODE = infoMAP[indexMap][10]
+--MAP.PIXEL_MODE = true
 
 -- Initialiser la puzzle 
 function initPuzzle()
@@ -190,6 +224,9 @@ function initPuzzle()
     MAP.NAME = infoMAP[indexMap][6]
     MAP.LARG = infoMAP[indexMap][7]
     MAP.HAUT = infoMAP[indexMap][8]
+    MAP.MINI = infoMAP[indexMap][9]
+    MAP.PIXEL_MODE = infoMAP[indexMap][10]
+    --MAP.PIXEL_MODE = true
 
     -- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
     GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
@@ -324,6 +361,7 @@ MINI = {}
 MINI.CELL_SIZE = MAP.MINI
 MINI.POS_X = 2  -- Position à gauche
 MINI.POS_Y = 13  -- Position en bas
+MINI.PIXEL = MAP.PIXEL_MODE  -- Mode pixel ou case
 
 function drawMiniGrid()
     for y = 1, #MAP do
@@ -331,20 +369,35 @@ function drawMiniGrid()
             local color = MAP[y][x]
             local posX = MINI.POS_X + (x - 1) * MINI.CELL_SIZE
             local posY = MINI.POS_Y + (y - 1) * MINI.CELL_SIZE
+
+            -- Pisition du pixel non centré
+            local pixX = MINI.POS_X + (x - 1)
+            local pixY = MINI.POS_Y + (y - 1)
                 
             -- Position du pixel au centre 
-            local centerX = posX + MINI.CELL_SIZE // 2
-            local centerY = posY + MINI.CELL_SIZE // 2
+            local centerX = posX + math.floor(MINI.CELL_SIZE / 2)
+            local centerY = posY + math.floor(MINI.CELL_SIZE / 2)
 
-            if color ~= 99 then
-                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)
+            if MINI.PIXEL then
+                -- Mode Pixel : Affichage d'un seul pixel par cellule
+                if color ~= 99 then
+                    pix(pixX, pixY, color)  -- Pixel au centre
+                else
+                    pix(pixX, pixY, 8)  -- Pixel gris pour cases vides
+                end
             else
-                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8) 
-                pix(centerX, centerY, 13)
+                -- Mode Carré : Affichage de cases colorées avec bordure
+                if color ~= 99 then
+                    rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)  -- Remplissage
+                else
+                    rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8) 
+                    pix(centerX, centerY, 13)
+                end
             end
         end
     end
 end
+
 
 -- Identifie la couleur
 indexColor = 1
@@ -365,12 +418,12 @@ function nextPuzzle()
     -- Position et contenu des puzzles
     local tablePuzzle = {
         {
-            {10, 10, selectMAP[1],"cadre1"}, {75, 10, selectMAP[2],"cadre2"}, {140, 10, selectMAP[3],"cadre3"},
-            {10, 75, selectMAP[4],"cadre4"}, {75, 75, selectMAP[5],"cadre5"}, {140, 75, selectMAP[6],"cadre6"}  
+            {10, 10, selectMAP[1],1}, {75, 10, selectMAP[2],2}, {140, 10, selectMAP[3],3},
+            {10, 75, selectMAP[4],4}, {75, 75, selectMAP[5],5}, {140, 75, selectMAP[6],6}  
         },
         {
-            {10, 10, selectMAP[7]}, {75, 10, selectMAP[8]}, {140, 10, selectMAP[9]},
-            {10, 75, selectMAP[10]}, {75, 75, selectMAP[11]}, {140, 75, selectMAP[12]}  
+            {10, 10, selectMAP[3],3}, {75, 10, selectMAP[8]}, {140, 10, selectMAP[2],2},
+            {10, 75, selectMAP[10]}, {75, 75, selectMAP[1],1}, {140, 75, selectMAP[12]}  
         },
     }
 
@@ -393,7 +446,9 @@ function nextPuzzle()
 
         -- Choisir le puzzle
         if prev_lb and not lb and hover then
-            print(pos[4], 1, 1, 12)  -- Affiche le nom du cadre cliqué
+           -- print(pos[4], 1, 1, 12)  -- Affiche le nom du cadre cliqué
+           indexMap = pos[4]
+            updatePhase(1)
         end
 
         -- Récupère la MAP du puzzle actuel
@@ -428,9 +483,6 @@ function nextPuzzle()
             end
         end
     end
-
-    -- Met à jour prev_lb après la boucle (pour éviter qu'il soit écrasé à chaque cadre)
-    prev_lb = lb  
 
     -- Affichage des infos
     print("SELECT NEXT PUZZLE", 30 + ajustText, 1, 12)
@@ -600,7 +652,7 @@ function TIC()
 
 		-- Affiche le numéro et nom du puzzle
         print("#".. indexMap, 2, 3, 12)
-        print(infoMAP[indexMap][6], 25, 3, 12)
+        print(infoMAP[indexMap][6], 20, 3, 12)
 
         -- Icone Mode Soluce
         rect(16, 105, 25, 25, 8)

@@ -42,12 +42,14 @@ v1.03.3 -> FAIL : Condition de victoire jamais réparé !! A REVENIR !!
 v1.03.4 -> SUCCESS : IU selection de puzzle
 v1.03.5 -> ACTUALLY : préparation à l'algo pour dessiner les puzzle dans la selection
 v1.03.6 -> SUCCESS : Afficher les puzzles dispobible dans la collection !! A REVENIR SUR LES PUZZLES DE GRAND TAILLE !!
-v1.03.7 -> UPGRADE : Nouvelle puzzle ajouter, modification des paramètres du mini-puzzle, taille du mini-puzzle ajouté dans le tableau selecMap
+v1.03.7 -> UPGRADE : Nouvelle puzzle #3, modification des paramètres du mini-puzzle, taille du mini-puzzle ajouté dans le tableau selecMap
 v1.03.8 -> UPGRADE : IU Building, déplacement du nom et numéro de puzzle, la progression du puzzle ainsi que l'icone delete
 v1.03.9 -> SUCCESS : Bordure rouge lorsque la souris survole un élement pour choisir un puzzle + changer de page
 v1.03.10 -> HOTFIX : Bordure rouge lorsque la souris survole un élement pour choisir un puzzle + changer de page
 v1.04.0 -> SUCCESS : Choisir un puzzle parmi une sélection
 v1.04.1 -> FAIL : Réduire la taille de la mini grille pour les grands puzzle, impossible de récupérer la valeur false/true de infoMAP[i][10] !! A REVENIR !!
+v1.05.0 -> UPGRADE : Nouveau puzzle #4, possibilité de mettre des puzzle plus grand
+
 EN COURS : 
 
 A FAIRE : 
@@ -85,4 +87,6 @@ probleme : UX personnel erroné, assiste trop le joueur, reduit la reflexion du 
             bien au contraire, ajoute de la difficulté, a intégré en derniers
 solution : m'y remettre la tête frais
 
-ABONDONNE : 
+ABONDONNE / PAUSE : 
+- v1.03.3
+- v1.04.1
