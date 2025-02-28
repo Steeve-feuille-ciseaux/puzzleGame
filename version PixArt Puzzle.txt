@@ -47,7 +47,7 @@ v1.03.8 -> UPGRADE : IU Building, déplacement du nom et numéro de puzzle, la p
 v1.03.9 -> SUCCESS : Bordure rouge lorsque la souris survole un élement pour choisir un puzzle + changer de page
 v1.03.10 -> HOTFIX : Bordure rouge lorsque la souris survole un élement pour choisir un puzzle + changer de page
 v1.04.0 -> SUCCESS : Choisir un puzzle parmi une sélection
-
+v1.04.1 -> FAIL : Réduire la taille de la mini grille pour les grands puzzle, impossible de récupérer la valeur false/true de infoMAP[i][10] !! A REVENIR !!
 EN COURS : 
 
 A FAIRE : 
