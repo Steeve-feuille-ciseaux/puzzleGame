@@ -50,6 +50,7 @@ v1.04.0 -> SUCCESS : Choisir un puzzle parmi une sélection
 v1.04.1 -> FAIL : Réduire la taille de la mini grille pour les grands puzzle, impossible de récupérer la valeur false/true de infoMAP[i][10] !! A REVENIR !!
 v1.05.0 -> UPGRADE : Nouveau puzzle #4, possibilité de mettre des puzzle plus grand
 v1.06.0 -> UPGRADE : Nouveau puzzle #5, UI position des nombre de pixel par couleur a corriger !! A REVENIR !! 
+v1.06.1 -> UPGRADE : Notice sur le setting de la hauteur et largeur des futur puzzle au risque de faire bugué la progression en -1 / -1 
 
 EN COURS : 
 
