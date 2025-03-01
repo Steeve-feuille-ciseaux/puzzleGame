@@ -52,6 +52,7 @@ v1.05.0 -> UPGRADE : Nouveau puzzle #4, possibilité de mettre des puzzle plus g
 v1.06.0 -> UPGRADE : Nouveau puzzle #5, UI position des nombre de pixel par couleur a corriger !! A REVENIR !! 
 v1.06.1 -> UPGRADE : Notice sur le setting de la hauteur et largeur des futur puzzle au risque de faire bugué la progression en -1 / -1 
 v1.06.2 -> UPGRADE : Notice sur la selection de puzzle 
+v1.06.3 -> REVIEW : Relecture du code ainsi qu'une possible implentation d'un SNIPPET 
 
 EN COURS : 
 
@@ -94,3 +95,66 @@ ABONDONNE / PAUSE :
 - v1.03.3
 - v1.04.1
 - v1.06.0
+
+SNIPPET : tri les couleur, indique le nombre par couleur, la largueur et hauteur 
+local map = {
+    {99,99,99,99,99,99,99,99,99,00,99,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,99,00,02,00,99,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,00,02,02,03,00,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,99,00,02,03,03,00,99,99,99,99,99,99,99},
+    {99,99,99,99,99,99,00,02,03,03,03,04,00,99,99,99,99,99,99},
+    {99,99,99,99,99,99,00,03,03,03,04,04,00,99,99,99,99,99,99},
+    {00,00,00,00,00,00,03,03,03,04,04,04,05,00,00,00,00,00,00},
+    {00,02,02,02,02,03,03,00,04,04,04,00,05,05,06,06,06,09,00},
+    {99,00,02,02,03,03,03,00,04,04,05,00,05,06,06,06,09,00,99},
+    {99,99,00,03,03,03,04,00,04,05,05,00,06,06,06,09,00,99,99},
+    {99,99,99,00,03,04,04,04,05,05,05,06,06,06,09,00,99,99,99},
+    {99,99,99,99,00,04,04,05,05,05,06,06,06,09,00,99,99,99,99},
+    {99,99,99,99,00,04,05,05,05,06,06,06,09,09,00,99,99,99,99},
+    {99,99,99,00,04,05,05,05,06,06,06,09,09,09,10,00,99,99,99},
+    {99,99,99,00,05,05,05,06,00,00,00,09,09,10,10,00,99,99,99},
+    {99,99,00,05,05,05,00,00,99,99,99,00,00,10,10,11,00,99,99},
+    {99,99,00,05,05,00,99,99,99,99,99,99,99,00,11,11,00,99,99},
+    {99,99,00,00,00,99,99,99,99,99,99,99,99,99,00,00,00,99,99},
+}
+
+local color = {}
+local count_i = 0
+local count_j = 0
+
+-- Compter le nombre d'éléments sur la première ligne
+for i = 1, #map[1] do
+    count_i = count_i + 1
+end
+
+-- Compter le nombre d'éléments sur la première colonne
+for j = 1, #map do
+    count_j = count_j + 1
+end
+
+for i = 1, #map do
+    for j = 1, #map[i] do
+        local value = map[i][j]
+        if value ~= 99 then
+            local found = false
+            for k = 1, #color do
+                if color[k][1] == value then
+                    color[k][2] = color[k][2] + 1
+                    found = true
+                    break
+                end
+            end
+            if not found then
+                table.insert(color, {value, 1})
+            end
+        end
+    end
+end
+
+-- Afficher le tableau color
+for i, pair in ipairs(color) do
+    print(pair[1], pair[2])
+end
+
+print("Nombre d'éléments sur la première ligne (i):", count_i)
+print("Nombre d'éléments sur la première colonne (j):", count_j)
