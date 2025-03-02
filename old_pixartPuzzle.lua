@@ -213,17 +213,17 @@ function rdmSelectPuzzle(minR, maxR)
     indexMap = math.random(minR, maxR)
 end
 -- Execution aléatoire d'un puzzle
---rdmSelectPuzzle(1, 4)
+rdmSelectPuzzle(1, 4)
 
 -- Paramètre de l'ensemble des puzzles
 infoMAP = {
     -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE, MINI.PIXEL_MODE
     -- Si la largeur et la hauteur sont incorrect, la progression affichera -1 / -1
 	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, false},
-	{ 6, 75, 3, {00,13,04,02}, {64,11,21,20,27,22,12,5,3}, "CAT1", 19, 21, 3, false},
-	{ 5, 80, 3, {00,02,03,04}, {64,11,21,20,27,22,12,5,3}, "CAT2", 24, 26, 3, false},
-	{ 4, 80, 8, {00,06,10,04,03,02,09,01}, {64,11,21,20,27,22,12,5,3}, "PUZZLE1", 29, 29, 2, false},
-	{ 4, 80, 8, {00,06,03,04,09,10}, {64,11,21,20,27,22,12,5,3}, "FLOWER1", 27, 27, 3, false}
+	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3, false},
+	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3, false},
+	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2, false},
+	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3, false}
 }
 
 -- Dessin à réaliser 
@@ -648,11 +648,35 @@ function TIC()
             local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
             rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
             rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
+
+            -- Affichage du nombre de pixel 
             --print("x".. MAP.COLOR.NB[i], 224, yPos + 1, 12)
             --print("x".. GRID.COLOR.NB[i], 224, yPos + 1, 12)
             --print("x".. (MAP.COLOR.NB[i] - GRID.COLOR.Q[i]), 224, yPos + 1, 12)
             
-            print("x".. "?", 224, yPos + 1, 12)
+            --print("x".. "?", 224, yPos + 1, 12)
+
+
+            -- Affichage des pixel restant
+            local pixelColor = 0
+            for y = 1, #GRID do
+                for x = 1, #GRID[y] do
+                    if GRID[y][x] == color then
+                        pixelColor = pixelColor + 1
+                    end
+                end
+            end
+
+            -- Calcule les pixels restants
+            countPixelColor = MAP.COLOR.NB[i] - pixelColor
+        
+            -- Si countPixelColor est égal à 0, color devient 99 !! REVENIR ICI !! 
+            if countPixelColor == 0 then
+                print("FINITO", 10,10,12)
+            end
+        
+            -- Affiche le nombre de pixels restants
+            print(countPixelColor, 224, yPos + 1, 12)
         end
 
         -- Dessine le carré qui sera l'icone delete pixel de la grille
@@ -735,7 +759,7 @@ function TIC()
                 cellDelete = true -- Basculer entre true et false
             end
 
-            -- Vérifier si un carré de couleur est cliqué
+            -- Placé un pixel de couleur sur la grille
             if mX >= 215 and mX <= 215 + GRID.CELL_SIZE then
                 for i, color in ipairs(MAP.COLOR) do
                     local yPos = MAP.POS_Y + (GRID.CELL_SIZE + 2) * (i - 1)  
