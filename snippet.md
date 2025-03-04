@@ -1,9 +1,8 @@
 -- SNIPPET : Appliquer ce code dans un compilateur LUA
 
 
-#############################################################
 # obtenir MAP.COLOR, MAP.COLOR.NB, MAP.LARGEUR, MAP.HAUTEUR #
-#############################################################
+
 
 -- Remplacer l'exemple par votre dessin
 local map =    {
@@ -91,9 +90,7 @@ print("Nombre d'éléments sur la première ligne (i):", count_i)
 print("Nombre d'éléments sur la première colonne (j):", count_j)
 
 
-##########################################################
 # Créer un tableau vierge selon la hauteur et la largeur #
-##########################################################
 
 
 local X = 21  -- Indiquer la largeur 

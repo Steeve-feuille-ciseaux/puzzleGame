@@ -55,6 +55,7 @@ v1.06.2 -> UPGRADE : Notice sur la selection de puzzle
 v1.06.3 -> REVIEW : Relecture du code ainsi qu'une possible implentation d'un SNIPPET 
 v1.07.1 -> ACTUALLY : limité les pixel par couleur, pixel restant récupérer, maintenant faut intégré l'arret de l'ajout de pixel si la couleur est égale à zero
 v1.07.2 -> SUCCESS : Snippet pour créer un tableau vierge selon la largeur et la hauteur, inclus dans le fichier snippet.txt puis executer le code dans un compilateur LUA
+v1.07.2 -> ACTUALLY : intégration partial nouveau puzzle flower #2
 
 EN COURS : limité les pixel par couleur
 
