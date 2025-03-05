@@ -16,6 +16,7 @@ GameplayPhase = 0
 pagePuzzle = 1
 pageMax = 2
 indexMap = 0
+noPixel = false
 
 -- DECOUPAGE DU JEU
 function updatePhase(GameplayPhase)
@@ -241,14 +242,14 @@ selectMAP = {
 }
 
 -- Variable très important pour choisir un puzzle parmi la collection 
-indexMap = 4
+indexMap = 6
 
 -- Définis aléatoirement un puzzle
 function rdmSelectPuzzle(minR, maxR)
     indexMap = math.random(minR, maxR)
 end
 -- Execution aléatoire d'un puzzle
-rdmSelectPuzzle(1, 4)
+--rdmSelectPuzzle(1, 4)
 
 -- Paramètre de l'ensemble des puzzles
 infoMAP = {
@@ -258,8 +259,8 @@ infoMAP = {
 	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3, false},
 	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3, false},
 	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2, false},
-	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3, false}
-	{ 4, 80, 8, {12,09,10,05,06,07}, {0,0,0,0,0,0}, "FLOWER2", 38, 33, 3, false}
+	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3, false},
+	{ 3, 88, 8, {12,09,10,05,06,07}, {0,0,0,0,0,0}, "FLOWER2", 38, 33, 3, false}
 }
 
 -- Dessin à réaliser 
@@ -589,6 +590,10 @@ function TIC()
             rainbowIndex = 1
         end
     end
+
+    if noPixel then
+        print("PAS DE PIXEL", 50,5,12)
+    end
     ----------------------------- CHEAT KEY ------------------------
     -- RESET GRID touche T
     if key(20) then
@@ -705,10 +710,12 @@ function TIC()
 
             -- Calcule les pixels restants
             countPixelColor = MAP.COLOR.NB[i] - pixelColor
+            print(MAP.COLOR.NB[i], 10,10,12)
         
             -- Si countPixelColor est égal à 0, color devient 99 !! REVENIR ICI !! 
             if countPixelColor == 0 then
-                print("FINITO", 10,10,12)
+                print(countPixelColor, 10,10,12)
+                noPixel = true
             end
         
             -- Affiche le nombre de pixels restants
