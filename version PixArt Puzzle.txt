@@ -58,6 +58,7 @@ v1.07.2 -> SUCCESS : Snippet pour créer un tableau vierge selon la largeur et l
 v1.07.3 -> ACTUALLY : intégration partial nouveau puzzle flower #2
 v1.07.4 -> ACTUALLY : limité les pixel par couleur, reflexion...
 v1.07.5 -> ACTUALLY : Nouveau puzzle flower #2 a checker
+v1.07.6 -> SUCCESS : Nouveau puzzle #6 flower #2 fonctionnel !
 
 EN COURS : limité les pixel par couleur
 
