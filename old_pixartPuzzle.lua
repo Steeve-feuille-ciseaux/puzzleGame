@@ -55,6 +55,7 @@ ajuste2 = 20
 timerSoluce = 5 -- Durée d'affichage
 timeRemaining = 0  -- Temps restant pour l'affichage de la soluce
 lastTime = time()  -- Stocke le temps précédent au démarrage
+countSoluce = 0 -- Soluce utilisé
 
 -- ICONE DELETE 
 -- Position du carré icone en bas à droite
@@ -713,8 +714,8 @@ function TIC()
         end
 
         -- Affiche le total des pixels restants
-        print("Total: " .. totalPixelColor, 100, 130, 12)
-        print(solucePuzzle, 50, 130, 12)
+        -- print("Total: " .. totalPixelColor, 100, 130, 12)
+        -- print(solucePuzzle, 50, 130, 12)
 
         -- Apparaitre Icone Mode Soluce
         if totalPixelColor <= 0 then
@@ -837,15 +838,25 @@ function TIC()
                     end
                 end
             end
+        end
 
-            -- Activé le mode soluce
+        -- Vérifier si le clic gauche vient d'être relâché
+        if prev_lb and not lb then
+            -- Activer le mode soluce seulement au relâchement
             if totalPixelColor <= 0 then                
                 if mX >= 16 and mX <= 16 + 25 and mY >= 105 and mY <= 105 + 25 then
                     solucePuzzle = true
                     timeRemaining = timerSoluce  -- Initialise le timer
+                    countSoluce = countSoluce + 1 
                 end
             end
         end
+
+        -- Mettre à jour prev_lb pour la prochaine frame
+        prev_lb = lb
+
+        -- Visualisé le nombre de soluce utilisé
+        -- print(countSoluce, 10, 100, 12)
 
         -- Mise à jour du timer (à placer dans ta boucle de mise à jour du jeu)
         local currentTime = time()

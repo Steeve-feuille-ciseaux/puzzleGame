@@ -61,12 +61,12 @@ v1.07.5 -> ACTUALLY : Nouveau puzzle flower #2 a checker
 v1.07.6 -> SUCCESS : Nouveau puzzle #6 flower #2 fonctionnel !
 v1.08.0 -> SUCCESS : limité les pixel par couleur, Feature intégré !
 v1.09.0 -> SUCCESS :  Mode Soluce intégré
+v1.09.1 -> UPGRADE :  Mode Soluce amélioré -> Ajouter le compteur de soluce
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
 A FAIRE : 
-- Mode Soluce pour indiquer les pixel mal placé
-            Ajouter le compteur de soluce
+- Mode Soluce pour indiquer les pixel mal placé            
             Finir l'icone du mode soluce 
             Soit condition de victoire soit mode soluce
 - musique et animation
@@ -76,6 +76,10 @@ A FAIRE :
 REFAIRE ABSOLUMENT : 
 - bug sur la condition de victoire, en cheat mode ça fonction mais pas jouant normalement
     revoir watchEqual() et endPuzzle
+
+Idée de Challenge : 
+- Ne pas utilise le mode Soluce
+- finir les puzzle sous X durée
 
 -- A TESTER : 
 
