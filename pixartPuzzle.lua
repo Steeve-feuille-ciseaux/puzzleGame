@@ -715,7 +715,10 @@ function TIC()
             -- Si countPixelColor est égal à 0, color devient 99 !! REVENIR ICI !! 
             if countPixelColor == 0 then
                 print(countPixelColor, 10,10,12)
+                print(MAP.COLOR.NB[i], 20,10,12)
                 noPixel = true
+            else
+                noPixel = false
             end
         
             -- Affiche le nombre de pixels restants
@@ -786,30 +789,56 @@ function TIC()
             -- Convertir les coordonnées de la souris en indices de la grille
             local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
             local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
-    
+
             -- Vérifier si les indices sont dans les limites de la grille
             if gridX >= 1 and gridX <= #GRID[1] and gridY >= 1 and gridY <= #GRID then
-                if cellDelete == false then
-                    GRID[gridY][gridX] = selectedColor -- Changer la valeur de la cellule pour dessiner dans la grille
-                else
-                    GRID[gridY][gridX] = 99 -- Changer la valeur de la cellule pour dessiner dans la grille
+                -- Calculer le nombre de pixels placés pour la couleur sélectionnée
+                local pixelCount = 0
+                for y = 1, #GRID do
+                    for x = 1, #GRID[y] do
+                        if GRID[y][x] == selectedColor then
+                            pixelCount = pixelCount + 1
+                        end
+                    end
+                end
+                local remainingPixels = MAP.COLOR.NB[indexColor] - pixelCount
+
+                -- Vérifier si on peut placer la couleur OU si on est en mode suppression
+                if cellDelete then
+                    GRID[gridY][gridX] = 99 -- Toujours autoriser la suppression
+                elseif remainingPixels > 0 then
+                    GRID[gridY][gridX] = selectedColor -- Ajouter seulement si la couleur est dispo
                 end
             end
-    
+
             -- Vérifier si le bouton gauche est pressé sur l'icône de suppression
             if mX >= (squarePosX - squareSize) and mX <= (squarePosX + squareSize) and 
-                mY >= (squarePosY - squareSize) and mY <= (squarePosY + squareSize) then
-                cellDelete = true -- Basculer entre true et false
+            mY >= (squarePosY - squareSize) and mY <= (squarePosY + squareSize) then
+                cellDelete = true -- Activer le mode suppression
             end
 
-            -- Placé un pixel de couleur sur la grille
+            -- Vérifier si l'utilisateur clique sur une couleur de la palette
             if mX >= 215 and mX <= 215 + GRID.CELL_SIZE then
                 for i, color in ipairs(MAP.COLOR) do
                     local yPos = MAP.POS_Y + (GRID.CELL_SIZE + 2) * (i - 1)  
                     if mY >= yPos and mY <= yPos + GRID.CELL_SIZE then
-                        indexColor = i  -- Met à jour l'index de couleur
+                        -- Vérifier si la couleur sélectionnée est encore disponible
+                        local pixelCount = 0
+                        for y = 1, #GRID do
+                            for x = 1, #GRID[y] do
+                                if GRID[y][x] == color then
+                                    pixelCount = pixelCount + 1
+                                end
+                            end
+                        end
+                        local remainingPixels = MAP.COLOR.NB[i] - pixelCount
+
+                        -- Permettre de sélectionner une couleur, même si elle est à 0 (mais on ne pourra pas la placer)
+                        indexColor = i  
                         selectedColor = MAP.COLOR[indexColor]  
-                        cellDelete = false -- Désactiver le mode suppression
+                        
+                        -- Désactiver le mode suppression quand on sélectionne une couleur
+                        cellDelete = false 
                     end
                 end
             end
