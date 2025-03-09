@@ -52,6 +52,9 @@ cellDelete = false
 -- soluce Puzzle
 solucePuzzle = false
 ajuste2 = 20
+timerSoluce = 5 -- Durée d'affichage
+timeRemaining = 0  -- Temps restant pour l'affichage de la soluce
+lastTime = time()  -- Stocke le temps précédent au démarrage
 
 -- ICONE DELETE 
 -- Position du carré icone en bas à droite
@@ -680,21 +683,16 @@ function TIC()
         -- Affiche la mini-grille
         drawMiniGrid()
 
+        -- Initialisation de la variable pour stocker le total des pixels restants
+        local totalPixelColor = 0
+
         -- Affiche les pixels à placer
         for i, color in ipairs(MAP.COLOR) do
             local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
             rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
             rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
 
-            -- Affichage du nombre de pixel 
-            --print("x".. MAP.COLOR.NB[i], 224, yPos + 1, 12)
-            --print("x".. GRID.COLOR.NB[i], 224, yPos + 1, 12)
-            --print("x".. (MAP.COLOR.NB[i] - GRID.COLOR.Q[i]), 224, yPos + 1, 12)
-            
-            --print("x".. "?", 224, yPos + 1, 12)
-
-
-            -- Affichage des pixel restant
+            -- Compte le nombre de pixels restants pour cette couleur
             local pixelColor = 0
             for y = 1, #GRID do
                 for x = 1, #GRID[y] do
@@ -704,12 +702,26 @@ function TIC()
                 end
             end
 
-            -- Calcule les pixels restants
-            countPixelColor = MAP.COLOR.NB[i] - pixelColor
-            -- print(MAP.COLOR.NB[i], 10,10,12)
-        
-            -- Affiche le nombre de pixels restants
+            -- Calcule les pixels restants pour cette couleur
+            local countPixelColor = MAP.COLOR.NB[i] - pixelColor
+            
+            -- Ajoute au total des pixels restants
+            totalPixelColor = totalPixelColor + countPixelColor
+
+            -- Affiche le nombre de pixels restants pour cette couleur
             print(countPixelColor, 224, yPos + 1, 12)
+        end
+
+        -- Affiche le total des pixels restants
+        print("Total: " .. totalPixelColor, 100, 130, 12)
+        print(solucePuzzle, 50, 130, 12)
+
+        -- Apparaitre Icone Mode Soluce
+        if totalPixelColor <= 0 then
+            rect(16, 105, 25, 25, 8)
+            rectb(16, 105, 25, 25, 13)
+        else
+            solucePuzzle = false
         end
 
         -- Dessine le carré qui sera l'icone delete pixel de la grille
@@ -742,10 +754,6 @@ function TIC()
 		-- Affiche le numéro et nom du puzzle
         print("#".. indexMap, 2, 3, 12)
         print(infoMAP[indexMap][6], 20, 3, 12)
-
-        -- Icone Mode Soluce
-        rect(16, 105, 25, 25, 8)
-        rectb(16, 105, 25, 25, 13)
 
         -- Carre cursor
         -- Afficher un carré de la couleur sélectionnée qui suit la souris
@@ -828,6 +836,27 @@ function TIC()
                         cellDelete = false 
                     end
                 end
+            end
+
+            -- Activé le mode soluce
+            if totalPixelColor <= 0 then                
+                if mX >= 16 and mX <= 16 + 25 and mY >= 105 and mY <= 105 + 25 then
+                    solucePuzzle = true
+                    timeRemaining = timerSoluce  -- Initialise le timer
+                end
+            end
+        end
+
+        -- Mise à jour du timer (à placer dans ta boucle de mise à jour du jeu)
+        local currentTime = time()
+        dt = (currentTime - lastTime) / 1000  -- Convertir en secondes
+        lastTime = currentTime  -- Mise à jour du dernier temps
+
+        if solucePuzzle then
+            if timeRemaining > 0 then
+                timeRemaining = timeRemaining - dt  -- dt est le deltaTime (temps écoulé entre les frames)
+            else
+                solucePuzzle = false  -- Désactive la soluce quand le timer atteint 0
             end
         end
 

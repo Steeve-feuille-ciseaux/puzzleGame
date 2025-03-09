@@ -60,16 +60,15 @@ v1.07.4 -> ACTUALLY : limité les pixel par couleur, reflexion...
 v1.07.5 -> ACTUALLY : Nouveau puzzle flower #2 a checker
 v1.07.6 -> SUCCESS : Nouveau puzzle #6 flower #2 fonctionnel !
 v1.08.0 -> SUCCESS : limité les pixel par couleur, Feature intégré !
+v1.09.0 -> SUCCESS :  Mode Soluce intégré
 
-EN COURS : 
+EN COURS : Mode Soluce / Bug condition de victoire
 
 A FAIRE : 
 - Mode Soluce pour indiquer les pixel mal placé
-           Besoin de remttre la feature nombre de pixel par couleur -> soustraire par le nombre de variable dans GRID
-           Une icone loupe apparaît s'il reste peut de pixel à placer
-           le mode soluce reste actif 5 seconde affiche le décompte
-           usage limiter une toutes les 10 secondes affiche le décompte
-           si activé icone loupe devient arc-en-ciel 
+            Ajouter le compteur de soluce
+            Finir l'icone du mode soluce 
+            Soit condition de victoire soit mode soluce
 - musique et animation
 - reprendre la documention du doc via gitbook
 - Affichez le niveau de difficulter du puzzle
