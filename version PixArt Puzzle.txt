@@ -63,6 +63,7 @@ v1.08.0 -> SUCCESS : limité les pixel par couleur, Feature intégré !
 v1.09.0 -> SUCCESS :  Mode Soluce intégré
 v1.09.1 -> UPGRADE :  Mode Soluce amélioré -> Ajouter le compteur de soluce
 v1.10.0 -> SUCCESS :  Nouveau puzzle #7 Elephant
+v1.10.1 -> ACTUALLY :  Building puzzle #8 Puzzle #2
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
