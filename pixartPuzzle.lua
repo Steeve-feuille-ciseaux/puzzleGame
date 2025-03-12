@@ -74,6 +74,26 @@ rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
 rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
 rainbowTimer = 0 -- Timer pour l'animation
 
+-- ICONE SOLUCE
+soluceDraw = {
+    {08,08,08,14,14,14,14,14,08,08,08,08,08,08,08,08},
+    {08,08,14,10,10,10,10,10,14,08,08,08,08,08,08,08},
+    {08,14,10,10,10,10,10,10,10,14,08,08,08,08,08,08},
+    {14,10,10,10,10,10,10,12,10,10,14,08,08,08,08,08},
+    {14,10,10,10,10,10,10,10,12,10,14,08,08,08,08,08},
+    {14,10,12,10,10,10,10,10,12,10,14,08,08,08,08,08},
+    {14,10,12,10,10,10,10,10,10,10,14,08,08,08,08,08},
+    {14,10,10,12,10,10,10,10,10,10,14,08,08,08,08,08},
+    {08,14,10,10,12,12,10,10,10,14,08,08,08,08,08,08},
+    {08,08,14,10,10,10,10,10,14,14,08,08,08,08,08,08},
+    {08,08,08,14,14,14,14,14,08,08,03,03,08,08,08,08},
+    {08,08,08,08,08,08,08,08,08,08,03,03,03,08,08,08},
+    {08,08,08,08,08,08,08,08,08,08,08,03,03,03,08,08},
+    {08,08,08,08,08,08,08,08,08,08,08,08,03,03,03,08},
+    {08,08,08,08,08,08,08,08,08,08,08,08,08,03,03,03},
+    {08,08,08,08,08,08,08,08,08,08,08,08,08,08,03,03},
+}
+
 -- Collection de puzzle
 selectMAP = {
 	{
@@ -802,8 +822,30 @@ function TIC()
 
         -- Apparaitre Icone Mode Soluce
         if totalPixelColor <= 0 then
-            rect(16, 105, 25, 25, 8)
-            rectb(16, 105, 25, 25, 13)
+
+            if solucePuzzle then
+                rect(16, 105, 20, 20, 8)
+                rectb(16, 105, 20, 20, rainbowColors[rainbowIndex])
+            else
+                rect(16, 105, 20, 20, 8)
+                rectb(16, 105, 20, 20, 13)
+            end
+            -- Afficher le tableau dans le rectangle (à partir de la position 16, 105)
+            for y = 0, 15 do
+                for x = 0, 15 do
+                    -- Obtenez la couleur du tableau (99 pour la couleur claire, 00 pour le noir)
+                    local color = soluceDraw[y + 1][x + 1]
+    
+                    -- Déplacer l'affichage à l'intérieur du rectangle
+                    -- Ajout de 16 et 105 pour décaler les pixels à l'intérieur du rectangle
+                    local xpos = 18 + x
+                    local ypos = 107 + y
+    
+                    -- Dessiner un pixel avec la couleur correspondante
+                    pix(xpos, ypos, color)
+                end
+            end
+
         else
             solucePuzzle = false
         end

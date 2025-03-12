@@ -65,12 +65,12 @@ v1.09.1 -> UPGRADE :  Mode Soluce amélioré -> Ajouter le compteur de soluce
 v1.10.0 -> SUCCESS :  Nouveau puzzle #7 Elephant
 v1.10.1 -> ACTUALLY :  Building puzzle #8 Puzzle #2
 v1.11.0 -> SUCCESS :  Nouveau puzzle #8 Puzzle #2
+v1.11.1 -> ACTUALLY :  une loupe représentant l'icone du mode soluce intégré 
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
 A FAIRE : 
 - Mode Soluce pour indiquer les pixel mal placé            
-            Finir l'icone du mode soluce 
             Soit condition de victoire soit mode soluce
 - musique et animation
 - reprendre la documention du doc via gitbook
