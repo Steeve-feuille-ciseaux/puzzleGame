@@ -68,15 +68,18 @@ v1.11.0 -> SUCCESS :  Nouveau puzzle #8 Puzzle2
 v1.11.1 -> ACTUALLY :  une loupe représentant l'icone du mode soluce intégré 
 v1.12.0 -> SUCCESS :  Nouveau puzzle #9 SUGAR1
 v1.12.1 -> ACTUALLY :  Nouveau puzzle #10 PLANET1 en cours
+v1.12.2 -> ACTUALLY :  Nouveau puzzle #10 PLANET1 en cours
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
 A FAIRE : 
 - Mode Soluce pour indiquer les pixel mal placé            
             Soit condition de victoire soit mode soluce
+- amelioration IU : si CELL_SIZE est petite, remplacé 99 rect() + rectb() par pix()
 - musique et animation
 - reprendre la documention du doc via gitbook
 - Affichez le niveau de difficulter du puzzle
+- checker CELL_SIZE + UI selon les puzzle 
 
 REFAIRE ABSOLUMENT : 
 - bug sur la condition de victoire, en cheat mode ça fonction mais pas jouant normalement
