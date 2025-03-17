@@ -69,6 +69,7 @@ v1.11.1 -> ACTUALLY :  une loupe représentant l'icone du mode soluce intégré
 v1.12.0 -> SUCCESS :  Nouveau puzzle #9 SUGAR1
 v1.12.1 -> ACTUALLY :  Nouveau puzzle #10 PLANET1 en cours
 v1.12.2 -> ACTUALLY :  Nouveau puzzle #10 PLANET1 en cours
+v1.12.3 -> ACTUALLY :  Nouveau puzzle #10 PLANET1 intégré, bug sur le nombre de piece à resoudre
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
