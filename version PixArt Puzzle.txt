@@ -57,20 +57,21 @@ v1.07.1 -> ACTUALLY : limité les pixel par couleur, pixel restant récupérer, 
 v1.07.2 -> SUCCESS : Snippet pour créer un tableau vierge selon la largeur et la hauteur, inclus dans le fichier snippet.txt puis executer le code dans un compilateur LUA
 v1.07.3 -> ACTUALLY : intégration partial nouveau puzzle flower #2
 v1.07.4 -> ACTUALLY : limité les pixel par couleur, reflexion...
-v1.07.5 -> ACTUALLY : Nouveau puzzle flower #2 a checker
+v1.07.5 -> ACTUALLY : Building puzzle flower #2 a checker
 v1.07.6 -> SUCCESS : Nouveau puzzle #6 flower #2 fonctionnel !
 v1.08.0 -> SUCCESS : limité les pixel par couleur, Feature intégré !
 v1.09.0 -> SUCCESS :  Mode Soluce intégré
 v1.09.1 -> UPGRADE :  Mode Soluce amélioré -> Ajouter le compteur de soluce
 v1.10.0 -> SUCCESS :  Nouveau puzzle #7 Elephant
-v1.10.1 -> ACTUALLY :  Building puzzle #8 Puzzle #2
+v1.10.1 -> ACTUALLY :  Building puzzle #8 Puzzle2
 v1.11.0 -> SUCCESS :  Nouveau puzzle #8 Puzzle2
 v1.11.1 -> ACTUALLY :  une loupe représentant l'icone du mode soluce intégré 
 v1.12.0 -> SUCCESS :  Nouveau puzzle #9 SUGAR1
-v1.12.1 -> ACTUALLY :  Nouveau puzzle #10 PLANET1 en cours
-v1.12.2 -> ACTUALLY :  Nouveau puzzle #10 PLANET1 en cours
-v1.12.3 -> ACTUALLY :  Nouveau puzzle #10 PLANET1 intégré, bug sur le nombre de piece à resoudre
+v1.12.1 -> ACTUALLY :  Building puzzle #10 PLANET1 en cours
+v1.12.2 -> ACTUALLY :  Building puzzle #10 PLANET1 en cours
+v1.12.3 -> ACTUALLY :  Building puzzle #10 PLANET1 intégré, bug sur le nombre de piece à resoudre
 v1.13.0 -> ACTUALLY :  Nouveau puzzle #10 PLANET1 bug résolue !
+v1.14.0 -> SUCCESS :  Nouveau puzzle #11 CAKE1 bug résolue !
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
