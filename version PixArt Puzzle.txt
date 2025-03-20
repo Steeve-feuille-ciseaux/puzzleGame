@@ -73,6 +73,7 @@ v1.12.3 -> ACTUALLY :  Building puzzle #10 PLANET1 intégré, bug sur le nombre 
 v1.13.0 -> SUCCESS :  Nouveau puzzle #10 PLANET1 bug résolue !
 v1.14.0 -> SUCCESS :  Nouveau puzzle #11 CAKE1 bug résolue !
 v1.14.1 -> ACTUALLY :  Building puzzle #12 night heroes
+v1.15.0 -> SUCCESS :  Building puzzle #12 BATMAN1
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
