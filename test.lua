@@ -1155,13 +1155,8 @@ function TIC()
         local yesWidth, yesHeight = 21, 10
         local noWidth, noHeight = 15, 10
 
-        -- page de remerciement 
-        if swapScreen == 4 then
-            print("Thanks", 10, 58, 12)
-            print("for", 18, 67, 12)
-            print("playing", 10, 76, colorN)
-        elseif swapScreen == 3 then            
-            -- Afficher les messages
+        --Afficher les messages
+        if swapScreen == 3 then            
             print("BRAVO !!!", 10, 58, 12)
             print("One More", 10, 67, 12)
 
@@ -1194,5 +1189,12 @@ function TIC()
         -- Mettre à jour l'état précédent du bouton droit
         prev_lb = lb
     end
+
+    -- page de remerciement 
+    if swapScreen == 4 then
+        print("Thanks", 10, 58, 12)
+        print("for", 18, 67, 12)
+        print("playing", 10, 76, 12)
+    end   
 
 end

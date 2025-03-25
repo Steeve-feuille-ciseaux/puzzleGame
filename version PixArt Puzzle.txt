@@ -78,12 +78,11 @@ v1.15.1 -> SUCCESS :  Clean code -> function count_values_in_grid(grid, values) 
 v1.15.2 -> ACTUALLY :  Bug condition de victoire + refonte changement d'écran
 v1.15.3 -> SUCCESS :  DEBUG -> changement d'écran -> titre -> choix de puzzle
 v1.15.4 -> SUCCESS :  DEBUG -> endPuzzle où mode Soluce
+v1.16.0 -> SUCCESS : DEBUG + Gameplay loop 
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
 A FAIRE : 
-- Mode Soluce pour indiquer les pixel mal placé            
-            Soit condition de victoire soit mode soluce
 - amelioration IU : si CELL_SIZE est petite, remplacé 99 rect() + rectb() par pix()
 - musique et animation
 - reprendre la documention du doc via gitbook
