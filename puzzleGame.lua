@@ -7,37 +7,14 @@
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
-titlePage = false
-selectPuzzle = false
-buildingPuzzle = true
-endPuzzle = false
-thxPage = false
-GameplayPhase = 0
+swapScreen = 0 -- DECOUPAGE DU JEU
 pagePuzzle = 1
 pageMax = 2
 indexMap = 0
 
 -- DECOUPAGE DU JEU
-function updatePhase(GameplayPhase)
-    -- Réinitialiser toutes les variables
-    selectPuzzle = false
-    buildingPuzzle = false
-    endPuzzle = false
-    thxPage = false
-
-    -- Activer la bonne variable en fonction de GameplayPhase
-    if GameplayPhase == 1 then
-        cls(0)
-        initPuzzle()
-        buildingPuzzle = true       -- building Puzzle
-    elseif GameplayPhase == 2 then
-        GRID = MAP
-        endPuzzle = true            -- end Puzzle
-    elseif GameplayPhase == 3 then   
-        selectPuzzle = true         -- select Puzzle
-    elseif GameplayPhase == 4 then
-        thxPage = true
-    end
+if swapScreen == 1 then
+    -- cls(0)
 end
 
 -- bouton droit relaché
@@ -487,7 +464,7 @@ selectMAP = {
 }
 
 -- Variable très important pour choisir un puzzle parmi la collection 
-indexMap = 6
+indexMap = 4
 
 -- Définis aléatoirement un puzzle
 function rdmSelectPuzzle(minR, maxR)
@@ -609,21 +586,6 @@ function drawGrid()
             -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
         end
     end
-end
-
--- Fonction pour compter les occurrences des valeurs dans MAP.COLOR.NB
-local function count_values_in_grid(grid, values)
-    local count = 0
-    for i = 1, #grid do
-        for j = 1, #grid[i] do
-            for _, value in ipairs(values) do
-                if grid[i][j] == value then
-                    count = count + 1
-                end
-            end
-        end
-    end
-    return count
 end
 
 function resetGrid(g1)    
@@ -768,7 +730,8 @@ function nextPuzzle()
         if prev_lb and not lb and hover then
            -- print(pos[4], 1, 1, 12)  -- Affiche le nom du cadre cliqué
            indexMap = pos[4]
-            updatePhase(1)
+           swapScreen = 2
+           initPuzzle()
         end
 
         -- Récupère la MAP du puzzle actuel
@@ -845,12 +808,12 @@ function TIC()
     ----------------------------- CHEAT KEY ------------------------
     -- RESET GRID touche T
     if key(20) then
-        updatePhase(1)
+        swapScreen = 1
     end
 
     -- SWAP PUZZLE touche U
     if key(21) then
-        updatePhase(3)
+        swapScreen = 2
     end
 
     -- MODE SOLUCE touche Q
@@ -860,12 +823,24 @@ function TIC()
 
     -- FIN DE PUZZLE touche E
     if key(5) then
-        updatePhase(2)
+        GRID = MAP
     end
     ----------------------------- CHEAT KEY ------------------------
 
+    if swapScreen == 0 then
+        print("pix'Art Puzzle", 100, 50, 12)
+        print("put any button", 100, 70, 12)
+        
+        if prev_lb and not lb then
+            swapScreen = 1
+        end
+
+        -- Mettre à jour prev_lb pour la prochaine frame
+        prev_lb = lb
+    end
+
     -- ## SELECTION PUZZLE        
-    if selectPuzzle then
+    if swapScreen == 1 then
         cls(0)
 
         -- Affiche la collection de puzzle débloqué
@@ -925,7 +900,7 @@ function TIC()
 
 
     -- ## BUILDING PUZZLE
-    if buildingPuzzle then
+    if swapScreen == 2 then
         -- Affiche la grille
         drawGrid()
         
@@ -1021,6 +996,12 @@ function TIC()
         line(210, 128, 235, 115, 12)
         -- Affiche le total de pixel
         print(pixTotal, 220, 125, 12)
+
+        -- FIN DU PUZZLE
+        if pixCount == 0 then
+            GRID = MAP
+            swapScreen = 3
+        end
 
 		-- Affiche le numéro et nom du puzzle
         print("#".. indexMap, 2, 3, 12)
@@ -1145,7 +1126,7 @@ function TIC()
 
     -- ## Condition de VICTOIRE    
     -- Vérifier si MAP et GRID sont identiques avant d'appeler completePuzzle    
-    if watchEqual(MAP, GRID) and endPuzzle then
+    if swapScreen == 3 then
         cls(0)
 
         -- Dessiner la grille
@@ -1175,11 +1156,11 @@ function TIC()
         local noWidth, noHeight = 15, 10
 
         -- page de remerciement 
-        if thxPage then
+        if swapScreen == 4 then
             print("Thanks", 10, 58, 12)
             print("for", 18, 67, 12)
             print("playing", 10, 76, colorN)
-        else            
+        elseif swapScreen == 3 then            
             -- Afficher les messages
             print("BRAVO !!!", 10, 58, 12)
             print("One More", 10, 67, 12)
@@ -1197,8 +1178,7 @@ function TIC()
             colorY = 5  -- Changer la couleur de "Yes"
             print("Yes", yesX, yesY, colorY)
             if prev_lb and not lb  then 
-                endPuzzle = false -- !! INDISPENSABLE POUR QUITTER LA BOUCLE ET CHANGER DE PHASE !!
-                updatePhase(3)
+                swapScreen = 1
             end
         end
 
@@ -1207,7 +1187,7 @@ function TIC()
             colorN = 4  -- Changer la couleur de "No"
             print("No", noX, noY, colorN)
             if lb then 
-                updatePhase(4)
+                swapScreen = 4
             end
         end
 

@@ -74,6 +74,10 @@ v1.13.0 -> SUCCESS :  Nouveau puzzle #10 PLANET1 bug résolue !
 v1.14.0 -> SUCCESS :  Nouveau puzzle #11 CAKE1 bug résolue !
 v1.14.1 -> ACTUALLY :  Building puzzle #12 night heroes
 v1.15.0 -> SUCCESS :  Building puzzle #12 BATMAN1
+v1.15.1 -> SUCCESS :  Clean code -> function count_values_in_grid(grid, values) -> non utilisé
+v1.15.2 -> ACTUALLY :  Bug condition de victoire + refonte changement d'écran
+v1.15.3 -> SUCCESS :  DEBUG -> changement d'écran -> titre -> choix de puzzle
+v1.15.4 -> SUCCESS :  DEBUG -> endPuzzle où mode Soluce
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
