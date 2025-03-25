@@ -1181,8 +1181,10 @@ function TIC()
         if mX >= noX and mX <= noX + noWidth and mY >= noY and mY <= noY + noHeight then
             colorN = 4  -- Changer la couleur de "No"
             print("No", noX, noY, colorN)
-            if lb then 
+            if prev_lb and not lb then
+                -- 4 thxScreen | 0 -> titleScreen
                 swapScreen = 4
+                -- swapScreen = 0
             end
         end
 
@@ -1196,5 +1198,8 @@ function TIC()
         print("for", 18, 67, 12)
         print("playing", 10, 76, 12)
     end   
+
+    -- Mettre à jour prev_lb pour la prochaine frame
+    prev_lb = lb
 
 end

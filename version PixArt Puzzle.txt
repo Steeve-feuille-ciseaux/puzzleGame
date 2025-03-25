@@ -79,6 +79,7 @@ v1.15.2 -> ACTUALLY :  Bug condition de victoire + refonte changement d'écran
 v1.15.3 -> SUCCESS :  DEBUG -> changement d'écran -> titre -> choix de puzzle
 v1.15.4 -> SUCCESS :  DEBUG -> endPuzzle où mode Soluce
 v1.16.0 -> SUCCESS : DEBUG + Gameplay loop 
+v1.16.1 -> SUCCESS : Si le joueur veut arrêter soit on affiche la page de remerciement soit on renvoie la page titre
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
