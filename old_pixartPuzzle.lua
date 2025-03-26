@@ -825,7 +825,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("put any button", 100, 70, 12)
-        print("v1.17.0", 208, 130, 12) -- Version
+        print("v1.17.0", 207, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
