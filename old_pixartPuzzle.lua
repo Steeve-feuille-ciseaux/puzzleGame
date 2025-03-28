@@ -566,7 +566,7 @@ function drawGrid()
 
             if color == 99 then
                 rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 8) 
-                rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+                pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
             else
                 rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
             end    
@@ -825,7 +825,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("put any button", 100, 70, 12)
-        print("v1.17.0", 207, 130, 12) -- Version
+        print("v1.18.0", 207, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1

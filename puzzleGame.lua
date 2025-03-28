@@ -12,11 +12,6 @@ pagePuzzle = 1
 pageMax = 2
 indexMap = 0
 
--- DECOUPAGE DU JEU
-if swapScreen == 1 then
-    -- cls(0)
-end
-
 -- bouton droit relaché
 prev_rb = false
 
@@ -571,7 +566,7 @@ function drawGrid()
 
             if color == 99 then
                 rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 8) 
-                rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
+                pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
             else
                 rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
             end    
@@ -830,6 +825,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("put any button", 100, 70, 12)
+        print("v1.18.0", 207, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -1182,9 +1178,7 @@ function TIC()
             colorN = 4  -- Changer la couleur de "No"
             print("No", noX, noY, colorN)
             if prev_lb and not lb then
-                -- 4 thxScreen | 0 -> titleScreen
-                swapScreen = 4
-                -- swapScreen = 0
+                swapScreen = 0
             end
         end
 

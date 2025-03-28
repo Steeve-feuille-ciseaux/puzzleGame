@@ -82,6 +82,7 @@ v1.16.0 -> SUCCESS : DEBUG + Gameplay loop
 v1.16.1 -> SUCCESS : Si le joueur veut arrêter soit on affiche la page de remerciement soit on renvoie la page titre
 v1.17.0 -> SUCCESS : version du jeu sur le titreScreen + v1.16.1 -> on renvoie la page de titre
 v1.17.1 -> SUCCESS : correction position de l'affichage 
+v1.18.0 -> SUCCESS : Remplacer les grilles par des pixel centrer pour placer les puzzles 
 
 EN COURS : Mode Soluce / Bug condition de victoire
 
