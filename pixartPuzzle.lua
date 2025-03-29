@@ -3,7 +3,7 @@
 -- desc:    Puzzle in Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v1.19.0
+-- version: v1.18.3
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -664,8 +664,8 @@ colorSelect_SIZE = 6 -- Taille icone Selection des couleurs entre 7 et 3
 -- Sélection puzzle / niveau
 function nextPuzzle()        
     local ajustText = 20
-    local iconSize = 60
     local ajustIcon = 15
+    local iconSize = 60
 
     -- Récupère la position et état du clic
     local mX, mY, lb = mouse()
@@ -685,12 +685,6 @@ function nextPuzzle()
             {10, 75, selectMAP[10],10}, {75, 75, selectMAP[11],11}, {140, 75, selectMAP[12],12}  
         },
     }
-
-    -- Vérifie que pagePuzzle est valide
-    if pagePuzzle < 1 or pagePuzzle > #tablePuzzle then
-        print("Erreur: pagePuzzle hors limites!" .. pagePuzzle, 30, 10, 12)
-        return
-    end
 
     -- Dessine les cadres des puzzles
     for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
@@ -742,6 +736,26 @@ function nextPuzzle()
                 end
             end
         end
+
+        -- Afficher un point d'interrogation 
+        local spriteSize = 8  -- La taille du sprite, ajustez selon la taille réelle du sprite
+
+        -- Afficher les sprites côte à côte
+        spr(1, x + 4 + 60 / 2 - spriteSize * 2, y - 7 + 60 / 2 - spriteSize, 1, 1)
+        spr(2, x + 4 + 60 / 2 - spriteSize, y - 7 + 60 / 2 - spriteSize, 1, 1)
+        spr(3, x + 4 + 60 / 2, y - 7 + 60 / 2 - spriteSize, 1, 1)
+        
+        spr(17, x + 4 + 60 / 2 - spriteSize * 2, y - 7 + 60 / 2, 1, 1)
+        spr(18, x + 4 + 60 / 2 - spriteSize, y - 7 + 60 / 2, 1, 1)
+        spr(19, x + 4 + 60 / 2, y - 7 + 60 / 2, 1, 1)
+        
+        spr(33, x + 4 + 60 / 2 - spriteSize * 2, y - 7 + 60 / 2 + 8, 1, 1)
+        spr(34, x + 4 + 60 / 2 - spriteSize, y - 7 + 60 / 2 + 8, 1, 1)
+        spr(35, x + 4 + 60 / 2, y - 7 + 60 / 2 + 8, 1, 1)
+        
+        spr(49, x + 4 + 60 / 2 - spriteSize * 2, y - 7 + 60 / 2 + 16, 1, 1)
+        spr(50, x + 4 + 60 / 2 - spriteSize, y - 7 + 60 / 2 + 16, 1, 1)
+        spr(51, x + 4 + 60 / 2, y - 7 + 60 / 2 + 16, 1, 1)
     end
 
     -- Affichage des infos
@@ -807,7 +821,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("v1.19.0", 207, 130, 12) -- Version
+        print("v1.18.3", 207, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
