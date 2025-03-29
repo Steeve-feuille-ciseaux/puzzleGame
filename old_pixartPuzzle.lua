@@ -23,7 +23,6 @@ cellDelete = false
 
 -- soluce Puzzle
 solucePuzzle = false
-ajuste2 = 20
 timerSoluce = 5 -- Durée d'affichage
 timeRemaining = 0  -- Temps restant pour l'affichage de la soluce
 lastTime = time()  -- Stocke le temps précédent au démarrage
@@ -32,12 +31,12 @@ countSoluce = 0 -- Soluce utilisé
 -- ICONE DELETE 
 -- Position du carré icone en bas à droite
 squarePosX = 222 
-squarePosY = 120 - ajuste2
+squarePosY = 100
 -- Taille du carré 
 squareSize = 7  
 -- Position de la croix en bas à gauche
 crossPosX = 222
-crossPosY = 120 - ajuste2
+crossPosY = 100
 crossSize = 3  -- Taille de la croix
 crossLarg = 0.5 -- Largeur des lignes
 
@@ -470,20 +469,20 @@ end
 
 -- Paramètre de l'ensemble des puzzles
 infoMAP = {
-    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE, MINI.PIXEL_MODE
+    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE
     -- Si la largeur et la hauteur sont incorrect, la progression affichera -1 / -1
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, false},
-	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3, false},
-	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3, false},
-	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2, false},
-	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3, false},
-	{ 3, 88, 8, {09,10,12,07,05,06}, {145,221,388,28,31,27}, "FLOWER2", 38, 33, 3, false},
-	{ 3, 88, 8, {00,10,09,03}, {181,163,321,2}, "ELEPHANT", 29, 38, 3, false},
-	{ 3, 88, 8, {00,02,10,06,01,04,03}, {624,176,96,144,49,144,136}, "PUZZLE2", 39, 39, 3, false},
-	{ 6, 75, 8, {00,10,09,04,03,06,11,02,05,12}, {75,14,15,8,9,18,3,6,13,7}, "SUGAR1", 18, 21, 3, false},
-	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3, false}, -- CELL_SIZE -> 5
-	{ 3, 92, 1, {00,03,04,12,02,05,11,09}, {122,97,16,5,101,183,222,18}, "CAKE1", 31, 45, 3, false}, 
-	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3, false}, 
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3},
+	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3},
+	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3},
+	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2},
+	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3},
+	{ 3, 88, 8, {09,10,12,07,05,06}, {145,221,388,28,31,27}, "FLOWER2", 38, 33, 3},
+	{ 3, 88, 8, {00,10,09,03}, {181,163,321,2}, "ELEPHANT", 29, 38, 3},
+	{ 3, 88, 8, {00,02,10,06,01,04,03}, {624,176,96,144,49,144,136}, "PUZZLE2", 39, 39, 3},
+	{ 6, 75, 8, {00,10,09,04,03,06,11,02,05,12}, {75,14,15,8,9,18,3,6,13,7}, "SUGAR1", 18, 21, 3},
+	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3}, -- CELL_SIZE -> 5
+	{ 3, 92, 1, {00,03,04,12,02,05,11,09}, {122,97,16,5,101,183,222,18}, "CAKE1", 31, 45, 3}, 
+	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3}, 
 }
 
 -- Dessin à réaliser 
@@ -499,7 +498,6 @@ MAP.NAME = infoMAP[indexMap][6]
 MAP.LARG = infoMAP[indexMap][7]
 MAP.HAUT = infoMAP[indexMap][8]
 MAP.MINI = infoMAP[indexMap][9]
-MAP.PIXEL_MODE = infoMAP[indexMap][10]
 
 -- Initialiser la puzzle 
 function initPuzzle()
@@ -515,7 +513,6 @@ function initPuzzle()
     MAP.LARG = infoMAP[indexMap][7]
     MAP.HAUT = infoMAP[indexMap][8]
     MAP.MINI = infoMAP[indexMap][9]
-    MAP.PIXEL_MODE = infoMAP[indexMap][10]
 
     -- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
     GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
@@ -677,12 +674,12 @@ function nextPuzzle()
     -- X, Y, Choix du puzzle, Choix de la case
     local tablePuzzle = {
         {
-            {10, 10, selectMAP[1],1}, {75, 10, selectMAP[2],2}, {140, 10, selectMAP[3],3},
-            {10, 75, selectMAP[4],4}, {75, 75, selectMAP[5],5}, {140, 75, selectMAP[6],6}  
+            {10, 10, selectMAP[1],1,true}, {75, 10, selectMAP[2],2,false}, {140, 10, selectMAP[3],3,false},
+            {10, 75, selectMAP[4],4,false}, {75, 75, selectMAP[5],5,false}, {140, 75, selectMAP[6],6,false}  
         },
         {
-            {10, 10, selectMAP[7],7}, {75, 10, selectMAP[8],8}, {140, 10, selectMAP[9],9},
-            {10, 75, selectMAP[10],10}, {75, 75, selectMAP[11],11}, {140, 75, selectMAP[12],12}  
+            {10, 10, selectMAP[7],7,false}, {75, 10, selectMAP[8],8,false}, {140, 10, selectMAP[9],9,false},
+            {10, 75, selectMAP[10],10,false}, {75, 75, selectMAP[11],11,false}, {140, 75, selectMAP[12],12,false}  
         },
     }
 
@@ -707,6 +704,7 @@ function nextPuzzle()
 
         -- Récupère la MAP du puzzle actuel
         local puzzleMAP = pos[3]
+        local unlockPuzzle = pos[5]
 
         -- Vérifie que la MAP du puzzle existe
         if puzzleMAP then
@@ -728,34 +726,33 @@ function nextPuzzle()
                     local posX = startX + (px - 1) * cellSize
                     local posY = startY + (py - 1) * cellSize
 
-                    if color ~= 99 then
-                        rect(posX, posY, cellSize, cellSize, color)
+                    if unlockPuzzle then
+                        if color ~= 99 then
+                            rect(posX, posY, cellSize, cellSize, color)
+                        else
+                            rect(posX, posY, cellSize, cellSize, 8) 
+                        end
                     else
-                        rect(posX, posY, cellSize, cellSize, 8) 
+                        -- Afficher les sprites côte à côte
+                        spr(1, x + 4 + 60 / 2 - 8 * 2, y - 7 + 60 / 2 - 8, 1, 1)
+                        spr(2, x + 4 + 60 / 2 - 8, y - 7 + 60 / 2 - 8, 1, 1)
+                        spr(3, x + 4 + 60 / 2, y - 7 + 60 / 2 - 8, 1, 1)
+                        
+                        spr(17, x + 4 + 60 / 2 - 8 * 2, y - 7 + 60 / 2, 1, 1)
+                        spr(18, x + 4 + 60 / 2 - 8, y - 7 + 60 / 2, 1, 1)
+                        spr(19, x + 4 + 60 / 2, y - 7 + 60 / 2, 1, 1)
+                        
+                        spr(33, x + 4 + 60 / 2 - 8 * 2, y - 7 + 60 / 2 + 8, 1, 1)
+                        spr(34, x + 4 + 60 / 2 - 8, y - 7 + 60 / 2 + 8, 1, 1)
+                        spr(35, x + 4 + 60 / 2, y - 7 + 60 / 2 + 8, 1, 1)
+                        
+                        spr(49, x + 4 + 60 / 2 - 8 * 2, y - 7 + 60 / 2 + 16, 1, 1)
+                        spr(50, x + 4 + 60 / 2 - 8, y - 7 + 60 / 2 + 16, 1, 1)
+                        spr(51, x + 4 + 60 / 2, y - 7 + 60 / 2 + 16, 1, 1)
                     end
                 end
             end
         end
-
-        -- Afficher un point d'interrogation 
-        local spriteSize = 8  -- La taille du sprite, ajustez selon la taille réelle du sprite
-
-        -- Afficher les sprites côte à côte
-        spr(1, x + 4 + 60 / 2 - spriteSize * 2, y - 7 + 60 / 2 - spriteSize, 1, 1)
-        spr(2, x + 4 + 60 / 2 - spriteSize, y - 7 + 60 / 2 - spriteSize, 1, 1)
-        spr(3, x + 4 + 60 / 2, y - 7 + 60 / 2 - spriteSize, 1, 1)
-        
-        spr(17, x + 4 + 60 / 2 - spriteSize * 2, y - 7 + 60 / 2, 1, 1)
-        spr(18, x + 4 + 60 / 2 - spriteSize, y - 7 + 60 / 2, 1, 1)
-        spr(19, x + 4 + 60 / 2, y - 7 + 60 / 2, 1, 1)
-        
-        spr(33, x + 4 + 60 / 2 - spriteSize * 2, y - 7 + 60 / 2 + 8, 1, 1)
-        spr(34, x + 4 + 60 / 2 - spriteSize, y - 7 + 60 / 2 + 8, 1, 1)
-        spr(35, x + 4 + 60 / 2, y - 7 + 60 / 2 + 8, 1, 1)
-        
-        spr(49, x + 4 + 60 / 2 - spriteSize * 2, y - 7 + 60 / 2 + 16, 1, 1)
-        spr(50, x + 4 + 60 / 2 - spriteSize, y - 7 + 60 / 2 + 16, 1, 1)
-        spr(51, x + 4 + 60 / 2, y - 7 + 60 / 2 + 16, 1, 1)
     end
 
     -- Affichage des infos

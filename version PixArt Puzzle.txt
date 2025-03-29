@@ -85,7 +85,8 @@ v1.17.1 -> SUCCESS : correction position de l'affichage
 v1.18.0 -> SUCCESS : Remplacer les grilles par des pixel centrer pour placer les puzzles 
 v1.18.1 -> SUCCESS : Clean code -> CELL_SIZE + UI selon les puzzle
 v1.18.2 -> SUCCESS : Clean code pour préparer le feature "Lock les puzzles non-fait dans la selection"
-v1.18.3 -> SUCCESS : draw ? on select puzzle
+v1.18.3 -> SUCCESS : draw "?" on select puzzle
+v1.18.4 -> SUCCESS : codé le verroullage du puzzle
 
 EN COURS : Lock les puzzles non-fait dans la selection
 
