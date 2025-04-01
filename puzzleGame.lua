@@ -3,7 +3,7 @@
 -- desc:    Puzzle in Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: 1.00.0
+-- version: v1.18.3
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -23,7 +23,6 @@ cellDelete = false
 
 -- soluce Puzzle
 solucePuzzle = false
-ajuste2 = 20
 timerSoluce = 5 -- Durée d'affichage
 timeRemaining = 0  -- Temps restant pour l'affichage de la soluce
 lastTime = time()  -- Stocke le temps précédent au démarrage
@@ -32,12 +31,12 @@ countSoluce = 0 -- Soluce utilisé
 -- ICONE DELETE 
 -- Position du carré icone en bas à droite
 squarePosX = 222 
-squarePosY = 120 - ajuste2
+squarePosY = 100
 -- Taille du carré 
 squareSize = 7  
 -- Position de la croix en bas à gauche
 crossPosX = 222
-crossPosY = 120 - ajuste2
+crossPosY = 100
 crossSize = 3  -- Taille de la croix
 crossLarg = 0.5 -- Largeur des lignes
 
@@ -470,20 +469,20 @@ end
 
 -- Paramètre de l'ensemble des puzzles
 infoMAP = {
-    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE, MINI.PIXEL_MODE
+    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE
     -- Si la largeur et la hauteur sont incorrect, la progression affichera -1 / -1
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, false},
-	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3, false},
-	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3, false},
-	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2, false},
-	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3, false},
-	{ 3, 88, 8, {09,10,12,07,05,06}, {145,221,388,28,31,27}, "FLOWER2", 38, 33, 3, false},
-	{ 3, 88, 8, {00,10,09,03}, {181,163,321,2}, "ELEPHANT", 29, 38, 3, false},
-	{ 3, 88, 8, {00,02,10,06,01,04,03}, {624,176,96,144,49,144,136}, "PUZZLE2", 39, 39, 3, false},
-	{ 6, 75, 8, {00,10,09,04,03,06,11,02,05,12}, {75,14,15,8,9,18,3,6,13,7}, "SUGAR1", 18, 21, 3, false},
-	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3, false}, -- CELL_SIZE -> 5
-	{ 3, 92, 1, {00,03,04,12,02,05,11,09}, {122,97,16,5,101,183,222,18}, "CAKE1", 31, 45, 3, false}, 
-	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3, false}, 
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3},
+	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3},
+	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3},
+	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2},
+	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3},
+	{ 3, 88, 8, {09,10,12,07,05,06}, {145,221,388,28,31,27}, "FLOWER2", 38, 33, 3},
+	{ 3, 88, 8, {00,10,09,03}, {181,163,321,2}, "ELEPHANT", 29, 38, 3},
+	{ 3, 88, 8, {00,02,10,06,01,04,03}, {624,176,96,144,49,144,136}, "PUZZLE2", 39, 39, 3},
+	{ 6, 75, 8, {00,10,09,04,03,06,11,02,05,12}, {75,14,15,8,9,18,3,6,13,7}, "SUGAR1", 18, 21, 3},
+	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3}, -- CELL_SIZE -> 5
+	{ 3, 92, 1, {00,03,04,12,02,05,11,09}, {122,97,16,5,101,183,222,18}, "CAKE1", 31, 45, 3}, 
+	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3}, 
 }
 
 -- Dessin à réaliser 
@@ -499,8 +498,6 @@ MAP.NAME = infoMAP[indexMap][6]
 MAP.LARG = infoMAP[indexMap][7]
 MAP.HAUT = infoMAP[indexMap][8]
 MAP.MINI = infoMAP[indexMap][9]
-MAP.PIXEL_MODE = infoMAP[indexMap][10]
---MAP.PIXEL_MODE = true
 
 -- Initialiser la puzzle 
 function initPuzzle()
@@ -516,8 +513,6 @@ function initPuzzle()
     MAP.LARG = infoMAP[indexMap][7]
     MAP.HAUT = infoMAP[indexMap][8]
     MAP.MINI = infoMAP[indexMap][9]
-    MAP.PIXEL_MODE = infoMAP[indexMap][10]
-    --MAP.PIXEL_MODE = true
 
     -- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
     GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
@@ -576,9 +571,6 @@ function drawGrid()
                     rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, rainbowColors[rainbowIndex])
                     --rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
             end
-
-            -- Ajouter un point gris au centre de chaque cellule
-            -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
         end
     end
 end
@@ -637,7 +629,6 @@ MINI = {}
 MINI.CELL_SIZE = 2 -- MAP.MINI
 MINI.POS_X = 2  -- Position à gauche
 MINI.POS_Y = 13  -- Position en bas
-MINI.PIXEL = MAP.PIXEL_MODE  -- Mode pixel ou case
 
 function drawMiniGrid()
     for y = 1, #MAP do
@@ -645,30 +636,17 @@ function drawMiniGrid()
             local color = MAP[y][x]
             local posX = MINI.POS_X + (x - 1) * MINI.CELL_SIZE
             local posY = MINI.POS_Y + (y - 1) * MINI.CELL_SIZE
-
-            -- Pisition du pixel non centré
-            local pixX = MINI.POS_X + (x - 1)
-            local pixY = MINI.POS_Y + (y - 1)
                 
             -- Position du pixel au centre 
             local centerX = posX + math.floor(MINI.CELL_SIZE / 2)
             local centerY = posY + math.floor(MINI.CELL_SIZE / 2)
 
-            if MINI.PIXEL then
-                -- Mode Pixel : Affichage d'un seul pixel par cellule
-                if color ~= 99 then
-                    pix(pixX, pixY, color)  -- Pixel au centre
-                else
-                    pix(pixX, pixY, 8)  -- Pixel gris pour cases vides
-                end
+            -- Mode Carré : Affichage de cases colorées avec bordure
+            if color ~= 99 then
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)  -- Remplissage
             else
-                -- Mode Carré : Affichage de cases colorées avec bordure
-                if color ~= 99 then
-                    rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)  -- Remplissage
-                else
-                    rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8) 
-                    pix(centerX, centerY, 13)
-                end
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8) 
+                pix(centerX, centerY, 13)
             end
         end
     end
@@ -677,13 +655,14 @@ end
 
 -- Identifie la couleur
 indexColor = 1
-selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée
+selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée      
+colorSelect_SIZE = 6 -- Taille icone Selection des couleurs entre 7 et 3
 
 -- Sélection puzzle / niveau
 function nextPuzzle()        
     local ajustText = 20
-    local iconSize = 60
     local ajustIcon = 15
+    local iconSize = 60
 
     -- Récupère la position et état du clic
     local mX, mY, lb = mouse()
@@ -695,20 +674,14 @@ function nextPuzzle()
     -- X, Y, Choix du puzzle, Choix de la case
     local tablePuzzle = {
         {
-            {10, 10, selectMAP[1],1}, {75, 10, selectMAP[2],2}, {140, 10, selectMAP[3],3},
-            {10, 75, selectMAP[4],4}, {75, 75, selectMAP[5],5}, {140, 75, selectMAP[6],6}  
+            {10, 10, selectMAP[1],1,true}, {75, 10, selectMAP[2],2,false}, {140, 10, selectMAP[3],3,false},
+            {10, 75, selectMAP[4],4,false}, {75, 75, selectMAP[5],5,false}, {140, 75, selectMAP[6],6,false}  
         },
         {
-            {10, 10, selectMAP[7],7}, {75, 10, selectMAP[8],8}, {140, 10, selectMAP[9],9},
-            {10, 75, selectMAP[10],10}, {75, 75, selectMAP[11],11}, {140, 75, selectMAP[12],12}  
+            {10, 10, selectMAP[7],7,false}, {75, 10, selectMAP[8],8,false}, {140, 10, selectMAP[9],9,false},
+            {10, 75, selectMAP[10],10,false}, {75, 75, selectMAP[11],11,false}, {140, 75, selectMAP[12],12,false}  
         },
     }
-
-    -- Vérifie que pagePuzzle est valide
-    if pagePuzzle < 1 or pagePuzzle > #tablePuzzle then
-        print("Erreur: pagePuzzle hors limites!" .. pagePuzzle, 30, 10, 12)
-        return
-    end
 
     -- Dessine les cadres des puzzles
     for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
@@ -731,6 +704,7 @@ function nextPuzzle()
 
         -- Récupère la MAP du puzzle actuel
         local puzzleMAP = pos[3]
+        local unlockPuzzle = pos[5]
 
         -- Vérifie que la MAP du puzzle existe
         if puzzleMAP then
@@ -752,10 +726,29 @@ function nextPuzzle()
                     local posX = startX + (px - 1) * cellSize
                     local posY = startY + (py - 1) * cellSize
 
-                    if color ~= 99 then
-                        rect(posX, posY, cellSize, cellSize, color)
+                    if unlockPuzzle then
+                        if color ~= 99 then
+                            rect(posX, posY, cellSize, cellSize, color)
+                        else
+                            rect(posX, posY, cellSize, cellSize, 8) 
+                        end
                     else
-                        rect(posX, posY, cellSize, cellSize, 8) 
+                        -- Afficher les sprites côte à côte
+                        spr(1, x + 18, y + 15, 1, 1)
+                        spr(2, x + 26, y + 15, 1, 1)
+                        spr(3, x + 34, y + 15, 1, 1)
+                        
+                        spr(17, x + 18, y + 23, 1, 1)
+                        spr(18, x + 26, y + 23, 1, 1)
+                        spr(19, x + 34, y + 23, 1, 1)
+                        
+                        spr(33, x + 18, y + 31, 1, 1)
+                        spr(34, x + 26, y + 31, 1, 1)
+                        spr(35, x + 34, y + 31, 1, 1)
+                        
+                        spr(49, x + 18, y + 39, 1, 1)
+                        spr(50, x + 26, y + 39, 1, 1)
+                        spr(51, x + 34, y + 39, 1, 1)
                     end
                 end
             end
@@ -801,12 +794,12 @@ function TIC()
     end
 
     ----------------------------- CHEAT KEY ------------------------
-    -- RESET GRID touche T
+    -- SWAP PUZZLE touche T
     if key(20) then
         swapScreen = 1
     end
 
-    -- SWAP PUZZLE touche U
+    -- NEXT PUZZLE touche U
     if key(21) then
         swapScreen = 2
     end
@@ -824,8 +817,8 @@ function TIC()
 
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
-        print("put any button", 100, 70, 12)
-        print("v1.18.0", 207, 130, 12) -- Version
+        print("click anywhere", 100, 70, 12)
+        print("v1.18.3", 207, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -908,9 +901,9 @@ function TIC()
 
         -- Affiche les pixels à placer
         for i, color in ipairs(MAP.COLOR) do
-            local yPos = MAP.POS_Y + (MAP.CELL_SIZE + 2) * (i - 1)  
-            rect(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, color)
-            rectb(215, yPos, MAP.CELL_SIZE, MAP.CELL_SIZE, 13)
+            local yPos = MAP.POS_Y + (colorSelect_SIZE + 2) * (i - 1)
+            rect(214, yPos, colorSelect_SIZE, colorSelect_SIZE, color)
+            rectb(214, yPos, colorSelect_SIZE, colorSelect_SIZE, 13)
 
             -- Compte le nombre de pixels restants pour cette couleur
             local pixelColor = 0
@@ -929,7 +922,7 @@ function TIC()
             totalPixelColor = totalPixelColor + countPixelColor
 
             -- Affiche le nombre de pixels restants pour cette couleur
-            print(countPixelColor, 224, yPos + 1, 12)
+            print(countPixelColor, 223, yPos + 1, 12)
         end
 
         -- Affiche le total des pixels restants
@@ -977,7 +970,7 @@ function TIC()
         end
         
         -- Positionne la flèche pour indiquer la couleur sélectionnée
-        arrowPosY = (MAP.POS_Y + 3) + (MAP.CELL_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
+        arrowPosY = (MAP.POS_Y + 3) + (colorSelect_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
         arrowPosX = 212  -- Position X de la flèche (fixe, juste à gauche des carrés de couleur)
 
         -- Dessiner une flèche pointant vers le carré de couleur sélectionné
@@ -1012,7 +1005,7 @@ function TIC()
             end
         else
             rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
-            rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
+            --rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
         end
 
         -- Si le bouton droite est pressé
@@ -1061,10 +1054,10 @@ function TIC()
             end
 
             -- Vérifier si l'utilisateur clique sur une couleur de la palette
-            if mX >= 215 and mX <= 215 + GRID.CELL_SIZE then
+            if mX >= 215 and mX <= 215 + colorSelect_SIZE then
                 for i, color in ipairs(MAP.COLOR) do
-                    local yPos = MAP.POS_Y + (GRID.CELL_SIZE + 2) * (i - 1)  
-                    if mY >= yPos and mY <= yPos + GRID.CELL_SIZE then
+                    local yPos = MAP.POS_Y + (colorSelect_SIZE + 2) * (i - 1)  
+                    if mY >= yPos and mY <= yPos + colorSelect_SIZE then
                         -- Vérifier si la couleur sélectionnée est encore disponible
                         local pixelCount = 0
                         for y = 1, #GRID do
