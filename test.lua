@@ -45,26 +45,6 @@ rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
 rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
 rainbowTimer = 0 -- Timer pour l'animation
 
--- ICONE SOLUCE
-soluceDraw = {
-    {08,08,08,14,14,14,14,14,08,08,08,08,08,08,08,08},
-    {08,08,14,10,10,10,10,10,14,08,08,08,08,08,08,08},
-    {08,14,10,10,10,10,10,10,10,14,08,08,08,08,08,08},
-    {14,10,10,10,10,10,10,12,10,10,14,08,08,08,08,08},
-    {14,10,10,10,10,10,10,10,12,10,14,08,08,08,08,08},
-    {14,10,12,10,10,10,10,10,12,10,14,08,08,08,08,08},
-    {14,10,12,10,10,10,10,10,10,10,14,08,08,08,08,08},
-    {14,10,10,12,10,10,10,10,10,10,14,08,08,08,08,08},
-    {08,14,10,10,12,12,10,10,10,14,08,08,08,08,08,08},
-    {08,08,14,10,10,10,10,10,14,14,08,08,08,08,08,08},
-    {08,08,08,14,14,14,14,14,08,08,03,03,08,08,08,08},
-    {08,08,08,08,08,08,08,08,08,08,03,03,03,08,08,08},
-    {08,08,08,08,08,08,08,08,08,08,08,03,03,03,08,08},
-    {08,08,08,08,08,08,08,08,08,08,08,08,03,03,03,08},
-    {08,08,08,08,08,08,08,08,08,08,08,08,08,03,03,03},
-    {08,08,08,08,08,08,08,08,08,08,08,08,08,08,03,03},
-}
-
 -- Collection de puzzle
 selectMAP = {
 	{
@@ -485,6 +465,19 @@ infoMAP = {
 	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3}, 
 }
 
+-- Position et selections des puzzles
+-- X, Y, Choix du puzzle, Choix de la case
+tablePuzzle = {
+    {
+        {10, 10, selectMAP[1],1,true}, {75, 10, selectMAP[2],2,false}, {140, 10, selectMAP[3],3,false},
+        {10, 75, selectMAP[4],4,false}, {75, 75, selectMAP[5],5,false}, {140, 75, selectMAP[6],6,false}  
+    },
+    {
+        {10, 10, selectMAP[7],7,false}, {75, 10, selectMAP[8],8,false}, {140, 10, selectMAP[9],9,false},
+        {10, 75, selectMAP[10],10,false}, {75, 75, selectMAP[11],11,false}, {140, 75, selectMAP[12],12,false}  
+    },
+}
+
 -- Dessin à réaliser 
 MAP = selectMAP[indexMap]
 
@@ -669,19 +662,6 @@ function nextPuzzle()
 
     -- Initialiser prev_lb au début pour qu'il garde son état entre les cadres
     if prev_lb == nil then prev_lb = false end  
-
-    -- Position et contenu des puzzles
-    -- X, Y, Choix du puzzle, Choix de la case
-    local tablePuzzle = {
-        {
-            {10, 10, selectMAP[1],1,true}, {75, 10, selectMAP[2],2,false}, {140, 10, selectMAP[3],3,false},
-            {10, 75, selectMAP[4],4,false}, {75, 75, selectMAP[5],5,false}, {140, 75, selectMAP[6],6,false}  
-        },
-        {
-            {10, 10, selectMAP[7],7,false}, {75, 10, selectMAP[8],8,false}, {140, 10, selectMAP[9],9,false},
-            {10, 75, selectMAP[10],10,false}, {75, 75, selectMAP[11],11,false}, {140, 75, selectMAP[12],12,false}  
-        },
-    }
 
     -- Dessine les cadres des puzzles
     for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
@@ -933,27 +913,15 @@ function TIC()
         if totalPixelColor <= 0 then
 
             if solucePuzzle then
-                rect(16, 105, 20, 20, 8)
-                rectb(16, 105, 20, 20, rainbowColors[rainbowIndex])
+                rectb(16, 105, 18, 18, rainbowColors[rainbowIndex])
             else
-                rect(16, 105, 20, 20, 8)
-                rectb(16, 105, 20, 20, 13)
+                rect(16, 105, 18, 18, 13)
             end
-            -- Afficher le tableau dans le rectangle (à partir de la position 16, 105)
-            for y = 0, 15 do
-                for x = 0, 15 do
-                    -- Obtenez la couleur du tableau (99 pour la couleur claire, 00 pour le noir)
-                    local color = soluceDraw[y + 1][x + 1]
-    
-                    -- Déplacer l'affichage à l'intérieur du rectangle
-                    -- Ajout de 16 et 105 pour décaler les pixels à l'intérieur du rectangle
-                    local xpos = 18 + x
-                    local ypos = 107 + y
-    
-                    -- Dessiner un pixel avec la couleur correspondante
-                    pix(xpos, ypos, color)
-                end
-            end
+            -- ICONE SOLUCE
+            spr(4, 17, 106, 1, 1)
+            spr(5, 25, 106, 1, 1)
+            spr(20, 17, 114, 1, 1)
+            spr(21, 25, 114, 1, 1)
 
         else
             solucePuzzle = false
