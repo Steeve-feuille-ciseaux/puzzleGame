@@ -88,9 +88,10 @@ v1.18.2 -> SUCCESS : Clean code pour préparer le feature "Lock les puzzles non-
 v1.18.3 -> SUCCESS : draw "?" on select puzzle
 v1.18.4 -> SUCCESS : codé le verroullage du puzzle
 v1.18.5 -> ACTUALLY : Clean code -> Sprite select puzzle locké
-v1.19.0 -> SUCCESS : Icone soluce remplacé par sprite soluce 
+v1.19.0 -> SUCCESS : Icone soluce remplacé par sprite soluce pour économiser en poids du fichier
+v1.19.1 -> ACTUALLY : start feature Unlock puzzle
 
-EN COURS : Lock les puzzles non-fait dans la selection
+EN COURS : UnLock les puzzles non-fait dans la selection
 
 A FAIRE : 
 - musique et animation

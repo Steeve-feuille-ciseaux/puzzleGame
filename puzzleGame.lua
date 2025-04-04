@@ -656,7 +656,7 @@ function nextPuzzle()
     local ajustText = 20
     local ajustIcon = 15
     local iconSize = 60
-
+    print(tablePuzzle[5], 1, 1, 12) -- !! REPRENDRE ICI
     -- Récupère la position et état du clic
     local mX, mY, lb = mouse()
 
@@ -677,6 +677,7 @@ function nextPuzzle()
         -- Choisir le puzzle
         if prev_lb and not lb and hover then
            -- print(pos[4], 1, 1, 12)  -- Affiche le nom du cadre cliqué
+           tablePuzzle[5] = true -- !! REPRENDRE ICI
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
