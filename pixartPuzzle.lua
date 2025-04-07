@@ -3,7 +3,7 @@
 -- desc:    Puzzle in Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v1.18.3
+-- version: v1.20.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -44,26 +44,6 @@ crossLarg = 0.5 -- Largeur des lignes
 rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
 rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
 rainbowTimer = 0 -- Timer pour l'animation
-
--- ICONE SOLUCE
-soluceDraw = {
-    {08,08,08,14,14,14,14,14,08,08,08,08,08,08,08,08},
-    {08,08,14,10,10,10,10,10,14,08,08,08,08,08,08,08},
-    {08,14,10,10,10,10,10,10,10,14,08,08,08,08,08,08},
-    {14,10,10,10,10,10,10,12,10,10,14,08,08,08,08,08},
-    {14,10,10,10,10,10,10,10,12,10,14,08,08,08,08,08},
-    {14,10,12,10,10,10,10,10,12,10,14,08,08,08,08,08},
-    {14,10,12,10,10,10,10,10,10,10,14,08,08,08,08,08},
-    {14,10,10,12,10,10,10,10,10,10,14,08,08,08,08,08},
-    {08,14,10,10,12,12,10,10,10,14,08,08,08,08,08,08},
-    {08,08,14,10,10,10,10,10,14,14,08,08,08,08,08,08},
-    {08,08,08,14,14,14,14,14,08,08,03,03,08,08,08,08},
-    {08,08,08,08,08,08,08,08,08,08,03,03,03,08,08,08},
-    {08,08,08,08,08,08,08,08,08,08,08,03,03,03,08,08},
-    {08,08,08,08,08,08,08,08,08,08,08,08,03,03,03,08},
-    {08,08,08,08,08,08,08,08,08,08,08,08,08,03,03,03},
-    {08,08,08,08,08,08,08,08,08,08,08,08,08,08,03,03},
-}
 
 -- Collection de puzzle
 selectMAP = {
@@ -485,6 +465,19 @@ infoMAP = {
 	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3}, 
 }
 
+-- Position et selections des puzzles
+-- X, Y, Choix du puzzle, Choix de la case
+tablePuzzle = {
+    {
+        {10, 10, selectMAP[1],1,true}, {75, 10, selectMAP[2],2,false}, {140, 10, selectMAP[3],3,false},
+        {10, 75, selectMAP[4],4,false}, {75, 75, selectMAP[5],5,false}, {140, 75, selectMAP[6],6,false}  
+    },
+    {
+        {10, 10, selectMAP[7],7,false}, {75, 10, selectMAP[8],8,false}, {140, 10, selectMAP[9],9,false},
+        {10, 75, selectMAP[10],10,false}, {75, 75, selectMAP[11],11,false}, {140, 75, selectMAP[12],12,false}  
+    },
+}
+
 -- Dessin à réaliser 
 MAP = selectMAP[indexMap]
 
@@ -663,25 +656,11 @@ function nextPuzzle()
     local ajustText = 20
     local ajustIcon = 15
     local iconSize = 60
-
     -- Récupère la position et état du clic
     local mX, mY, lb = mouse()
 
     -- Initialiser prev_lb au début pour qu'il garde son état entre les cadres
     if prev_lb == nil then prev_lb = false end  
-
-    -- Position et contenu des puzzles
-    -- X, Y, Choix du puzzle, Choix de la case
-    local tablePuzzle = {
-        {
-            {10, 10, selectMAP[1],1,true}, {75, 10, selectMAP[2],2,false}, {140, 10, selectMAP[3],3,false},
-            {10, 75, selectMAP[4],4,false}, {75, 75, selectMAP[5],5,false}, {140, 75, selectMAP[6],6,false}  
-        },
-        {
-            {10, 10, selectMAP[7],7,false}, {75, 10, selectMAP[8],8,false}, {140, 10, selectMAP[9],9,false},
-            {10, 75, selectMAP[10],10,false}, {75, 75, selectMAP[11],11,false}, {140, 75, selectMAP[12],12,false}  
-        },
-    }
 
     -- Dessine les cadres des puzzles
     for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
@@ -697,6 +676,7 @@ function nextPuzzle()
         -- Choisir le puzzle
         if prev_lb and not lb and hover then
            -- print(pos[4], 1, 1, 12)  -- Affiche le nom du cadre cliqué
+           tablePuzzle[pagePuzzle][i][5] = true -- !! REPRENDRE ICI
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
@@ -733,22 +713,22 @@ function nextPuzzle()
                             rect(posX, posY, cellSize, cellSize, 8) 
                         end
                     else
-                        -- Afficher les sprites côte à côte
-                        spr(1, x + 4 + 60 / 2 - 8 * 2, y - 7 + 60 / 2 - 8, 1, 1)
-                        spr(2, x + 4 + 60 / 2 - 8, y - 7 + 60 / 2 - 8, 1, 1)
-                        spr(3, x + 4 + 60 / 2, y - 7 + 60 / 2 - 8, 1, 1)
+                        -- Afficher les sprites côte à côte !! REPRENDRE ICI Cleaning code
+                        spr(1, x + 18, y + 15, 1, 1)
+                        spr(2, x + 26, y + 15, 1, 1)
+                        spr(3, x + 34, y + 15, 1, 1)
                         
-                        spr(17, x + 4 + 60 / 2 - 8 * 2, y - 7 + 60 / 2, 1, 1)
-                        spr(18, x + 4 + 60 / 2 - 8, y - 7 + 60 / 2, 1, 1)
-                        spr(19, x + 4 + 60 / 2, y - 7 + 60 / 2, 1, 1)
+                        spr(17, x + 18, y + 23, 1, 1)
+                        spr(18, x + 26, y + 23, 1, 1)
+                        spr(19, x + 34, y + 23, 1, 1)
                         
-                        spr(33, x + 4 + 60 / 2 - 8 * 2, y - 7 + 60 / 2 + 8, 1, 1)
-                        spr(34, x + 4 + 60 / 2 - 8, y - 7 + 60 / 2 + 8, 1, 1)
-                        spr(35, x + 4 + 60 / 2, y - 7 + 60 / 2 + 8, 1, 1)
+                        spr(33, x + 18, y + 31, 1, 1)
+                        spr(34, x + 26, y + 31, 1, 1)
+                        spr(35, x + 34, y + 31, 1, 1)
                         
-                        spr(49, x + 4 + 60 / 2 - 8 * 2, y - 7 + 60 / 2 + 16, 1, 1)
-                        spr(50, x + 4 + 60 / 2 - 8, y - 7 + 60 / 2 + 16, 1, 1)
-                        spr(51, x + 4 + 60 / 2, y - 7 + 60 / 2 + 16, 1, 1)
+                        spr(49, x + 18, y + 39, 1, 1)
+                        spr(50, x + 26, y + 39, 1, 1)
+                        spr(51, x + 34, y + 39, 1, 1)
                     end
                 end
             end
@@ -818,7 +798,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("v1.18.3", 207, 130, 12) -- Version
+        print("v1.20.0", 206, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -933,27 +913,15 @@ function TIC()
         if totalPixelColor <= 0 then
 
             if solucePuzzle then
-                rect(16, 105, 20, 20, 8)
-                rectb(16, 105, 20, 20, rainbowColors[rainbowIndex])
+                rectb(16, 105, 18, 18, rainbowColors[rainbowIndex])
             else
-                rect(16, 105, 20, 20, 8)
-                rectb(16, 105, 20, 20, 13)
+                rect(16, 105, 18, 18, 13)
             end
-            -- Afficher le tableau dans le rectangle (à partir de la position 16, 105)
-            for y = 0, 15 do
-                for x = 0, 15 do
-                    -- Obtenez la couleur du tableau (99 pour la couleur claire, 00 pour le noir)
-                    local color = soluceDraw[y + 1][x + 1]
-    
-                    -- Déplacer l'affichage à l'intérieur du rectangle
-                    -- Ajout de 16 et 105 pour décaler les pixels à l'intérieur du rectangle
-                    local xpos = 18 + x
-                    local ypos = 107 + y
-    
-                    -- Dessiner un pixel avec la couleur correspondante
-                    pix(xpos, ypos, color)
-                end
-            end
+            -- ICONE SOLUCE
+            spr(4, 17, 106, 1, 1)
+            spr(5, 25, 106, 1, 1)
+            spr(20, 17, 114, 1, 1)
+            spr(21, 25, 114, 1, 1)
 
         else
             solucePuzzle = false

@@ -444,6 +444,7 @@ indexMap = 4
 function rdmSelectPuzzle(minR, maxR)
     indexMap = math.random(minR, maxR)
 end
+
 -- Execution aléatoire d'un puzzle
 --rdmSelectPuzzle(1, 4)
 
@@ -466,15 +467,15 @@ infoMAP = {
 }
 
 -- Position et selections des puzzles
--- X, Y, Choix du puzzle, Choix de la case
+-- X, Y, Choix du puzzle, Choix de la case, Unlock, keyUnlock
 tablePuzzle = {
     {
-        {10, 10, selectMAP[1],1,true}, {75, 10, selectMAP[2],2,false}, {140, 10, selectMAP[3],3,false},
-        {10, 75, selectMAP[4],4,false}, {75, 75, selectMAP[5],5,false}, {140, 75, selectMAP[6],6,false}  
+        {10, 10, selectMAP[1],1,true,true}, {75, 10, selectMAP[2],2,false,true}, {140, 10, selectMAP[3],3,false,true},
+        {10, 75, selectMAP[4],4,false,true}, {75, 75, selectMAP[5],5,false,true}, {140, 75, selectMAP[6],6,false,true}  
     },
     {
-        {10, 10, selectMAP[7],7,false}, {75, 10, selectMAP[8],8,false}, {140, 10, selectMAP[9],9,false},
-        {10, 75, selectMAP[10],10,false}, {75, 75, selectMAP[11],11,false}, {140, 75, selectMAP[12],12,false}  
+        {10, 10, selectMAP[7],7,false,true}, {75, 10, selectMAP[8],8,false,true}, {140, 10, selectMAP[9],9,false,true},
+        {10, 75, selectMAP[10],10,false,true}, {75, 75, selectMAP[11],11,false,true}, {140, 75, selectMAP[12],12,false,false}  
     },
 }
 
@@ -675,16 +676,34 @@ function nextPuzzle()
 
         -- Choisir le puzzle
         if prev_lb and not lb and hover then
-           -- print(pos[4], 1, 1, 12)  -- Affiche le nom du cadre cliqué
-           tablePuzzle[pagePuzzle][i][5] = true -- !! REPRENDRE ICI
+           tablePuzzle[pagePuzzle][i][5] = true 
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
+           
+            -- REPRENDRE ICI 
+           if countLock >= 11 then
+               keyLockPuzzle = true
+           end
         end
 
+        -- REPRENDRE ICI 
+        countLock = 0 -- Nombre de puzzle déverrouillé
+        -- Parcours tous les puzzle déverrouillé
+        for pagePuzzleIndex, page in ipairs(tablePuzzle) do
+            for i, cell in ipairs(page) do
+                -- Incrementé chaque puzzle déverrouillé
+                if cell[5] == true then
+                    countLock = countLock + 1
+                end
+            end
+        end
+
+        print(countLock, 1, 1, 12) -- REPRENDRE ICI 
         -- Récupère la MAP du puzzle actuel
         local puzzleMAP = pos[3]
         local unlockPuzzle = pos[5]
+        local keyLockPuzzle = pos[6]
 
         -- Vérifie que la MAP du puzzle existe
         if puzzleMAP then
@@ -698,7 +717,6 @@ function nextPuzzle()
             -- Calcul du point de départ pour centrer
             local startX = x + (iconSize - (cols * cellSize)) / 2
             local startY = y + (iconSize - (rows * cellSize)) / 2
-
             -- Dessine la miniature du puzzle
             for py = 1, rows do
                 for px = 1, cols do
@@ -706,14 +724,13 @@ function nextPuzzle()
                     local posX = startX + (px - 1) * cellSize
                     local posY = startY + (py - 1) * cellSize
 
-                    if unlockPuzzle then
+                    if unlockPuzzle and keyLockPuzzle then
                         if color ~= 99 then
                             rect(posX, posY, cellSize, cellSize, color)
                         else
                             rect(posX, posY, cellSize, cellSize, 8) 
                         end
-                    else
-                        -- Afficher les sprites côte à côte !! REPRENDRE ICI Cleaning code
+                    elseif unlockPuzzle == false and keyLockPuzzle then
                         spr(1, x + 18, y + 15, 1, 1)
                         spr(2, x + 26, y + 15, 1, 1)
                         spr(3, x + 34, y + 15, 1, 1)
@@ -729,6 +746,11 @@ function nextPuzzle()
                         spr(49, x + 18, y + 39, 1, 1)
                         spr(50, x + 26, y + 39, 1, 1)
                         spr(51, x + 34, y + 39, 1, 1)
+                    elseif unlockPuzzle == false and keyLockPuzzle == false then
+                        spr(36, x + 14, y + 14, 2, 2)
+                        spr(37, x + 30, y + 14, 2, 2) 
+                        spr(52, x + 14, y + 30, 2, 2)
+                        spr(53, x + 30, y + 30, 2, 2) 
                     end
                 end
             end
@@ -904,10 +926,6 @@ function TIC()
             -- Affiche le nombre de pixels restants pour cette couleur
             print(countPixelColor, 223, yPos + 1, 12)
         end
-
-        -- Affiche le total des pixels restants
-        -- print("Total: " .. totalPixelColor, 100, 130, 12)
-        -- print(solucePuzzle, 50, 130, 12)
 
         -- Apparaitre Icone Mode Soluce
         if totalPixelColor <= 0 then
@@ -1098,9 +1116,6 @@ function TIC()
                 else
                     rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
                 end
-    
-                -- Ajouter un point gris au centre de chaque cellule
-                -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
             end
         end
 
@@ -1121,9 +1136,6 @@ function TIC()
             print("Yes", yesX, yesY, colorY)
             print("No", noX, noY, colorN)
         end
-
-        -- Récupérer la position de la souris et l'état des clics
-        --mX, mY, lb, _, rb, _, _ = mouse()
 
         -- Si la souris survole "Yes"
         if mX >= yesX and mX <= yesX + yesWidth and mY >= yesY and mY <= yesY + yesHeight then
