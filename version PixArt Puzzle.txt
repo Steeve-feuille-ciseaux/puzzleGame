@@ -90,10 +90,12 @@ v1.18.4 -> SUCCESS : codé le verroullage du puzzle
 v1.18.5 -> ACTUALLY : Clean code -> Sprite select puzzle locké
 v1.19.0 -> SUCCESS : Icone soluce remplacé par sprite soluce pour économiser en poids du fichier
 v1.19.1 -> ACTUALLY : start feature Unlock puzzle
+v1.20.0 -> SUCCESS : UnLock les puzzles non-fait dans la selection
 
-EN COURS : UnLock les puzzles non-fait dans la selection
+EN COURS : 
 
 A FAIRE : 
+- finir tous les puzzle pour débloquer le dernier
 - musique et animation
 - reprendre la documention du doc via gitbook
 - Affichez le niveau de difficulter du puzzle

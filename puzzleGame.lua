@@ -3,7 +3,7 @@
 -- desc:    Puzzle in Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v1.18.5
+-- version: v1.20.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -656,7 +656,6 @@ function nextPuzzle()
     local ajustText = 20
     local ajustIcon = 15
     local iconSize = 60
-    print(tablePuzzle[5], 1, 1, 12) -- !! REPRENDRE ICI
     -- Récupère la position et état du clic
     local mX, mY, lb = mouse()
 
@@ -677,7 +676,7 @@ function nextPuzzle()
         -- Choisir le puzzle
         if prev_lb and not lb and hover then
            -- print(pos[4], 1, 1, 12)  -- Affiche le nom du cadre cliqué
-           tablePuzzle[5] = true -- !! REPRENDRE ICI
+           tablePuzzle[pagePuzzle][i][5] = true -- !! REPRENDRE ICI
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
@@ -799,7 +798,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("v1.18.5", 207, 130, 12) -- Version
+        print("v1.20.0", 206, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
