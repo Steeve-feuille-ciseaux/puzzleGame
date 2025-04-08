@@ -3,7 +3,7 @@
 -- desc:    Puzzle in Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v1.20.0
+-- version: v1.20.2
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -680,15 +680,12 @@ function nextPuzzle()
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
-           
-            -- REPRENDRE ICI 
-           if countLock >= 11 then
-               keyLockPuzzle = true
-           end
         end
 
         -- REPRENDRE ICI 
+        local keyLockPuzzle = pos[6]
         countLock = 0 -- Nombre de puzzle déverrouillé
+
         -- Parcours tous les puzzle déverrouillé
         for pagePuzzleIndex, page in ipairs(tablePuzzle) do
             for i, cell in ipairs(page) do
@@ -699,11 +696,13 @@ function nextPuzzle()
             end
         end
 
-        print(countLock, 1, 1, 12) -- REPRENDRE ICI 
+        if countLock >= 11 then
+            tablePuzzle[2][6][6] = true
+        end
+
         -- Récupère la MAP du puzzle actuel
         local puzzleMAP = pos[3]
         local unlockPuzzle = pos[5]
-        local keyLockPuzzle = pos[6]
 
         -- Vérifie que la MAP du puzzle existe
         if puzzleMAP then
@@ -820,7 +819,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("v1.20.0", 206, 130, 12) -- Version
+        print("v1.20.2", 206, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
