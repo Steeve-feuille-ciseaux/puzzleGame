@@ -1,9 +1,9 @@
 -- title:   pixArt Puzzle
 -- author:  Steeve-feuille-ciseaux
--- desc:    Puzzle in Pixel
+-- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v1.20.0
+-- version: v2.00.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -444,6 +444,7 @@ indexMap = 4
 function rdmSelectPuzzle(minR, maxR)
     indexMap = math.random(minR, maxR)
 end
+
 -- Execution aléatoire d'un puzzle
 --rdmSelectPuzzle(1, 4)
 
@@ -466,15 +467,15 @@ infoMAP = {
 }
 
 -- Position et selections des puzzles
--- X, Y, Choix du puzzle, Choix de la case
+-- X, Y, Choix du puzzle, Choix de la case, Unlock, keyUnlock, Difficulty
 tablePuzzle = {
     {
-        {10, 10, selectMAP[1],1,true}, {75, 10, selectMAP[2],2,false}, {140, 10, selectMAP[3],3,false},
-        {10, 75, selectMAP[4],4,false}, {75, 75, selectMAP[5],5,false}, {140, 75, selectMAP[6],6,false}  
+        {10, 10, selectMAP[1],1, true, true, "easy"}, {75, 10, selectMAP[2],2, false, true, "easy"}, {140, 10, selectMAP[3],3, false, true, "middle"},
+        {10, 75, selectMAP[4],4, false, true, "hard"}, {75, 75, selectMAP[5],5, false,true, "middle"}, {140, 75, selectMAP[6],6, false, true, "hard"}  
     },
     {
-        {10, 10, selectMAP[7],7,false}, {75, 10, selectMAP[8],8,false}, {140, 10, selectMAP[9],9,false},
-        {10, 75, selectMAP[10],10,false}, {75, 75, selectMAP[11],11,false}, {140, 75, selectMAP[12],12,false}  
+        {10, 10, selectMAP[7],7, false, true, "easy"}, {75, 10, selectMAP[8],8, false, true, "hard"}, {140, 10, selectMAP[9],9, false, true, "easy"},
+        {10, 75, selectMAP[10],10, false, true, "middle"}, {75, 75, selectMAP[11],11, false, true, "hard"}, {140, 75, selectMAP[12],12, false, false, "middle"}  
     },
 }
 
@@ -670,16 +671,34 @@ function nextPuzzle()
         local hover = mX >= x and mX <= x + iconSize and mY >= y and mY <= y + iconSize
         local fillColor = hover and 3 or 13  
 
+        -- Puzzle accès refusé
+        local keyLockPuzzle = pos[6]
+        countLock = 0 -- Nombre de puzzle déverrouillé
+
         rect(x, y, iconSize, iconSize, 8)  
         rectb(x, y, iconSize, iconSize, fillColor)
 
         -- Choisir le puzzle
-        if prev_lb and not lb and hover then
-           -- print(pos[4], 1, 1, 12)  -- Affiche le nom du cadre cliqué
-           tablePuzzle[pagePuzzle][i][5] = true -- !! REPRENDRE ICI
+        if prev_lb and not lb and hover and pos[6] then
+           tablePuzzle[pagePuzzle][i][5] = true 
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
+        end
+
+
+        -- Parcours tous les puzzle déverrouillé
+        for pagePuzzleIndex, page in ipairs(tablePuzzle) do
+            for i, cell in ipairs(page) do
+                -- Incrementé chaque puzzle déverrouillé
+                if cell[5] == true then
+                    countLock = countLock + 1
+                end
+            end
+        end
+
+        if countLock >= 11 then
+            tablePuzzle[2][6][6] = true
         end
 
         -- Récupère la MAP du puzzle actuel
@@ -698,22 +717,21 @@ function nextPuzzle()
             -- Calcul du point de départ pour centrer
             local startX = x + (iconSize - (cols * cellSize)) / 2
             local startY = y + (iconSize - (rows * cellSize)) / 2
-
             -- Dessine la miniature du puzzle
             for py = 1, rows do
                 for px = 1, cols do
                     local color = puzzleMAP[py][px]
                     local posX = startX + (px - 1) * cellSize
                     local posY = startY + (py - 1) * cellSize
+                    local Difficulty = pos[7]
 
-                    if unlockPuzzle then
+                    if unlockPuzzle and keyLockPuzzle then
                         if color ~= 99 then
                             rect(posX, posY, cellSize, cellSize, color)
                         else
                             rect(posX, posY, cellSize, cellSize, 8) 
                         end
-                    else
-                        -- Afficher les sprites côte à côte !! REPRENDRE ICI Cleaning code
+                    elseif unlockPuzzle == false and keyLockPuzzle then
                         spr(1, x + 18, y + 15, 1, 1)
                         spr(2, x + 26, y + 15, 1, 1)
                         spr(3, x + 34, y + 15, 1, 1)
@@ -729,6 +747,19 @@ function nextPuzzle()
                         spr(49, x + 18, y + 39, 1, 1)
                         spr(50, x + 26, y + 39, 1, 1)
                         spr(51, x + 34, y + 39, 1, 1)
+                    elseif unlockPuzzle == false and keyLockPuzzle == false then
+                        spr(36, x + 14, y + 14, 2, 2)
+                        spr(37, x + 30, y + 14, 2, 2) 
+                        spr(52, x + 14, y + 30, 2, 2)
+                        spr(53, x + 30, y + 30, 2, 2) 
+                    end
+
+                    if Difficulty == "easy" then
+                        spr(16, x + 50, y + 2, 1, 1)
+                    elseif Difficulty == "middle" then
+                        spr(0, x + 50, y + 2, 1, 1)
+                    elseif Difficulty == "hard" then
+                        spr(32, x + 50, y + 2, 1, 1)
                     end
                 end
             end
@@ -798,7 +829,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("v1.20.0", 206, 130, 12) -- Version
+        print("v2.00.0", 205, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -904,10 +935,6 @@ function TIC()
             -- Affiche le nombre de pixels restants pour cette couleur
             print(countPixelColor, 223, yPos + 1, 12)
         end
-
-        -- Affiche le total des pixels restants
-        -- print("Total: " .. totalPixelColor, 100, 130, 12)
-        -- print(solucePuzzle, 50, 130, 12)
 
         -- Apparaitre Icone Mode Soluce
         if totalPixelColor <= 0 then
@@ -1098,9 +1125,6 @@ function TIC()
                 else
                     rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
                 end
-    
-                -- Ajouter un point gris au centre de chaque cellule
-                -- pix(posX + GRID.CELL_SIZE // 2, posY + GRID.CELL_SIZE // 2, 13)
             end
         end
 
@@ -1121,9 +1145,6 @@ function TIC()
             print("Yes", yesX, yesY, colorY)
             print("No", noX, noY, colorN)
         end
-
-        -- Récupérer la position de la souris et l'état des clics
-        --mX, mY, lb, _, rb, _, _ = mouse()
 
         -- Si la souris survole "Yes"
         if mX >= yesX and mX <= yesX + yesWidth and mY >= yesY and mY <= yesY + yesHeight then
