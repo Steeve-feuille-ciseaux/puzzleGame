@@ -93,6 +93,7 @@ v1.19.1 -> ACTUALLY : start feature Unlock puzzle
 v1.20.0 -> SUCCESS : UnLock les puzzles non-fait dans la selection
 v1.20.1 -> SUCCESS : sprite du caneda integré + ajout keyUnlock dans la table de sélection 
 v1.20.2 -> SUCCESS : Débloquer le dernier puzzle lorsque le reste sont fait 
+v1.21.0 -> SUCCESS : Débloquer le dernier puzzle lorsque le reste sont fait 
 
 EN COURS : Restreindre l'accès au dernier puzzle
 

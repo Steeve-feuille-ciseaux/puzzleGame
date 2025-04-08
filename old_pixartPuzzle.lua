@@ -3,7 +3,7 @@
 -- desc:    Puzzle in Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v1.20.2
+-- version: v1.21.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -671,20 +671,21 @@ function nextPuzzle()
         local hover = mX >= x and mX <= x + iconSize and mY >= y and mY <= y + iconSize
         local fillColor = hover and 3 or 13  
 
+        -- Puzzle accès refusé
+        local keyLockPuzzle = pos[6]
+        countLock = 0 -- Nombre de puzzle déverrouillé
+
         rect(x, y, iconSize, iconSize, 8)  
         rectb(x, y, iconSize, iconSize, fillColor)
 
         -- Choisir le puzzle
-        if prev_lb and not lb and hover then
+        if prev_lb and not lb and hover and pos[6] then
            tablePuzzle[pagePuzzle][i][5] = true 
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
         end
 
-        -- REPRENDRE ICI 
-        local keyLockPuzzle = pos[6]
-        countLock = 0 -- Nombre de puzzle déverrouillé
 
         -- Parcours tous les puzzle déverrouillé
         for pagePuzzleIndex, page in ipairs(tablePuzzle) do
@@ -819,7 +820,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("v1.20.2", 206, 130, 12) -- Version
+        print("v1.21.0", 206, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
