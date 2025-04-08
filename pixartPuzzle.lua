@@ -1,9 +1,9 @@
 -- title:   pixArt Puzzle
 -- author:  Steeve-feuille-ciseaux
--- desc:    Puzzle in Pixel
+-- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v1.21.0
+-- version: v2.00.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -820,7 +820,7 @@ function TIC()
     if swapScreen == 0 then
         print("pix'Art Puzzle", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("v1.21.0", 206, 130, 12) -- Version
+        print("v2.00.0", 206, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1

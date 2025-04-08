@@ -93,15 +93,20 @@ v1.19.1 -> ACTUALLY : start feature Unlock puzzle
 v1.20.0 -> SUCCESS : UnLock les puzzles non-fait dans la selection
 v1.20.1 -> SUCCESS : sprite du caneda integré + ajout keyUnlock dans la table de sélection 
 v1.20.2 -> SUCCESS : Débloquer le dernier puzzle lorsque le reste sont fait 
-v1.21.0 -> SUCCESS : Débloquer le dernier puzzle lorsque le reste sont fait 
+v1.21.0 -> SUCCESS : Restreindre l'accès au dernier puzzle
+v1.21.1 -> ACTUALLY : Affichez le niveau de difficulter du puzzle 1/2
 
-EN COURS : Restreindre l'accès au dernier puzzle
+-- BETA
+
+v2.00.0 -> 
+
+
+EN COURS : Polish avant la phase Beta -> Affichez le niveau de difficulter du puzzle
 
 A FAIRE : 
 - finir tous les puzzle pour débloquer le dernier
 - musique et animation
 - reprendre la documention du doc via gitbook
-- Affichez le niveau de difficulter du puzzle
 
 REFAIRE ABSOLUMENT : 
 
@@ -132,3 +137,7 @@ ABONDONNE / PAUSE :
 - v1.03.3
 - v1.04.1
 - v1.06.0
+
+RETOUR BETA : 
+Ajouter des repère chiffre colonne + ligne
+Feature abondonnée a ajouté
