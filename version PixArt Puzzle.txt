@@ -99,10 +99,10 @@ v1.22.0 -> ACTUALLY : Affichez le niveau de difficulté du puzzle 2/2
 
 -- BETA
 
-v2.00.0 -> 
+v2.00.0 -> Polish avant la phase Beta 
 
 
-EN COURS : Polish avant la phase Beta 
+EN COURS : 
 A FAIRE : 
 - musique et animation
 - reprendre la documention du doc via gitbook

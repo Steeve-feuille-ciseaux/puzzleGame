@@ -1,4 +1,4 @@
--- title:   pixArt Puzzle
+-- title:   Pen Pixel
 -- author:  Steeve-feuille-ciseaux
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
@@ -467,15 +467,15 @@ infoMAP = {
 }
 
 -- Position et selections des puzzles
--- X, Y, Choix du puzzle, Choix de la case, Unlock, keyUnlock
+-- X, Y, Choix du puzzle, Choix de la case, Unlock, keyUnlock, Difficulty
 tablePuzzle = {
     {
-        {10, 10, selectMAP[1],1,true,true}, {75, 10, selectMAP[2],2,false,true}, {140, 10, selectMAP[3],3,false,true},
-        {10, 75, selectMAP[4],4,false,true}, {75, 75, selectMAP[5],5,false,true}, {140, 75, selectMAP[6],6,false,true}  
+        {10, 10, selectMAP[1],1, true, true, "easy"}, {75, 10, selectMAP[2],2, false, true, "easy"}, {140, 10, selectMAP[3],3, false, true, "middle"},
+        {10, 75, selectMAP[4],4, false, true, "hard"}, {75, 75, selectMAP[5],5, false,true, "middle"}, {140, 75, selectMAP[6],6, false, true, "hard"}  
     },
     {
-        {10, 10, selectMAP[7],7,false,true}, {75, 10, selectMAP[8],8,false,true}, {140, 10, selectMAP[9],9,false,true},
-        {10, 75, selectMAP[10],10,false,true}, {75, 75, selectMAP[11],11,false,true}, {140, 75, selectMAP[12],12,false,false}  
+        {10, 10, selectMAP[7],7, false, true, "easy"}, {75, 10, selectMAP[8],8, false, true, "hard"}, {140, 10, selectMAP[9],9, false, true, "easy"},
+        {10, 75, selectMAP[10],10, false, true, "middle"}, {75, 75, selectMAP[11],11, false, true, "hard"}, {140, 75, selectMAP[12],12, false, false, "middle"}  
     },
 }
 
@@ -673,6 +673,7 @@ function nextPuzzle()
 
         -- Puzzle accès refusé
         local keyLockPuzzle = pos[6]
+        local Difficulty = pos[7]
         countLock = 0 -- Nombre de puzzle déverrouillé
 
         rect(x, y, iconSize, iconSize, 8)  
@@ -754,6 +755,14 @@ function nextPuzzle()
                     end
                 end
             end
+
+            if Difficulty == "easy" then
+                spr(0, x + 50, y + 2, 1, 1)
+            elseif Difficulty == "middle" then 
+                spr(16, x + 50, y + 2, 1, 1)
+            elseif Difficulty == "hard" then
+                spr(32, x + 50, y + 2, 1, 1)
+            end
         end
     end
 
@@ -818,9 +827,9 @@ function TIC()
     ----------------------------- CHEAT KEY ------------------------
 
     if swapScreen == 0 then
-        print("pix'Art Puzzle", 100, 50, 12)
+        print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("v2.00.0", 206, 130, 12) -- Version
+        print("Demo v2.00.0", 1, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1

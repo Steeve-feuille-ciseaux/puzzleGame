@@ -1,4 +1,4 @@
--- title:   pixArt Puzzle
+-- title:   Pen Pixel
 -- author:  Steeve-feuille-ciseaux
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
@@ -673,6 +673,7 @@ function nextPuzzle()
 
         -- Puzzle accès refusé
         local keyLockPuzzle = pos[6]
+        local Difficulty = pos[7]
         countLock = 0 -- Nombre de puzzle déverrouillé
 
         rect(x, y, iconSize, iconSize, 8)  
@@ -754,6 +755,14 @@ function nextPuzzle()
                     end
                 end
             end
+
+            if Difficulty == "easy" then
+                spr(0, x + 50, y + 2, 1, 1)
+            elseif Difficulty == "middle" then 
+                spr(16, x + 50, y + 2, 1, 1)
+            elseif Difficulty == "hard" then
+                spr(32, x + 50, y + 2, 1, 1)
+            end
         end
     end
 
@@ -818,9 +827,9 @@ function TIC()
     ----------------------------- CHEAT KEY ------------------------
 
     if swapScreen == 0 then
-        print("pix'Art Puzzle", 100, 50, 12)
+        print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("v2.00.0", 205, 130, 12) -- Version
+        print("Demo v2.00.0", 1, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
