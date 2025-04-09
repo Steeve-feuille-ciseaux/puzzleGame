@@ -10,7 +10,7 @@
 swapScreen = 0 -- DECOUPAGE DU JEU
 pagePuzzle = 1
 pageMax = 2
-indexMap = 0
+indexMap = 1
 
 -- bouton droit relaché
 prev_rb = false
@@ -437,9 +437,6 @@ selectMAP = {
     },
 }
 
--- Variable très important pour choisir un puzzle parmi la collection 
-indexMap = 4
-
 -- Définis aléatoirement un puzzle
 function rdmSelectPuzzle(minR, maxR)
     indexMap = math.random(minR, maxR)
@@ -678,7 +675,7 @@ function nextPuzzle()
         rectb(x, y, iconSize, iconSize, fillColor)
 
         -- Choisir le puzzle
-        if prev_lb and not lb and hover and pos[6] then
+        if prev_lb and not lb and hover and keyLockPuzzle then
            tablePuzzle[pagePuzzle][i][5] = true 
            indexMap = pos[4]
            swapScreen = 2
@@ -803,9 +800,20 @@ function TIC()
     end
 
     ----------------------------- CHEAT KEY ------------------------
+
+    -- MODE SOLUCE touche Q
+    if key(17) then
+        solucePuzzle = true
+    end
+
     -- SWAP PUZZLE touche T
     if key(20) then
         swapScreen = 1
+    end
+
+    -- FIN DE PUZZLE touche E
+    if key(5) then
+        GRID = MAP
     end
 
     -- NEXT PUZZLE touche U
@@ -813,21 +821,16 @@ function TIC()
         swapScreen = 2
     end
 
-    -- MODE SOLUCE touche Q
-    if key(17) then
-        solucePuzzle = true
-    end
-
-    -- FIN DE PUZZLE touche E
-    if key(5) then
-        GRID = MAP
+    -- ABORT PUZZLE touche SPACE où touche ENTER
+    if key(48) or key(50) then
+        swapScreen = 5
     end
     ----------------------------- CHEAT KEY ------------------------
 
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("Demo v2.01.0", 1, 130, 12) -- Version
+        print("Demo v2.2", 1, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -1185,6 +1188,30 @@ function TIC()
         print("for", 18, 67, 12)
         print("playing", 10, 76, 12)
     end   
+
+    if swapScreen == 5 then
+        cls(0)
+        print("Abort the puzzle ?", 70, 58, 12)
+        print("Yes", 95, 67, 12)
+        print("No", 130, 67, 12)
+        
+        -- survole Yes
+        if mX >= 95 and mX <= 95 + 17 and mY >= 67 and mY <= 67 + 10 then
+            print("Yes", 95, 67, 5)
+            if prev_lb and not lb then
+                tablePuzzle[pagePuzzle][indexMap][5] = false 
+                swapScreen = 0
+            end
+        end
+
+        -- survole No
+        if mX >= 130 and mX <= 130 + 12 and mY >= 67 and mY <= 67 + 10 then
+            print("No", 130, 67, 4)
+            if prev_lb and not lb then
+                swapScreen = 2
+            end
+        end
+    end
 
     -- Mettre à jour prev_lb pour la prochaine frame
     prev_lb = lb
