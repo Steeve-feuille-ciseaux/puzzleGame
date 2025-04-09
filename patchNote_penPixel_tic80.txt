@@ -102,6 +102,7 @@ v1.22.0 -> SUCCESS : Affichez le niveau de difficulté du puzzle 2/2
 v2.01.0 -> Refonte des commande durant le building puzzle
 v2.02.0 -> abondon du puzzle en cours
 v2.02.1 -> l'abondon du puzzle ne redirige plus vers le titre mais la selection + CHEAT KEY réduit
+v2.02.2 -> option abondon disponible uniquement durant le bulding puzzle
 
 
 EN COURS : Polish durant la phase de beta avec le retour des joueurs

@@ -3,7 +3,7 @@
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.01.0
+-- version: v2.02.2
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -810,11 +810,6 @@ function TIC()
     if key(5) then
         GRID = MAP
     end
-
-    -- ABORT PUZZLE touche SPACE où touche ENTER
-    if key(48) or key(50) then
-        swapScreen = 5
-    end
     ----------------------------- CHEAT KEY ------------------------
 
     if swapScreen == 0 then
@@ -1108,8 +1103,12 @@ function TIC()
             else
                 solucePuzzle = false  -- Désactive la soluce quand le timer atteint 0
             end
-        end
+        end        
 
+        -- ABORT PUZZLE touche SPACE où touche ENTER
+        if key(48) or key(50) then
+            swapScreen = 5
+        end
     end
 
     -- ## Condition de VICTOIRE    
