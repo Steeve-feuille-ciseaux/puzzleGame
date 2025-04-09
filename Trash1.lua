@@ -806,19 +806,9 @@ function TIC()
         solucePuzzle = true
     end
 
-    -- SWAP PUZZLE touche T
-    if key(20) then
-        swapScreen = 1
-    end
-
     -- FIN DE PUZZLE touche E
     if key(5) then
         GRID = MAP
-    end
-
-    -- NEXT PUZZLE touche U
-    if key(21) then
-        swapScreen = 2
     end
 
     -- ABORT PUZZLE touche SPACE où touche ENTER
@@ -1200,7 +1190,7 @@ function TIC()
             print("Yes", 95, 67, 5)
             if prev_lb and not lb then
                 tablePuzzle[pagePuzzle][indexMap][5] = false 
-                swapScreen = 0
+                swapScreen = 1
             end
         end
 
