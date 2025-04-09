@@ -121,34 +121,3 @@ for i = 1, Y do
     print("    {" .. table.concat(tableau[i], ",") .. "},")
 end
 print("}")
-
-# ALGO TEMPORAIRE #
-
--- Afficher les sprites côte à côte, avec un décalage de +8 tous les 3 sprites
-
-local y_offset = 0 -- Initialiser le décalage vertical
-for i = 1, 3 do
-    -- Affichage des 3 premiers sprites
-    spr(i, x + 18, y + y_offset + 15, 1, 1)
-    spr(i+1, x + 26, y + y_offset + 15, 1, 1)
-    spr(i+2, x + 34, y + y_offset + 15, 1, 1)
-    
-    -- Après avoir affiché les 3 sprites, ajouter 8 à `y_offset` pour les sprites suivants
-    y_offset = y_offset + 8
-    
-    -- Affichage des 3 autres sprites
-    spr(i+16, x + 18, y + y_offset + 15, 1, 1)
-    spr(i+17, x + 26, y + y_offset + 15, 1, 1)
-    spr(i+18, x + 34, y + y_offset + 15, 1, 1)
-    
-    -- Ajout de 8 à `y_offset` après la ligne de sprites
-    y_offset = y_offset + 8
-
-    -- Affichage des 3 autres sprites
-    spr(i+32, x + 18, y + y_offset + 15, 1, 1)
-    spr(i+33, x + 26, y + y_offset + 15, 1, 1)
-    spr(i+34, x + 34, y + y_offset + 15, 1, 1)
-
-    -- Ajout de 8 à `y_offset` après la ligne de sprites
-    y_offset = y_offset + 8
-end

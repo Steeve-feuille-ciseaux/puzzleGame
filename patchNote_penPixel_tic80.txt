@@ -95,14 +95,15 @@ v1.20.1 -> SUCCESS : sprite du caneda integré + ajout keyUnlock dans la table d
 v1.20.2 -> SUCCESS : Débloquer le dernier puzzle lorsque le reste sont fait 
 v1.21.0 -> SUCCESS : Restreindre l'accès au dernier puzzle
 v1.21.1 -> ACTUALLY : Affichez le niveau de difficulté du puzzle 1/2
-v1.22.0 -> ACTUALLY : Affichez le niveau de difficulté du puzzle 2/2
+v1.22.0 -> SUCCESS : Affichez le niveau de difficulté du puzzle 2/2
 
 -- BETA
 
-v2.00.0 -> Polish avant la phase Beta 
+v2.01.0 -> Refonte des commande durant le building puzzle
 
 
-EN COURS : 
+EN COURS : Polish durant la phase de beta avec le retour des joueurs
+
 A FAIRE : 
 - musique et animation
 - reprendre la documention du doc via gitbook
@@ -120,6 +121,7 @@ REFONTE :
 feature : afficher tous les pixel en bazar puis les placer sur la grille
 probleme : UX désastreux car très pénible prendre et mettre les plieces une par une du bazar à la grille, sensation de répétition
 solution : afficher les pixel de couleur disponible pour cliquer une fois dessus pour placer plusieur pixel de mettre couleur
+- pendant la beta un joueur proposait de changer de couleur avec la molette et supprimer avec le clic droit
 
 - Activé le mode soluce selon la quantité de pièce restant par couleur
 feature : mettre un décompteur sur les pixel présent dans le tableau GRID

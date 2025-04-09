@@ -3,7 +3,7 @@
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.00.0
+-- version: v2.01.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -657,8 +657,6 @@ function nextPuzzle()
     local ajustText = 20
     local ajustIcon = 15
     local iconSize = 60
-    -- Récupère la position et état du clic
-    local mX, mY, lb = mouse()
 
     -- Initialiser prev_lb au début pour qu'il garde son état entre les cadres
     if prev_lb == nil then prev_lb = false end  
@@ -829,7 +827,7 @@ function TIC()
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("Demo v2.00.0", 1, 130, 12) -- Version
+        print("Demo v2.01.0", 1, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -1003,13 +1001,26 @@ function TIC()
             --rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
         end
 
-        -- Si le bouton droite est pressé
-        if prev_rb and not rb and cellDelete == false then
+        -- Changer de couleur avec la molette
+        if scrollY < 0 then
+            cellDelete = false
             indexColor = indexColor + 1
             if indexColor > #MAP.COLOR then
-                indexColor = 1 -- Revenir au début si on dépasse la liste
+                indexColor = 1 
             end
             selectedColor = MAP.COLOR[indexColor]
+        elseif scrollY > 0 then
+            cellDelete = false
+            indexColor = indexColor - 1
+            if indexColor < 1 then
+                indexColor = #MAP.COLOR
+            end
+            selectedColor = MAP.COLOR[indexColor]
+        end
+        
+        -- Activer le mode suppression avec le clic droit
+        if prev_rb and not rb and cellDelete == false then
+            cellDelete = true 
         end
 
         -- Mettre à jour l'état précédent du bouton droit
