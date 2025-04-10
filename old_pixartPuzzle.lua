@@ -3,7 +3,7 @@
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.02.2
+-- version: v2.02.3
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -619,7 +619,7 @@ pixTotal = countDifferences(GRID, MAP)
 MINI = {}
 MINI.CELL_SIZE = 2 -- MAP.MINI
 MINI.POS_X = 2  -- Position à gauche
-MINI.POS_Y = 13  -- Position en bas
+MINI.POS_Y = 23  -- Position en bas
 
 function drawMiniGrid()
     for y = 1, #MAP do
@@ -777,7 +777,7 @@ function TIC()
 	-- print(mY, 1,15,12)       
 
     -- Affiche les limites de l'écran 
-    -- rectb(1,1,239,135,13) 
+     rectb(1,1,239,135,13) 
 
     -- Changer de carte avec les touches fléchées
     if btnp(2) then  -- Flèche gauche
@@ -926,15 +926,15 @@ function TIC()
         if totalPixelColor <= 0 then
 
             if solucePuzzle then
-                rectb(16, 105, 18, 18, rainbowColors[rainbowIndex])
+                rectb(2, 115, 18, 18, rainbowColors[rainbowIndex])
             else
-                rect(16, 105, 18, 18, 13)
+                rect(2, 115, 18, 18, 13)
             end
             -- ICONE SOLUCE
-            spr(4, 17, 106, 1, 1)
-            spr(5, 25, 106, 1, 1)
-            spr(20, 17, 114, 1, 1)
-            spr(21, 25, 114, 1, 1)
+            spr(4, 3, 116, 1, 1)
+            spr(5, 10, 116, 1, 1)
+            spr(20, 3, 124, 1, 1)
+            spr(21, 10, 124, 1, 1)
 
         else
             solucePuzzle = false
@@ -976,6 +976,7 @@ function TIC()
 		-- Affiche le numéro et nom du puzzle
         print("#".. indexMap, 2, 3, 12)
         print(infoMAP[indexMap][6], 20, 3, 12)
+        print("LEVEL EN D", 10, 10, 12)
 
         -- Carre cursor
         -- Afficher un carré de la couleur sélectionnée qui suit la souris
