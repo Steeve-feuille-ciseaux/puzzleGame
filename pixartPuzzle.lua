@@ -3,7 +3,7 @@
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.02.2
+-- version: v2.03.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -11,6 +11,7 @@ swapScreen = 0 -- DECOUPAGE DU JEU
 pagePuzzle = 1
 pageMax = 2
 indexMap = 1
+cancelLock = 1
 
 -- bouton droit relaché
 prev_rb = false
@@ -437,30 +438,22 @@ selectMAP = {
     },
 }
 
--- Définis aléatoirement un puzzle
-function rdmSelectPuzzle(minR, maxR)
-    indexMap = math.random(minR, maxR)
-end
-
--- Execution aléatoire d'un puzzle
---rdmSelectPuzzle(1, 4)
-
 -- Paramètre de l'ensemble des puzzles
 infoMAP = {
-    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE
+    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE, Difficulty
     -- Si la largeur et la hauteur sont incorrect, la progression affichera -1 / -1
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3},
-	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3},
-	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3},
-	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2},
-	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3},
-	{ 3, 88, 8, {09,10,12,07,05,06}, {145,221,388,28,31,27}, "FLOWER2", 38, 33, 3},
-	{ 3, 88, 8, {00,10,09,03}, {181,163,321,2}, "ELEPHANT", 29, 38, 3},
-	{ 3, 88, 8, {00,02,10,06,01,04,03}, {624,176,96,144,49,144,136}, "PUZZLE2", 39, 39, 3},
-	{ 6, 75, 8, {00,10,09,04,03,06,11,02,05,12}, {75,14,15,8,9,18,3,6,13,7}, "SUGAR1", 18, 21, 3},
-	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3}, -- CELL_SIZE -> 5
-	{ 3, 92, 1, {00,03,04,12,02,05,11,09}, {122,97,16,5,101,183,222,18}, "CAKE1", 31, 45, 3}, 
-	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3}, 
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, "Easy"},
+	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3, "Easy"},
+	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3, "Normal"},
+	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2, "Hard"},
+	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3, "Easy"},
+	{ 3, 88, 8, {09,10,12,07,05,06}, {145,221,388,28,31,27}, "FLOWER2", 38, 33, 3, "Normal"},
+	{ 3, 88, 8, {00,10,09,03}, {181,163,321,2}, "ELEPHANT", 29, 38, 3, "Easy"},
+	{ 3, 88, 8, {00,02,10,06,01,04,03}, {624,176,96,144,49,144,136}, "PUZZLE2", 39, 39, 3, "Hard"},
+	{ 6, 75, 8, {00,10,09,04,03,06,11,02,05,12}, {75,14,15,8,9,18,3,6,13,7}, "SUGAR1", 18, 21, 3, "Easy"},
+	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3, "Normal"}, -- CELL_SIZE -> 5
+	{ 3, 92, 1, {00,03,04,12,02,05,11,09}, {122,97,16,5,101,183,222,18}, "CAKE1", 31, 45, 3, "Hard"},
+	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3, "Normal"},
 }
 
 -- Position et selections des puzzles
@@ -468,7 +461,7 @@ infoMAP = {
 tablePuzzle = {
     {
         {10, 10, selectMAP[1],1, true, true, "easy"}, {75, 10, selectMAP[2],2, false, true, "easy"}, {140, 10, selectMAP[3],3, false, true, "middle"},
-        {10, 75, selectMAP[4],4, false, true, "hard"}, {75, 75, selectMAP[5],5, false,true, "middle"}, {140, 75, selectMAP[6],6, false, true, "hard"}  
+        {10, 75, selectMAP[4],4, false, true, "hard"}, {75, 75, selectMAP[5],5, false,true, "easy"}, {140, 75, selectMAP[6],6, false, true, "middle"}  
     },
     {
         {10, 10, selectMAP[7],7, false, true, "easy"}, {75, 10, selectMAP[8],8, false, true, "hard"}, {140, 10, selectMAP[9],9, false, true, "easy"},
@@ -489,6 +482,8 @@ MAP.NAME = infoMAP[indexMap][6]
 MAP.LARG = infoMAP[indexMap][7]
 MAP.HAUT = infoMAP[indexMap][8]
 MAP.MINI = infoMAP[indexMap][9]
+MAP.MINI = infoMAP[indexMap][10]
+MAP.MINI = infoMAP[indexMap][11]
 
 -- Initialiser la puzzle 
 function initPuzzle()
@@ -504,6 +499,8 @@ function initPuzzle()
     MAP.LARG = infoMAP[indexMap][7]
     MAP.HAUT = infoMAP[indexMap][8]
     MAP.MINI = infoMAP[indexMap][9]
+    MAP.MINI = infoMAP[indexMap][10]
+    MAP.MINI = infoMAP[indexMap][11]
 
     -- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
     GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
@@ -619,7 +616,7 @@ pixTotal = countDifferences(GRID, MAP)
 MINI = {}
 MINI.CELL_SIZE = 2 -- MAP.MINI
 MINI.POS_X = 2  -- Position à gauche
-MINI.POS_Y = 13  -- Position en bas
+MINI.POS_Y = 23  -- Position en bas
 
 function drawMiniGrid()
     for y = 1, #MAP do
@@ -677,6 +674,7 @@ function nextPuzzle()
         -- Choisir le puzzle
         if prev_lb and not lb and hover and keyLockPuzzle then
            tablePuzzle[pagePuzzle][i][5] = true 
+           cancelLock = i
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
@@ -815,7 +813,7 @@ function TIC()
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("Demo v2.2", 1, 130, 12) -- Version
+        print("Demo v2.3", 1, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -926,15 +924,15 @@ function TIC()
         if totalPixelColor <= 0 then
 
             if solucePuzzle then
-                rectb(16, 105, 18, 18, rainbowColors[rainbowIndex])
+                rectb(2, 115, 18, 18, rainbowColors[rainbowIndex])
             else
-                rect(16, 105, 18, 18, 13)
+                rect(2, 115, 18, 18, 13)
             end
             -- ICONE SOLUCE
-            spr(4, 17, 106, 1, 1)
-            spr(5, 25, 106, 1, 1)
-            spr(20, 17, 114, 1, 1)
-            spr(21, 25, 114, 1, 1)
+            spr(4, 3, 116, 1, 1)
+            spr(5, 10, 116, 1, 1)
+            spr(20, 3, 124, 1, 1)
+            spr(21, 10, 124, 1, 1)
 
         else
             solucePuzzle = false
@@ -974,8 +972,24 @@ function TIC()
         end
 
 		-- Affiche le numéro et nom du puzzle
+        rect(1, 1, 67, 19, 8)
+        rectb(0, 0, 68, 21, 13)
         print("#".. indexMap, 2, 3, 12)
         print(infoMAP[indexMap][6], 20, 3, 12)
+        local colorGem = 0
+        local colorPrint = 0
+        if infoMAP[indexMap][10] == "Easy" then
+            colorGem = 0
+            colorPrint = 6
+        elseif infoMAP[indexMap][10] == "Normal" then
+            colorGem = 16
+            colorPrint = 10
+        elseif infoMAP[indexMap][10] == "Hard" then
+            colorGem = 32
+            colorPrint = 3
+        end
+        spr(colorGem, 2, 10, 1, 1)
+        print(infoMAP[indexMap][10], 14, 11, colorPrint)
 
         -- Carre cursor
         -- Afficher un carré de la couleur sélectionnée qui suit la souris
@@ -1188,7 +1202,7 @@ function TIC()
         if mX >= 95 and mX <= 95 + 17 and mY >= 67 and mY <= 67 + 10 then
             print("Yes", 95, 67, 5)
             if prev_lb and not lb then
-                tablePuzzle[pagePuzzle][indexMap][5] = false 
+                tablePuzzle[pagePuzzle][cancelLock][5] = false 
                 swapScreen = 1
             end
         end

@@ -105,6 +105,7 @@ v2.02.1 -> l'abondon du puzzle ne redirige plus vers le titre mais la selection 
 v2.02.2 -> option abondon disponible uniquement durant le bulding puzzle
 v2.02.3 -> Afficher le niveau de difficulté
 v2.02.3.1 -> Afficher le niveau de difficulté
+v2.03.0 -> Afficher le niveau de difficulté
 
 
 EN COURS : Polish durant la phase de beta avec le retour des joueurs
