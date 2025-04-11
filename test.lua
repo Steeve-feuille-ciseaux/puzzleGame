@@ -447,20 +447,20 @@ end
 
 -- Paramètre de l'ensemble des puzzles
 infoMAP = {
-    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE
+    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE, Difficulty, gemme
     -- Si la largeur et la hauteur sont incorrect, la progression affichera -1 / -1
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3},
-	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3},
-	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3},
-	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2},
-	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3},
-	{ 3, 88, 8, {09,10,12,07,05,06}, {145,221,388,28,31,27}, "FLOWER2", 38, 33, 3},
-	{ 3, 88, 8, {00,10,09,03}, {181,163,321,2}, "ELEPHANT", 29, 38, 3},
-	{ 3, 88, 8, {00,02,10,06,01,04,03}, {624,176,96,144,49,144,136}, "PUZZLE2", 39, 39, 3},
-	{ 6, 75, 8, {00,10,09,04,03,06,11,02,05,12}, {75,14,15,8,9,18,3,6,13,7}, "SUGAR1", 18, 21, 3},
-	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3}, -- CELL_SIZE -> 5
-	{ 3, 92, 1, {00,03,04,12,02,05,11,09}, {122,97,16,5,101,183,222,18}, "CAKE1", 31, 45, 3}, 
-	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3}, 
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, "Easy", 1},
+	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3, "Easy", 1},
+	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3, "Normal", 2},
+	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2, "Hard", 3},
+	{ 4, 80, 8, {00,09,10,06,03,04}, {156,40,252,96,4,1}, "FLOWER1", 27, 27, 3, "Normal", 2},
+	{ 3, 88, 8, {09,10,12,07,05,06}, {145,221,388,28,31,27}, "FLOWER2", 38, 33, 3, "Hard", 3},
+	{ 3, 88, 8, {00,10,09,03}, {181,163,321,2}, "ELEPHANT", 29, 38, 3, "Easy", 1},
+	{ 3, 88, 8, {00,02,10,06,01,04,03}, {624,176,96,144,49,144,136}, "PUZZLE2", 39, 39, 3, "Hard", 3},
+	{ 6, 75, 8, {00,10,09,04,03,06,11,02,05,12}, {75,14,15,8,9,18,3,6,13,7}, "SUGAR1", 18, 21, 3, "Easy", 1},
+	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3, "Normal", 2}, -- CELL_SIZE -> 5
+	{ 3, 92, 1, {00,03,04,12,02,05,11,09}, {122,97,16,5,101,183,222,18}, "CAKE1", 31, 45, 3, "Hard", 3},
+	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3, "Normal", 2},
 }
 
 -- Position et selections des puzzles
@@ -489,6 +489,8 @@ MAP.NAME = infoMAP[indexMap][6]
 MAP.LARG = infoMAP[indexMap][7]
 MAP.HAUT = infoMAP[indexMap][8]
 MAP.MINI = infoMAP[indexMap][9]
+MAP.MINI = infoMAP[indexMap][10]
+MAP.MINI = infoMAP[indexMap][11]
 
 -- Initialiser la puzzle 
 function initPuzzle()
@@ -504,6 +506,8 @@ function initPuzzle()
     MAP.LARG = infoMAP[indexMap][7]
     MAP.HAUT = infoMAP[indexMap][8]
     MAP.MINI = infoMAP[indexMap][9]
+    MAP.MINI = infoMAP[indexMap][10]
+    MAP.MINI = infoMAP[indexMap][11]
 
     -- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
     GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
@@ -619,7 +623,7 @@ pixTotal = countDifferences(GRID, MAP)
 MINI = {}
 MINI.CELL_SIZE = 2 -- MAP.MINI
 MINI.POS_X = 2  -- Position à gauche
-MINI.POS_Y = 13  -- Position en bas
+MINI.POS_Y = 23  -- Position en bas
 
 function drawMiniGrid()
     for y = 1, #MAP do
@@ -926,15 +930,15 @@ function TIC()
         if totalPixelColor <= 0 then
 
             if solucePuzzle then
-                rectb(16, 105, 18, 18, rainbowColors[rainbowIndex])
+                rectb(2, 115, 18, 18, rainbowColors[rainbowIndex])
             else
-                rect(16, 105, 18, 18, 13)
+                rect(2, 115, 18, 18, 13)
             end
             -- ICONE SOLUCE
-            spr(4, 17, 106, 1, 1)
-            spr(5, 25, 106, 1, 1)
-            spr(20, 17, 114, 1, 1)
-            spr(21, 25, 114, 1, 1)
+            spr(4, 3, 116, 1, 1)
+            spr(5, 10, 116, 1, 1)
+            spr(20, 3, 124, 1, 1)
+            spr(21, 10, 124, 1, 1)
 
         else
             solucePuzzle = false
@@ -974,8 +978,12 @@ function TIC()
         end
 
 		-- Affiche le numéro et nom du puzzle
+        rect(1, 1, 67, 19, 8)
+        rectb(0, 0, 68, 21, 13)
         print("#".. indexMap, 2, 3, 12)
         print(infoMAP[indexMap][6], 20, 3, 12)
+        print(infoMAP[indexMap][10], 14, 11, 6)
+        spr(16, 2, 10, 1, 1)
 
         -- Carre cursor
         -- Afficher un carré de la couleur sélectionnée qui suit la souris
