@@ -796,19 +796,6 @@ function TIC()
         end
     end
 
-    ----------------------------- CHEAT KEY ------------------------
-
-    -- MODE SOLUCE touche Q
-    if key(17) then
-        solucePuzzle = true
-    end
-
-    -- FIN DE PUZZLE touche E
-    if key(5) then
-        GRID = MAP
-    end
-    ----------------------------- CHEAT KEY ------------------------
-
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)

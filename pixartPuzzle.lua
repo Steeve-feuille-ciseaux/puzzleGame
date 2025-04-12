@@ -3,7 +3,7 @@
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.03.0
+-- version: v2.05.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -11,7 +11,7 @@ swapScreen = 0 -- DECOUPAGE DU JEU
 pagePuzzle = 1
 pageMax = 2
 indexMap = 1
-cancelLock = 1
+unLock = 1
 
 -- bouton droit relaché
 prev_rb = false
@@ -673,8 +673,7 @@ function nextPuzzle()
 
         -- Choisir le puzzle
         if prev_lb and not lb and hover and keyLockPuzzle then
-           tablePuzzle[pagePuzzle][i][5] = true 
-           cancelLock = i
+           unLock = i
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
@@ -797,23 +796,10 @@ function TIC()
         end
     end
 
-    ----------------------------- CHEAT KEY ------------------------
-
-    -- MODE SOLUCE touche Q
-    if key(17) then
-        solucePuzzle = true
-    end
-
-    -- FIN DE PUZZLE touche E
-    if key(5) then
-        GRID = MAP
-    end
-    ----------------------------- CHEAT KEY ------------------------
-
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("Demo v2.3", 1, 130, 12) -- Version
+        print("Demo v2.5", 1, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -878,8 +864,12 @@ function TIC()
         end        
 
         -- Mettre à jour l'état précédent du bouton droit
-        prev_lb = lb
+        prev_lb = lb        
 
+        -- Back to titleScreen
+        if key(48) or key(50) then
+            swapScreen = 0
+        end
     end
 
 
@@ -968,6 +958,7 @@ function TIC()
         -- FIN DU PUZZLE
         if pixCount == 0 then
             GRID = MAP
+            tablePuzzle[pagePuzzle][unLock][5] = true 
             swapScreen = 3
         end
 
@@ -1202,7 +1193,6 @@ function TIC()
         if mX >= 95 and mX <= 95 + 17 and mY >= 67 and mY <= 67 + 10 then
             print("Yes", 95, 67, 5)
             if prev_lb and not lb then
-                tablePuzzle[pagePuzzle][cancelLock][5] = false 
                 swapScreen = 1
             end
         end

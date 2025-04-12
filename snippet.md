@@ -121,3 +121,17 @@ for i = 1, Y do
     print("    {" .. table.concat(tableau[i], ",") .. "},")
 end
 print("}")
+
+# Dev Mode #
+
+----------------------------- devMode ------------------------
+-- MODE SOLUCE touche Q
+if key(17) then
+    solucePuzzle = true
+end
+
+-- FIN DE PUZZLE touche E
+if key(5) then
+    GRID = MAP
+end
+----------------------------- CHEAT KEY ------------------------
