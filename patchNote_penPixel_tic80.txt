@@ -103,9 +103,10 @@ v2.01.0 -> Refonte des commande durant le building puzzle
 v2.02.0 -> abondon du puzzle en cours
 v2.02.1 -> l'abondon du puzzle ne redirige plus vers le titre mais la selection + CHEAT KEY réduit
 v2.02.2 -> option abondon disponible uniquement durant le bulding puzzle
-v2.02.3 -> Afficher le niveau de difficulté
-v2.02.3.1 -> Afficher le niveau de difficulté
-v2.03.0 -> Afficher le niveau de difficulté
+v2.02.3 -> Afficher le niveau de difficulté 1/3
+v2.02.3.1 -> Afficher le niveau de difficulté 2/3
+v2.03.0 -> Afficher le niveau de difficulté 3/3
+v2.04.0 -> Revenir à l'écran d'avant jusqu'à l'écran titre avec la barre d'espace où touche entrer
 
 
 EN COURS : Polish durant la phase de beta avec le retour des joueurs
