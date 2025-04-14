@@ -108,12 +108,15 @@ v2.02.3.1 -> Afficher le niveau de difficulté 2/3
 v2.03.0 -> Afficher le niveau de difficulté 3/3
 v2.04.0 -> Revenir à l'écran d'avant jusqu'à l'écran titre avec la barre d'espace où touche entrer
 v2.05.0 -> DevMode retiré
+v2.06.0 -> Remplacé curseur par une baguette
 
 
 EN COURS : Polish durant la phase de beta avec le retour des joueurs
 
 A FAIRE : 
-- musique et animation
+- Ecran titre
+- animation -> palette de couleur similaire au pixel poser
+- musique par puzzle / theme de puzzle
 - reprendre la documention du doc via gitbook
 
 REFAIRE ABSOLUMENT : 

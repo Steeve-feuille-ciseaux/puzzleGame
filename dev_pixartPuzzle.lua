@@ -3,7 +3,7 @@
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.04.0
+-- version: v2.06.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -769,6 +769,9 @@ function TIC()
     -- Récupère la position et état du clic
 	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
 
+    -- Icone de la souris
+    poke(0x3ffb,1)
+
     -- Affiche les coordonné X et Y de la souris
 	-- print(mX, 1,5,12)
 	-- print(mY, 1,15,12)       
@@ -799,7 +802,7 @@ function TIC()
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("Demo v2.4", 1, 130, 12) -- Version
+        print("Demo v2.6", 1, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1

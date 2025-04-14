@@ -3,50 +3,41 @@
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.05.0
+-- version: v2.06.0
 -- script:  lua
 
--- Script: Affichage de la grille uniquement
-swapScreen = 0 -- DECOUPAGE DU JEU
+swapScreen = 0 
 pagePuzzle = 1
 pageMax = 2
 indexMap = 1
 unLock = 1
 
--- bouton droit relaché
 prev_rb = false
 
--- bouton droit relaché
 prev_lb = false
 
--- Delete variable
 cellDelete = false
 
--- soluce Puzzle
 solucePuzzle = false
-timerSoluce = 5 -- Durée d'affichage
-timeRemaining = 0  -- Temps restant pour l'affichage de la soluce
-lastTime = time()  -- Stocke le temps précédent au démarrage
-countSoluce = 0 -- Soluce utilisé
+timerSoluce = 5 
+timeRemaining = 0  
+lastTime = time()  
+countSoluce = 0 
 
--- ICONE DELETE 
--- Position du carré icone en bas à droite
 squarePosX = 222 
 squarePosY = 100
--- Taille du carré 
+
 squareSize = 7  
--- Position de la croix en bas à gauche
+
 crossPosX = 222
 crossPosY = 100
-crossSize = 3  -- Taille de la croix
-crossLarg = 0.5 -- Largeur des lignes
+crossSize = 3  
+crossLarg = 0.5 
 
--- Animation Mode Soluce
-rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} -- Couleurs pour l'animation
-rainbowIndex = 1 -- Index actuel dans le tableau de couleurs
-rainbowTimer = 0 -- Timer pour l'animation
+rainbowColors = {2, 3, 4, 5, 6, 9, 10, 11} 
+rainbowIndex = 1 
+rainbowTimer = 0 
 
--- Collection de puzzle
 selectMAP = {
 	{
 		{99,99,99,99,99,99,99,99,99,00,99,99,99,99,99,99,99,99,99},
@@ -438,11 +429,8 @@ selectMAP = {
     },
 }
 
--- Paramètre de l'ensemble des puzzles
 infoMAP = {
-    -- CELL_SIZE ,POS_X ,POS_Y ,{COLOR} ,{COLOR.NB} ,NAME ,LARGEUR ,HAUTEUR ,MINI.CELL_SIZE, Difficulty
-    -- Si la largeur et la hauteur sont incorrect, la progression affichera -1 / -1
-	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, "Easy"},
+    { 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, "Easy"},
 	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3, "Easy"},
 	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3, "Normal"},
 	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2, "Hard"},
@@ -451,13 +439,11 @@ infoMAP = {
 	{ 3, 88, 8, {00,10,09,03}, {181,163,321,2}, "ELEPHANT", 29, 38, 3, "Easy"},
 	{ 3, 88, 8, {00,02,10,06,01,04,03}, {624,176,96,144,49,144,136}, "PUZZLE2", 39, 39, 3, "Hard"},
 	{ 6, 75, 8, {00,10,09,04,03,06,11,02,05,12}, {75,14,15,8,9,18,3,6,13,7}, "SUGAR1", 18, 21, 3, "Easy"},
-	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3, "Normal"}, -- CELL_SIZE -> 5
+	{ 3, 80, 8, {00,06,05,11,04,03}, {122,179,50,23,45,25}, "PLANET1", 34, 24, 3, "Normal"}, 
 	{ 3, 92, 1, {00,03,04,12,02,05,11,09}, {122,97,16,5,101,183,222,18}, "CAKE1", 31, 45, 3, "Hard"},
 	{ 3, 92, 1, {15,00,04,12,03,13}, {233,295,111,12,34,148}, "BATMAN", 29, 43, 3, "Normal"},
 }
 
--- Position et selections des puzzles
--- X, Y, Choix du puzzle, Choix de la case, Unlock, keyUnlock, Difficulty
 tablePuzzle = {
     {
         {10, 10, selectMAP[1],1, true, true, "easy"}, {75, 10, selectMAP[2],2, false, true, "easy"}, {140, 10, selectMAP[3],3, false, true, "middle"},
@@ -469,10 +455,8 @@ tablePuzzle = {
     },
 }
 
--- Dessin à réaliser 
 MAP = selectMAP[indexMap]
 
--- Info sur MAP
 MAP.CELL_SIZE = infoMAP[indexMap][1]
 MAP.POS_X = infoMAP[indexMap][2]
 MAP.POS_Y = infoMAP[indexMap][3]
@@ -485,11 +469,9 @@ MAP.MINI = infoMAP[indexMap][9]
 MAP.MINI = infoMAP[indexMap][10]
 MAP.MINI = infoMAP[indexMap][11]
 
--- Initialiser la puzzle 
 function initPuzzle()
     MAP = selectMAP[indexMap]
-
-    -- Info sur MAP !! A AMELIORER !!
+    
     MAP.CELL_SIZE = infoMAP[indexMap][1]
     MAP.POS_X = infoMAP[indexMap][2]
     MAP.POS_Y = infoMAP[indexMap][3]
@@ -501,11 +483,9 @@ function initPuzzle()
     MAP.MINI = infoMAP[indexMap][9]
     MAP.MINI = infoMAP[indexMap][10]
     MAP.MINI = infoMAP[indexMap][11]
-
-    -- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
+    
     GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
     
-    -- Info sur la grille !! A AMELIORER !!
     GRID.CELL_SIZE = MAP.CELL_SIZE
     GRID.POS_X = MAP.POS_X
     GRID.POS_Y = MAP.POS_Y
@@ -516,8 +496,6 @@ function initPuzzle()
     pixTotal = countDifferences(GRID, MAP)
 end
 
-
--- Création de la grille en Lua pour TIC-80
 function create_grid(rows, cols, value)
     local grid = {}
     for i = 1, rows do
@@ -529,17 +507,14 @@ function create_grid(rows, cols, value)
     return grid
 end
 
--- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
 GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
 
--- Info sur la grille
 GRID.CELL_SIZE = MAP.CELL_SIZE
 GRID.POS_X = MAP.POS_X
 GRID.POS_Y = MAP.POS_Y
 GRID.COLOR = MAP.COLOR
 GRID.COLOR.Q = {14,11,21,20,27,22,12,5,3}
 
--- Dessiner la grille
 function drawGrid()
     for y = 1, #GRID do
         for x = 1, #GRID[y] do
@@ -553,11 +528,9 @@ function drawGrid()
             else
                 rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
             end    
-
-            -- Mode Soluce
+            
             if solucePuzzle and GRID[y][x] ~= MAP[y][x] then
                     rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, rainbowColors[rainbowIndex])
-                    --rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, 13)
             end
         end
     end
@@ -571,37 +544,34 @@ function resetGrid(g1)
     end
 end
 
--- Vérifier si les dimensions sont les mêmes
 function watchEqual(t1, t2)
     if #t1 ~= #t2 then return false end  
 
     for i = 1, #t1 do
-        if #t1[i] ~= #t2[i] then return false end  -- Vérifier la largeur de chaque ligne
+        if #t1[i] ~= #t2[i] then return false end  
 
         for j = 1, #t1[i] do
             if t1[i][j] ~= t2[i][j] then
-                return false  -- Dès qu'une cellule est différente, renvoyer false
+                return false  
             end
         end
     end
 
-    return true  -- Si toutes les cases sont identiques, renvoyer true
+    return true  
 end
 
--- Nombre de pixel à placer
 function countDifferences(t1, t2)
     local count = 0
     local total = 0
-
-    -- Vérifier si les dimensions sont les mêmes
+    
     if #t1 ~= #t2 then return -1 end  
 
     for i = 1, #t1 do
-        if #t1[i] ~= #t2[i] then return -1 end  -- Vérifier la largeur de chaque ligne
+        if #t1[i] ~= #t2[i] then return -1 end  
 
         for j = 1, #t1[i] do
             if t1[i][j] ~= t2[i][j] then
-                count = count + 1  -- Incrémenter le compteur si la valeur est différente
+                count = count + 1  
             end
         end
     end
@@ -609,14 +579,12 @@ function countDifferences(t1, t2)
     return count
 end
 
--- Nombre maximum de piece
 pixTotal = countDifferences(GRID, MAP)
 
--- Info sur la mini grille
 MINI = {}
-MINI.CELL_SIZE = 2 -- MAP.MINI
-MINI.POS_X = 2  -- Position à gauche
-MINI.POS_Y = 23  -- Position en bas
+MINI.CELL_SIZE = 2 
+MINI.POS_X = 2 
+MINI.POS_Y = 23  
 
 function drawMiniGrid()
     for y = 1, #MAP do
@@ -625,13 +593,11 @@ function drawMiniGrid()
             local posX = MINI.POS_X + (x - 1) * MINI.CELL_SIZE
             local posY = MINI.POS_Y + (y - 1) * MINI.CELL_SIZE
                 
-            -- Position du pixel au centre 
             local centerX = posX + math.floor(MINI.CELL_SIZE / 2)
             local centerY = posY + math.floor(MINI.CELL_SIZE / 2)
 
-            -- Mode Carré : Affichage de cases colorées avec bordure
             if color ~= 99 then
-                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)  -- Remplissage
+                rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, color)  
             else
                 rect(posX, posY, MINI.CELL_SIZE, MINI.CELL_SIZE, 8) 
                 pix(centerX, centerY, 13)
@@ -640,50 +606,40 @@ function drawMiniGrid()
     end
 end
 
-
--- Identifie la couleur
 indexColor = 1
-selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée      
-colorSelect_SIZE = 6 -- Taille icone Selection des couleurs entre 7 et 3
+selectedColor = MAP.COLOR[indexColor];     
+colorSelect_SIZE = 6 
 
--- Sélection puzzle / niveau
 function nextPuzzle()        
     local ajustText = 20
     local ajustIcon = 15
     local iconSize = 60
-
-    -- Initialiser prev_lb au début pour qu'il garde son état entre les cadres
+    
     if prev_lb == nil then prev_lb = false end  
 
-    -- Dessine les cadres des puzzles
     for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
         local x, y = pos[1] + ajustIcon, pos[2]
 
-        -- Vérifie si la souris est sur le cadre
         local hover = mX >= x and mX <= x + iconSize and mY >= y and mY <= y + iconSize
         local fillColor = hover and 3 or 13  
 
-        -- Puzzle accès refusé
         local keyLockPuzzle = pos[6]
         local Difficulty = pos[7]
-        countLock = 0 -- Nombre de puzzle déverrouillé
+        countLock = 0 
 
         rect(x, y, iconSize, iconSize, 8)  
         rectb(x, y, iconSize, iconSize, fillColor)
 
-        -- Choisir le puzzle
         if prev_lb and not lb and hover and keyLockPuzzle then
            unLock = i
            indexMap = pos[4]
            swapScreen = 2
            initPuzzle()
         end
-
-
-        -- Parcours tous les puzzle déverrouillé
+        
         for pagePuzzleIndex, page in ipairs(tablePuzzle) do
             for i, cell in ipairs(page) do
-                -- Incrementé chaque puzzle déverrouillé
+                
                 if cell[5] == true then
                     countLock = countLock + 1
                 end
@@ -694,23 +650,19 @@ function nextPuzzle()
             tablePuzzle[2][6][6] = true
         end
 
-        -- Récupère la MAP du puzzle actuel
         local puzzleMAP = pos[3]
         local unlockPuzzle = pos[5]
 
-        -- Vérifie que la MAP du puzzle existe
         if puzzleMAP then
             local rows = #puzzleMAP
             local cols = #puzzleMAP[1]
 
-            -- Calcul de la taille des cellules
             local maxPuzzleSize = math.max(rows, cols)
             local cellSize = math.floor((iconSize - 8) / maxPuzzleSize)
 
-            -- Calcul du point de départ pour centrer
             local startX = x + (iconSize - (cols * cellSize)) / 2
             local startY = y + (iconSize - (rows * cellSize)) / 2
-            -- Dessine la miniature du puzzle
+            
             for py = 1, rows do
                 for px = 1, cols do
                     local color = puzzleMAP[py][px]
@@ -758,37 +710,29 @@ function nextPuzzle()
         end
     end
 
-    -- Affichage des infos
     print("SELECT NEXT PUZZLE", 30 + ajustText, 1, 12)
     print(pagePuzzle, 140 + ajustText, 1, 12)
     print(" / " .. #tablePuzzle, 145 + ajustText, 1, 12)
 end
 
 function TIC()
-    cls(0) -- Efface l'écran
-    -- Récupère la position et état du clic
+    cls(0) 
+    
 	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
+    
+    poke(0x3ffb,1)
 
-    -- Affiche les coordonné X et Y de la souris
-	-- print(mX, 1,5,12)
-	-- print(mY, 1,15,12)       
-
-    -- Affiche les limites de l'écran 
-    -- rectb(1,1,239,135,13) 
-
-    -- Changer de carte avec les touches fléchées
-    if btnp(2) then  -- Flèche gauche
+    if btnp(2) then 
         indexMap = indexMap - 1
         if indexMap < 1 then indexMap = #selectMAP end
     end
-    if btnp(3) then  -- Flèche droite
+    if btnp(3) then  
         indexMap = indexMap + 1
         if indexMap > #selectMAP then indexMap = 1 end
     end
     
-    -- Gestion de l'animation arc-en-ciel
     rainbowTimer = rainbowTimer + 1
-    if rainbowTimer > 10 then -- Changer de couleur toutes les 10 frames
+    if rainbowTimer > 10 then 
         rainbowTimer = 0
         rainbowIndex = rainbowIndex + 1
         if rainbowIndex > #rainbowColors then
@@ -799,41 +743,33 @@ function TIC()
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("Demo v2.5", 1, 130, 12) -- Version
+        print("Demo v2.6", 1, 130, 12) 
         
         if prev_lb and not lb then
             swapScreen = 1
         end
 
-        -- Mettre à jour prev_lb pour la prochaine frame
         prev_lb = lb
     end
-
-    -- ## SELECTION PUZZLE        
+      
     if swapScreen == 1 then
         cls(0)
 
-        -- Affiche la collection de puzzle débloqué
         nextPuzzle()
 
-        -- Taille de la flèche pour changer de page
         local size = 7  
 
-        -- next Page
         local rightX, rightY = 225, 72
 
-        -- Vérifie si la souris est sur le triangle droit
         local hoverRight = mX >= rightX and mX <= rightX + size and mY >= rightY - size and mY <= rightY + size
-        local rightColor = hoverRight and 3 or 12  -- Rouge si survolé, sinon couleur normale
-        local rightBorderColor = 14  -- Rouge foncé pour la bordure
+        local rightColor = hoverRight and 3 or 12  
+        local rightBorderColor = 14  
 
-        -- Corps de la flèche (rectangle fait de deux triangles)
         if pagePuzzle <= pageMax - 1 then
-            tri(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, rightColor) -- Triangle arrière
-            trib(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, rightBorderColor) -- Bordure
+            tri(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, rightColor) 
+            trib(rightX, rightY - size, rightX, rightY + size, rightX + size, rightY, rightBorderColor) 
         end
 
-        -- Aller à la page suivante 
         if prev_lb and not lb and hoverRight then
             pagePuzzle = pagePuzzle + 1
             if pagePuzzle == pageMax + 1 then
@@ -841,21 +777,17 @@ function TIC()
             end 
         end
 
-        -- before Page
         local leftX, leftY = 15, 72
 
-        -- Vérifie si la souris est sur le triangle gauche
         local hoverLeft = mX >= leftX - size and mX <= leftX and mY >= leftY - size and mY <= leftY + size
-        local leftColor = hoverLeft and 3 or 12  -- Rouge si survolé, sinon couleur normale
-        local leftBorderColor = 14  -- Rouge foncé pour la bordure
+        local leftColor = hoverLeft and 3 or 12 
+        local leftBorderColor = 14 
 
-        -- Corps de la flèche (rectangle fait de deux triangles)
         if pagePuzzle >= 2 then
             tri(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, leftColor)  
             trib(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, leftBorderColor) 
         end
 
-        -- Aller à la page précedente 
         if prev_lb and not lb and hoverLeft and pagePuzzle >= 0 then
             pagePuzzle = pagePuzzle - 1
             if pagePuzzle == 0 then
@@ -863,34 +795,26 @@ function TIC()
             end 
         end        
 
-        -- Mettre à jour l'état précédent du bouton droit
         prev_lb = lb        
 
-        -- Back to titleScreen
         if key(48) or key(50) then
             swapScreen = 0
         end
     end
 
-
-    -- ## BUILDING PUZZLE
     if swapScreen == 2 then
-        -- Affiche la grille
+        
         drawGrid()
         
-        -- Affiche la mini-grille
         drawMiniGrid()
 
-        -- Initialisation de la variable pour stocker le total des pixels restants
         local totalPixelColor = 0
 
-        -- Affiche les pixels à placer
         for i, color in ipairs(MAP.COLOR) do
             local yPos = MAP.POS_Y + (colorSelect_SIZE + 2) * (i - 1)
             rect(214, yPos, colorSelect_SIZE, colorSelect_SIZE, color)
             rectb(214, yPos, colorSelect_SIZE, colorSelect_SIZE, 13)
 
-            -- Compte le nombre de pixels restants pour cette couleur
             local pixelColor = 0
             for y = 1, #GRID do
                 for x = 1, #GRID[y] do
@@ -900,17 +824,13 @@ function TIC()
                 end
             end
 
-            -- Calcule les pixels restants pour cette couleur
             local countPixelColor = MAP.COLOR.NB[i] - pixelColor
             
-            -- Ajoute au total des pixels restants
             totalPixelColor = totalPixelColor + countPixelColor
 
-            -- Affiche le nombre de pixels restants pour cette couleur
             print(countPixelColor, 223, yPos + 1, 12)
         end
 
-        -- Apparaitre Icone Mode Soluce
         if totalPixelColor <= 0 then
 
             if solucePuzzle then
@@ -918,7 +838,7 @@ function TIC()
             else
                 rect(2, 115, 18, 18, 13)
             end
-            -- ICONE SOLUCE
+            
             spr(4, 3, 116, 1, 1)
             spr(5, 10, 116, 1, 1)
             spr(20, 3, 124, 1, 1)
@@ -928,41 +848,32 @@ function TIC()
             solucePuzzle = false
         end
 
-        -- Dessine le carré qui sera l'icone delete pixel de la grille
         rect(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 8)
         rectb(squarePosX - squareSize, squarePosY - squareSize, squareSize * 2, squareSize * 2, 13)
 
-        -- Dessine la croix rouge dans l'icone delete
         for i = -crossLarg, crossLarg do
             line(crossPosX - crossSize + i, crossPosY - crossSize, crossPosX + crossSize + i, crossPosY + crossSize, 2)
             line(crossPosX - crossSize + i, crossPosY + crossSize, crossPosX + crossSize + i, crossPosY - crossSize, 2)
         end
         
-        -- Positionne la flèche pour indiquer la couleur sélectionnée
-        arrowPosY = (MAP.POS_Y + 3) + (colorSelect_SIZE + 2) * (indexColor - 1)  -- Position Y de la flèche
-        arrowPosX = 212  -- Position X de la flèche (fixe, juste à gauche des carrés de couleur)
-
-        -- Dessiner une flèche pointant vers le carré de couleur sélectionné
+        arrowPosY = (MAP.POS_Y + 3) + (colorSelect_SIZE + 2) * (indexColor - 1) 
+        arrowPosX = 212  
         tri(arrowPosX, arrowPosY, arrowPosX - 4, arrowPosY - 4, arrowPosX - 4, arrowPosY + 4, 12)
 
-        -- Calculer le nombre de différences
         pixCount = countDifferences(GRID, MAP)
 
-        -- Affiche les pixel restant
         print(pixCount, 210, 113, 12)
-        -- Place le Slash entre le restant sur le total
+        
         line(210, 128, 235, 115, 12)
-        -- Affiche le total de pixel
+        
         print(pixTotal, 220, 125, 12)
 
-        -- FIN DU PUZZLE
         if pixCount == 0 then
             GRID = MAP
             tablePuzzle[pagePuzzle][unLock][5] = true 
             swapScreen = 3
         end
 
-		-- Affiche le numéro et nom du puzzle
         rect(1, 1, 67, 19, 8)
         rectb(0, 0, 68, 21, 13)
         print("#".. indexMap, 2, 3, 12)
@@ -981,9 +892,7 @@ function TIC()
         end
         spr(colorGem, 2, 10, 1, 1)
         print(infoMAP[indexMap][10], 14, 11, colorPrint)
-
-        -- Carre cursor
-        -- Afficher un carré de la couleur sélectionnée qui suit la souris
+        
         if cellDelete then
             for i = -crossLarg, crossLarg do
                 line(mX - crossSize + i, mY - crossSize, mX + crossSize + i, mY + crossSize, 2)
@@ -991,10 +900,8 @@ function TIC()
             end
         else
             rect(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, selectedColor)
-            --rectb(mX - (GRID.CELL_SIZE // 2), mY - (GRID.CELL_SIZE // 2), GRID.CELL_SIZE, GRID.CELL_SIZE, 13) -- Bordure
         end
 
-        -- Changer de couleur avec la molette
         if scrollY < 0 then
             cellDelete = false
             indexColor = indexColor + 1
@@ -1011,23 +918,19 @@ function TIC()
             selectedColor = MAP.COLOR[indexColor]
         end
         
-        -- Activer le mode suppression avec le clic droit
         if prev_rb and not rb and cellDelete == false then
             cellDelete = true 
         end
 
-        -- Mettre à jour l'état précédent du bouton droit
         prev_rb = rb
 
-        -- Si le bouton gauche est pressé
         if lb then 
-            -- Convertir les coordonnées de la souris en indices de la grille
+            
             local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
             local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
 
-            -- Vérifier si les indices sont dans les limites de la grille
             if gridX >= 1 and gridX <= #GRID[1] and gridY >= 1 and gridY <= #GRID then
-                -- Calculer le nombre de pixels placés pour la couleur sélectionnée
+                
                 local pixelCount = 0
                 for y = 1, #GRID do
                     for x = 1, #GRID[y] do
@@ -1038,26 +941,22 @@ function TIC()
                 end
                 local remainingPixels = MAP.COLOR.NB[indexColor] - pixelCount
 
-                -- Vérifier si on peut placer la couleur OU si on est en mode suppression
                 if cellDelete then
-                    GRID[gridY][gridX] = 99 -- Toujours autoriser la suppression
+                    GRID[gridY][gridX] = 99 
                 elseif remainingPixels > 0 then
-                    GRID[gridY][gridX] = selectedColor -- Ajouter seulement si la couleur est dispo
                 end
             end
 
-            -- Vérifier si le bouton gauche est pressé sur l'icône de suppression
             if mX >= (squarePosX - squareSize) and mX <= (squarePosX + squareSize) and 
             mY >= (squarePosY - squareSize) and mY <= (squarePosY + squareSize) then
-                cellDelete = true -- Activer le mode suppression
+                cellDelete = true 
             end
 
-            -- Vérifier si l'utilisateur clique sur une couleur de la palette
             if mX >= 215 and mX <= 215 + colorSelect_SIZE then
                 for i, color in ipairs(MAP.COLOR) do
                     local yPos = MAP.POS_Y + (colorSelect_SIZE + 2) * (i - 1)  
                     if mY >= yPos and mY <= yPos + colorSelect_SIZE then
-                        -- Vérifier si la couleur sélectionnée est encore disponible
+                        
                         local pixelCount = 0
                         for y = 1, #GRID do
                             for x = 1, #GRID[y] do
@@ -1068,60 +967,48 @@ function TIC()
                         end
                         local remainingPixels = MAP.COLOR.NB[i] - pixelCount
 
-                        -- Permettre de sélectionner une couleur, même si elle est à 0 (mais on ne pourra pas la placer)
                         indexColor = i  
                         selectedColor = MAP.COLOR[indexColor]  
                         
-                        -- Désactiver le mode suppression quand on sélectionne une couleur
                         cellDelete = false 
                     end
                 end
             end
         end
 
-        -- Vérifier si le clic gauche vient d'être relâché
         if prev_lb and not lb then
-            -- Activer le mode soluce seulement au relâchement
+            
             if totalPixelColor <= 0 then                
                 if mX >= 16 and mX <= 16 + 25 and mY >= 105 and mY <= 105 + 25 then
                     solucePuzzle = true
-                    timeRemaining = timerSoluce  -- Initialise le timer
+                    timeRemaining = timerSoluce  
                     countSoluce = countSoluce + 1 
                 end
             end
         end
 
-        -- Mettre à jour prev_lb pour la prochaine frame
         prev_lb = lb
 
-        -- Visualisé le nombre de soluce utilisé
-        -- print(countSoluce, 10, 100, 12)
-
-        -- Mise à jour du timer (à placer dans ta boucle de mise à jour du jeu)
         local currentTime = time()
-        dt = (currentTime - lastTime) / 1000  -- Convertir en secondes
-        lastTime = currentTime  -- Mise à jour du dernier temps
+        dt = (currentTime - lastTime) / 1000  
+        lastTime = currentTime  
 
         if solucePuzzle then
             if timeRemaining > 0 then
-                timeRemaining = timeRemaining - dt  -- dt est le deltaTime (temps écoulé entre les frames)
+                timeRemaining = timeRemaining - dt  
             else
-                solucePuzzle = false  -- Désactive la soluce quand le timer atteint 0
+                solucePuzzle = false  
             end
         end        
 
-        -- ABORT PUZZLE touche SPACE où touche ENTER
         if key(48) or key(50) then
             swapScreen = 5
         end
     end
 
-    -- ## Condition de VICTOIRE    
-    -- Vérifier si MAP et GRID sont identiques avant d'appeler completePuzzle    
     if swapScreen == 3 then
         cls(0)
 
-        -- Dessiner la grille
         for y = 1, #GRID do
             for x = 1, #GRID[y] do
                 local color = GRID[y][x]
@@ -1136,47 +1023,39 @@ function TIC()
             end
         end
 
-        -- Positions des textes "Yes" et "No"
         local yesX, yesY, colorY = 15, 76, 12
         local noX, noY, colorN = 40, 76, 12
 
-        -- Dimensions des boutons "Yes" et "No"
         local yesWidth, yesHeight = 21, 10
         local noWidth, noHeight = 15, 10
 
-        --Afficher les messages
         if swapScreen == 3 then            
             print("BRAVO !!!", 10, 58, 12)
             print("One More", 10, 67, 12)
 
-            -- Afficher les textes "Yes" et "No" avec les couleurs mises à jour
             print("Yes", yesX, yesY, colorY)
             print("No", noX, noY, colorN)
         end
 
-        -- Si la souris survole "Yes"
         if mX >= yesX and mX <= yesX + yesWidth and mY >= yesY and mY <= yesY + yesHeight then
-            colorY = 5  -- Changer la couleur de "Yes"
+            colorY = 5  
             print("Yes", yesX, yesY, colorY)
             if prev_lb and not lb  then 
                 swapScreen = 1
             end
         end
 
-        -- Si la souris survole "No"
         if mX >= noX and mX <= noX + noWidth and mY >= noY and mY <= noY + noHeight then
-            colorN = 4  -- Changer la couleur de "No"
+            colorN = 4  
             print("No", noX, noY, colorN)
             if prev_lb and not lb then
                 swapScreen = 0
             end
         end
 
-        -- Mettre à jour l'état précédent du bouton droit
         prev_lb = lb
     end
 
-    -- page de remerciement 
     if swapScreen == 4 then
         print("Thanks", 10, 58, 12)
         print("for", 18, 67, 12)
@@ -1189,7 +1068,6 @@ function TIC()
         print("Yes", 95, 67, 12)
         print("No", 130, 67, 12)
         
-        -- survole Yes
         if mX >= 95 and mX <= 95 + 17 and mY >= 67 and mY <= 67 + 10 then
             print("Yes", 95, 67, 5)
             if prev_lb and not lb then
@@ -1197,7 +1075,6 @@ function TIC()
             end
         end
 
-        -- survole No
         if mX >= 130 and mX <= 130 + 12 and mY >= 67 and mY <= 67 + 10 then
             print("No", 130, 67, 4)
             if prev_lb and not lb then
@@ -1206,7 +1083,6 @@ function TIC()
         end
     end
 
-    -- Mettre à jour prev_lb pour la prochaine frame
     prev_lb = lb
 
 end
