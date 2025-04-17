@@ -3,7 +3,7 @@
 -- desc:    Pen Pixel
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.05.0
+-- version: v2.06.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -640,14 +640,13 @@ function drawMiniGrid()
     end
 end
 
-
--- Identifie la couleur
-indexColor = 1
-selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée      
-colorSelect_SIZE = 6 -- Taille icone Selection des couleurs entre 7 et 3
-
 -- Sélection puzzle / niveau
-function nextPuzzle()        
+function nextPuzzle()       
+    -- Identifie la couleur
+    indexColor = 1
+    selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée      
+    colorSelect_SIZE = 6 -- Taille icone Selection des couleurs entre 7 et 3
+
     local ajustText = 20
     local ajustIcon = 15
     local iconSize = 60
@@ -769,6 +768,9 @@ function TIC()
     -- Récupère la position et état du clic
 	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
 
+    -- Icone de la souris
+    poke(0x3ffb,1)
+
     -- Affiche les coordonné X et Y de la souris
 	-- print(mX, 1,5,12)
 	-- print(mY, 1,15,12)       
@@ -799,7 +801,7 @@ function TIC()
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("Demo v2.5", 1, 130, 12) -- Version
+        print("Demo v2.6", 1, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1

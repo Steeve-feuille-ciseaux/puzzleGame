@@ -135,3 +135,27 @@ if key(5) then
     GRID = MAP
 end
 ----------------------------- CHEAT KEY ------------------------
+
+## Explosion de pixel ##
+ps = {}
+
+function TIC()
+ cls()
+ local x, y, l = mouse()
+ if l then
+  for i=1,10 do
+   local a = math.random()*6.28
+   local s = math.random()*1 -- vitesses réduites
+   ps[#ps+1] = {x=x, y=y, dx=math.cos(a)*s, dy=math.sin(a)*s, life=30}
+  end
+ end
+
+ for i=#ps,1,-1 do
+  local p = ps[i]
+  p.x = p.x + p.dx
+  p.y = p.y + p.dy
+  p.life = p.life - 1
+  pix(p.x, p.y, 15)
+  if p.life <= 0 then table.remove(ps, i) end
+ end
+end

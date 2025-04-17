@@ -111,11 +111,10 @@ v2.05.0 -> DevMode retiré
 v2.06.0 -> Remplacé curseur par une baguette
 
 
-EN COURS : Polish durant la phase de beta avec le retour des joueurs
+EN COURS : animation -> palette de couleur similaire au pixel poser + Bug couleur swap puzzle
 
 A FAIRE : 
 - Ecran titre
-- animation -> palette de couleur similaire au pixel poser
 - musique par puzzle / theme de puzzle
 - reprendre la documention du doc via gitbook
 
