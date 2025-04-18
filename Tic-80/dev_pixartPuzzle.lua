@@ -1,9 +1,9 @@
 -- title:   Pen Pixel
 -- author:  Steeve-feuille-ciseaux
--- desc:    Pen Pixel
+-- desc:    Draw pixel Art / Puzzle Game
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.06.0
+-- version: v2.07.0
 -- script:  lua
 
 -- Script: Affichage de la grille uniquement
@@ -502,6 +502,11 @@ function initPuzzle()
     MAP.MINI = infoMAP[indexMap][10]
     MAP.MINI = infoMAP[indexMap][11]
 
+    -- Identifie la couleur
+    indexColor = 1
+    selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée      
+    colorSelect_SIZE = 6 -- Taille icone Selection des couleurs entre 7 et 3
+
     -- Définition de la grille avec 21 lignes et 19 colonnes remplie de 99
     GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
     
@@ -640,12 +645,6 @@ function drawMiniGrid()
     end
 end
 
-
--- Identifie la couleur
-indexColor = 1
-selectedColor = MAP.COLOR[indexColor];  -- Stocke la couleur actuellement sélectionnée      
-colorSelect_SIZE = 6 -- Taille icone Selection des couleurs entre 7 et 3
-
 -- Sélection puzzle / niveau
 function nextPuzzle()        
     local ajustText = 20
@@ -764,6 +763,48 @@ function nextPuzzle()
     print(" / " .. #tablePuzzle, 145 + ajustText, 1, 12)
 end
 
+explosions = {}
+
+function create_explosion(x, y, nb_particules, portee, couleur)
+    local explosion = {
+        particles = {},
+        time = 0,
+        duration = 30 -- 0.5s à 60 FPS
+    }
+
+    for i = 1, nb_particules do
+        local angle = math.random() * 2 * math.pi
+        local speed = math.random() * (portee / 15) + 1
+        table.insert(explosion.particles, {
+            x = x,
+            y = y,
+            dx = math.cos(angle) * speed,
+            dy = math.sin(angle) * speed,
+            -- color = math.random(8, 15)
+            color = couleur
+        })
+    end
+
+    table.insert(explosions, explosion)
+end
+
+function update_explosions()
+    for i = #explosions, 1, -1 do
+        local e = explosions[i]
+        e.time = e.time + 1
+
+        for _, p in ipairs(e.particles) do
+            p.x = p.x + p.dx
+            p.y = p.y + p.dy
+            pix(p.x, p.y, p.color)
+        end
+
+        if e.time >= e.duration then
+            table.remove(explosions, i)
+        end
+    end
+end
+
 function TIC()
     cls(0) -- Efface l'écran
     -- Récupère la position et état du clic
@@ -802,7 +843,7 @@ function TIC()
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("Demo v2.6", 1, 130, 12) -- Version
+        print("Demo v2.7", 1, 130, 12) -- Version
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -923,9 +964,9 @@ function TIC()
             end
             -- ICONE SOLUCE
             spr(4, 3, 116, 1, 1)
-            spr(5, 10, 116, 1, 1)
+            spr(5, 11, 116, 1, 1)
             spr(20, 3, 124, 1, 1)
-            spr(21, 10, 124, 1, 1)
+            spr(21, 11, 124, 1, 1)
 
         else
             solucePuzzle = false
@@ -1046,6 +1087,7 @@ function TIC()
                     GRID[gridY][gridX] = 99 -- Toujours autoriser la suppression
                 elseif remainingPixels > 0 then
                     GRID[gridY][gridX] = selectedColor -- Ajouter seulement si la couleur est dispo
+                    create_explosion(mX, mY, 2, 5, selectedColor) -- 30 particules, portée de 20, couleur
                 end
             end
 
@@ -1081,12 +1123,14 @@ function TIC()
                 end
             end
         end
+        -- Animation 
+        update_explosions()
 
         -- Vérifier si le clic gauche vient d'être relâché
         if prev_lb and not lb then
             -- Activer le mode soluce seulement au relâchement
             if totalPixelColor <= 0 then                
-                if mX >= 16 and mX <= 16 + 25 and mY >= 105 and mY <= 105 + 25 then
+                if mX >= 1 and mX <= 1 + 16 and mY >= 114 and mY <= 114 + 16 then
                     solucePuzzle = true
                     timeRemaining = timerSoluce  -- Initialise le timer
                     countSoluce = countSoluce + 1 

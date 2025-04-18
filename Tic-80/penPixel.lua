@@ -1,9 +1,9 @@
 -- title:   Pen Pixel
 -- author:  Steeve-feuille-ciseaux
--- desc:    Pen Pixel
+-- desc:    Draw pixel Art / Puzzle Game
 -- site:    https://steeve-feuille-ciseaux.github.io/Portfolio/
 -- license: MIT License (change this to your license of choice)
--- version: v2.06.0
+-- version: v2.07.0
 -- script:  lua
 
 swapScreen = 0 
@@ -26,9 +26,7 @@ countSoluce = 0
 
 squarePosX = 222 
 squarePosY = 100
-
 squareSize = 7  
-
 crossPosX = 222
 crossPosY = 100
 crossSize = 3  
@@ -430,7 +428,7 @@ selectMAP = {
 }
 
 infoMAP = {
-    { 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, "Easy"},
+	{ 7, 70, 5, {00,02,03,04,05,06,09,10,11}, {64,11,21,20,27,22,12,5,3}, "STAR", 19, 18, 3, "Easy"},
 	{ 6, 75, 3, {00,13,04,02}, {85,173,8,21}, "CAT1", 19, 21, 3, "Easy"},
 	{ 5, 80, 3, {00,02,03,04}, {121,58,195,128}, "CAT2", 24, 26, 3, "Normal"},
 	{ 4, 80, 8, {00,10,06,04,03,02,01,09}, {344,57,56,52,44,32,35,36}, "PUZZLE1", 29, 29, 2, "Hard"},
@@ -471,7 +469,7 @@ MAP.MINI = infoMAP[indexMap][11]
 
 function initPuzzle()
     MAP = selectMAP[indexMap]
-    
+
     MAP.CELL_SIZE = infoMAP[indexMap][1]
     MAP.POS_X = infoMAP[indexMap][2]
     MAP.POS_Y = infoMAP[indexMap][3]
@@ -483,7 +481,11 @@ function initPuzzle()
     MAP.MINI = infoMAP[indexMap][9]
     MAP.MINI = infoMAP[indexMap][10]
     MAP.MINI = infoMAP[indexMap][11]
-    
+
+    indexColor = 1
+    selectedColor = MAP.COLOR[indexColor];  
+    colorSelect_SIZE = 6 
+
     GRID = create_grid(MAP.HAUT, MAP.LARG, 99)
     
     GRID.CELL_SIZE = MAP.CELL_SIZE
@@ -495,6 +497,7 @@ function initPuzzle()
     
     pixTotal = countDifferences(GRID, MAP)
 end
+
 
 function create_grid(rows, cols, value)
     local grid = {}
@@ -528,7 +531,7 @@ function drawGrid()
             else
                 rect(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, color)
             end    
-            
+
             if solucePuzzle and GRID[y][x] ~= MAP[y][x] then
                     rectb(posX, posY, GRID.CELL_SIZE, GRID.CELL_SIZE, rainbowColors[rainbowIndex])
             end
@@ -548,7 +551,7 @@ function watchEqual(t1, t2)
     if #t1 ~= #t2 then return false end  
 
     for i = 1, #t1 do
-        if #t1[i] ~= #t2[i] then return false end  
+        if #t1[i] ~= #t2[i] then return false end 
 
         for j = 1, #t1[i] do
             if t1[i][j] ~= t2[i][j] then
@@ -563,7 +566,7 @@ end
 function countDifferences(t1, t2)
     local count = 0
     local total = 0
-    
+
     if #t1 ~= #t2 then return -1 end  
 
     for i = 1, #t1 do
@@ -571,7 +574,7 @@ function countDifferences(t1, t2)
 
         for j = 1, #t1[i] do
             if t1[i][j] ~= t2[i][j] then
-                count = count + 1  
+                count = count + 1 
             end
         end
     end
@@ -583,7 +586,7 @@ pixTotal = countDifferences(GRID, MAP)
 
 MINI = {}
 MINI.CELL_SIZE = 2 
-MINI.POS_X = 2 
+MINI.POS_X = 2  
 MINI.POS_Y = 23  
 
 function drawMiniGrid()
@@ -606,15 +609,11 @@ function drawMiniGrid()
     end
 end
 
-indexColor = 1
-selectedColor = MAP.COLOR[indexColor];     
-colorSelect_SIZE = 6 
-
 function nextPuzzle()        
     local ajustText = 20
     local ajustIcon = 15
     local iconSize = 60
-    
+
     if prev_lb == nil then prev_lb = false end  
 
     for i, pos in ipairs(tablePuzzle[pagePuzzle]) do
@@ -636,10 +635,10 @@ function nextPuzzle()
            swapScreen = 2
            initPuzzle()
         end
-        
+
+
         for pagePuzzleIndex, page in ipairs(tablePuzzle) do
             for i, cell in ipairs(page) do
-                
                 if cell[5] == true then
                     countLock = countLock + 1
                 end
@@ -662,7 +661,6 @@ function nextPuzzle()
 
             local startX = x + (iconSize - (cols * cellSize)) / 2
             local startY = y + (iconSize - (rows * cellSize)) / 2
-            
             for py = 1, rows do
                 for px = 1, cols do
                     local color = puzzleMAP[py][px]
@@ -715,14 +713,53 @@ function nextPuzzle()
     print(" / " .. #tablePuzzle, 145 + ajustText, 1, 12)
 end
 
+explosions = {}
+
+function create_explosion(x, y, nb_particules, portee, couleur)
+    local explosion = {
+        particles = {},
+        time = 0,
+        duration = 30 
+    }
+
+    for i = 1, nb_particules do
+        local angle = math.random() * 2 * math.pi
+        local speed = math.random() * (portee / 15) + 1
+        table.insert(explosion.particles, {
+            x = x,
+            y = y,
+            dx = math.cos(angle) * speed,
+            dy = math.sin(angle) * speed,
+            color = couleur
+        })
+    end
+
+    table.insert(explosions, explosion)
+end
+
+function update_explosions()
+    for i = #explosions, 1, -1 do
+        local e = explosions[i]
+        e.time = e.time + 1
+
+        for _, p in ipairs(e.particles) do
+            p.x = p.x + p.dx
+            p.y = p.y + p.dy
+            pix(p.x, p.y, p.color)
+        end
+
+        if e.time >= e.duration then
+            table.remove(explosions, i)
+        end
+    end
+end
+
 function TIC()
     cls(0) 
-    
 	mX, mY, lb, _, rb, scrollX, scrollY= mouse()
-    
-    poke(0x3ffb,1)
 
-    if btnp(2) then 
+    poke(0x3ffb,1)
+    if btnp(2) then  
         indexMap = indexMap - 1
         if indexMap < 1 then indexMap = #selectMAP end
     end
@@ -743,7 +780,7 @@ function TIC()
     if swapScreen == 0 then
         print("Pen Pixel", 100, 50, 12)
         print("click anywhere", 100, 70, 12)
-        print("Demo v2.6", 1, 130, 12) 
+        print("Demo v2.7", 1, 130, 12) 
         
         if prev_lb and not lb then
             swapScreen = 1
@@ -751,7 +788,7 @@ function TIC()
 
         prev_lb = lb
     end
-      
+   
     if swapScreen == 1 then
         cls(0)
 
@@ -780,8 +817,8 @@ function TIC()
         local leftX, leftY = 15, 72
 
         local hoverLeft = mX >= leftX - size and mX <= leftX and mY >= leftY - size and mY <= leftY + size
-        local leftColor = hoverLeft and 3 or 12 
-        local leftBorderColor = 14 
+        local leftColor = hoverLeft and 3 or 12  
+        local leftBorderColor = 14  
 
         if pagePuzzle >= 2 then
             tri(leftX, leftY - size, leftX, leftY + size, leftX - size, leftY, leftColor)  
@@ -803,7 +840,6 @@ function TIC()
     end
 
     if swapScreen == 2 then
-        
         drawGrid()
         
         drawMiniGrid()
@@ -838,11 +874,10 @@ function TIC()
             else
                 rect(2, 115, 18, 18, 13)
             end
-            
             spr(4, 3, 116, 1, 1)
-            spr(5, 10, 116, 1, 1)
+            spr(5, 11, 116, 1, 1)
             spr(20, 3, 124, 1, 1)
-            spr(21, 10, 124, 1, 1)
+            spr(21, 11, 124, 1, 1)
 
         else
             solucePuzzle = false
@@ -856,18 +891,16 @@ function TIC()
             line(crossPosX - crossSize + i, crossPosY + crossSize, crossPosX + crossSize + i, crossPosY - crossSize, 2)
         end
         
-        arrowPosY = (MAP.POS_Y + 3) + (colorSelect_SIZE + 2) * (indexColor - 1) 
+        arrowPosY = (MAP.POS_Y + 3) + (colorSelect_SIZE + 2) * (indexColor - 1)  
         arrowPosX = 212  
+
         tri(arrowPosX, arrowPosY, arrowPosX - 4, arrowPosY - 4, arrowPosX - 4, arrowPosY + 4, 12)
 
         pixCount = countDifferences(GRID, MAP)
 
         print(pixCount, 210, 113, 12)
-        
         line(210, 128, 235, 115, 12)
-        
         print(pixTotal, 220, 125, 12)
-
         if pixCount == 0 then
             GRID = MAP
             tablePuzzle[pagePuzzle][unLock][5] = true 
@@ -892,7 +925,7 @@ function TIC()
         end
         spr(colorGem, 2, 10, 1, 1)
         print(infoMAP[indexMap][10], 14, 11, colorPrint)
-        
+
         if cellDelete then
             for i = -crossLarg, crossLarg do
                 line(mX - crossSize + i, mY - crossSize, mX + crossSize + i, mY + crossSize, 2)
@@ -925,7 +958,6 @@ function TIC()
         prev_rb = rb
 
         if lb then 
-            
             local gridX = math.floor((mX - GRID.POS_X) / GRID.CELL_SIZE) + 1
             local gridY = math.floor((mY - GRID.POS_Y) / GRID.CELL_SIZE) + 1
 
@@ -944,6 +976,8 @@ function TIC()
                 if cellDelete then
                     GRID[gridY][gridX] = 99 
                 elseif remainingPixels > 0 then
+                    GRID[gridY][gridX] = selectedColor 
+                    create_explosion(mX, mY, 2, 5, selectedColor)
                 end
             end
 
@@ -956,7 +990,6 @@ function TIC()
                 for i, color in ipairs(MAP.COLOR) do
                     local yPos = MAP.POS_Y + (colorSelect_SIZE + 2) * (i - 1)  
                     if mY >= yPos and mY <= yPos + colorSelect_SIZE then
-                        
                         local pixelCount = 0
                         for y = 1, #GRID do
                             for x = 1, #GRID[y] do
@@ -975,11 +1008,11 @@ function TIC()
                 end
             end
         end
+        update_explosions()
 
         if prev_lb and not lb then
-            
             if totalPixelColor <= 0 then                
-                if mX >= 16 and mX <= 16 + 25 and mY >= 105 and mY <= 105 + 25 then
+                if mX >= 1 and mX <= 1 + 16 and mY >= 114 and mY <= 114 + 16 then
                     solucePuzzle = true
                     timeRemaining = timerSoluce  
                     countSoluce = countSoluce + 1 
@@ -999,7 +1032,7 @@ function TIC()
             else
                 solucePuzzle = false  
             end
-        end        
+        end      
 
         if key(48) or key(50) then
             swapScreen = 5

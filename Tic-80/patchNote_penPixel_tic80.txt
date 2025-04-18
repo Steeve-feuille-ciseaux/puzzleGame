@@ -109,9 +109,9 @@ v2.03.0 -> Afficher le niveau de difficulté 3/3
 v2.04.0 -> Revenir à l'écran d'avant jusqu'à l'écran titre avec la barre d'espace où touche entrer
 v2.05.0 -> DevMode retiré
 v2.06.0 -> Remplacé curseur par une baguette
+v2.07.0 -> Animation explosion lorsqu'on dépose une pièce du puzzle + code compacté
 
-
-EN COURS : animation -> palette de couleur similaire au pixel poser + Bug couleur swap puzzle
+EN COURS : 
 
 A FAIRE : 
 - Ecran titre

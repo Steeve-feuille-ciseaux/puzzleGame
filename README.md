@@ -77,6 +77,8 @@ Le projet est codé en **LUA**, un langage simple que j'ai choisi pour sa facili
 ## Beta
 
 - **v2.01.0** : Refonte des commandes lors du building puzzle.
+- **v2.03.0** : Afficher le niveau de difficulté.
+- **v2.06.0** : Remplacé curseur par une baguette.
 
 Suivi **INTEGRALE** des patch note dans le fichier **patchNote_penPixel_tic80.txt**
 
