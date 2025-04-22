@@ -117,6 +117,7 @@ A FAIRE :
 - Ecran titre
 - musique par puzzle / theme de puzzle
 - reprendre la documention du doc via gitbook
+- Mode Draw où mode Bazar / CLutter
 
 REFAIRE ABSOLUMENT : 
 
