@@ -1,3 +1,4 @@
 -- DEVELLOPPEUMENT 
 v0.01.0 -> Afficher un puzzle
 v0.02.0 -> Moduler les puzzle et data associés
+v0.03.0 -> Afficher un grille vierge + ajouter des pixels de couleur

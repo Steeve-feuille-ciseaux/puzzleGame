@@ -69,61 +69,51 @@ local difficultyText = display.newText({
 })
 difficultyText.anchorX = 0
 
--- Créer une grille vierge
+--- Reprise du code créer une grille vierge 
+
+-- Création grille vierge
+local gridBlank = map.grid
+
+-- Affichage puzzle à reproduire
 local cellSize = map.data.cellSize  -- Taille de chaque case
 local gridOffsetX = map.data.posX   -- Décalage à gauche
 local gridOffsetY = map.data.posY   -- Décalage en haut
 
-local rows = map.data.Hauteur
-local cols = map.data.Largeur
-local value = "99"
+for y = 1, #gridBlank do
+	for x = 1, #gridBlank[y] do
+		local value = gridBlank[y][x]
+		local valueStr = string.format("%02d", value)
+		if not colorMap[valueStr] then valueStr = "99" end
+		local color = colorMap[valueStr]
 
-local gridBlank = {}
+		local rect = display.newRect(gridOffsetX + (x - 1) * cellSize, gridOffsetY + (y - 1) * cellSize, cellSize, cellSize)
+		rect:setFillColor(unpack(color))
+		rect.anchorX = 0
+		rect.anchorY = 0
 
--- Fonction pour ajouter les couleurs
-local function onCellTap(event)
-    local rect = event.target
-    local i, j = rect.i, rect.j
+		-- Ajout coordonnées pour usage dans l'événement
+		rect.gridX, rect.gridY = x, y
 
-    -- Modifier la valeur de la 
-	newColor = "05"
-    gridBlank[i][j] = newColor
+		-- Ajout du carré blanc si "99"
+		if valueStr == "99" then
+			local whiteSize = cellSize * 0.2
+			local centerX = rect.x + cellSize / 2
+			local centerY = rect.y + cellSize / 2
+			local whiteSquare = display.newRect(centerX, centerY, whiteSize, whiteSize)
+			whiteSquare:setFillColor(1, 1, 1)
+			rect.whiteSquare = whiteSquare
+		end
 
-    -- Mettre à jour la couleur
-    rect:setFillColor(unpack(colorMap[newColor]))
+		-- Fonction de clic pour changer 99 -> 05
+		local function onTap()
+			local newValueStr = "05"
+			local newColor = colorMap[newValueStr]
+			rect:setFillColor(unpack(newColor))
+			if rect.whiteSquare then rect.whiteSquare:removeSelf() end
+			gridBlank[rect.gridY][rect.gridX] = 5  -- Mettre à jour la grille
+		end
 
-    -- Supprimer le petit carré blanc si présent
-    if rect.marker then
-        rect.marker:removeSelf()
-        rect.marker = nil
-    end
-
-    return true
+		rect:addEventListener("tap", onTap)
+	end
 end
 
--- Créer une grille vierge
-for i = 1, rows do
-    gridBlank[i] = {}
-    for j = 1, cols do
-        gridBlank[i][j] = value
-        local x = gridOffsetX + (j - 1) * cellSize
-        local y = gridOffsetY + (i - 1) * cellSize
-        local valueStr = string.format("%02d", value)
-        local color = colorMap[valueStr] or {0.8, 0.8, 0.8}
-
-        local rect = display.newRect(x, y, cellSize, cellSize)
-        rect:setFillColor(unpack(color))
-        rect.i = i
-        rect.j = j
-
-        -- Ajouter un petit carré blanc si valeur est "99"
-        if valueStr == "99" then
-            local marker = display.newRect(x, y, 3, 3)
-            marker:setFillColor(1, 1, 1)
-            rect.marker = marker -- Attacher à la cellule pour suppression future
-        end
-
-        -- Ajouter le listener global
-        rect:addEventListener("tap", onCellTap)
-    end
-end
