@@ -128,10 +128,12 @@ end
 -- Position de départ
 local startX = 930
 local startY = 30
-local spacing = 10 -- Espace vertical entre les carrés
+local spacing = 10
 
-local arrowList = {} -- Liste des flèches pour gestion de visibilité
-local firstArrow -- Référence à la première flèche
+local arrowList = {}
+local carreList = {} -- 📌 Liste des carrés
+local firstArrow
+local currentIndex = 1 -- ✅ Bien initialisé
 
 -- Créer les carrés
 for i = 1, #map.data.colors do
@@ -140,40 +142,39 @@ for i = 1, #map.data.colors do
     local carre = display.newRect(startX, startY, cellSize, cellSize)
     carre:setFillColor(unpack(colorMap[colorName]))
     carre.colorValue = colorName
+    carre.index = i -- 📌 Stocker l'index
 
-    -- Créer la flèche triangle vers la droite à gauche du carré
+    table.insert(carreList, carre)
+
     local arrow = display.newPolygon(startX - 30, startY, { 
         0, -10,
         0, 10,
         15, 0
-    })  -- Triangle vers la droite    
-    arrow:setFillColor(1, 1, 1) -- Blanc
-    arrow.isVisible = false -- Invisible par défaut
+    })
+    arrow:setFillColor(1, 1, 1)
+    arrow.isVisible = false
     table.insert(arrowList, arrow)
 
-    -- Stocker la première flèche pour l'afficher par défaut
     if i == 1 then
         firstArrow = arrow
-        drawPixel = colorName -- La première couleur est sélectionnée par défaut
+        drawPixel = colorName
     end
 
-    -- Ajouter un écouteur de clic
     carre:addEventListener("tap", function(event)
         drawPixel = event.target.colorValue
-        print("Couleur sélectionnée :", drawPixel)
+        currentIndex = event.target.index -- ✅ Met à jour currentIndex correctement
 
         -- Masquer toutes les flèches
         for _, a in ipairs(arrowList) do
             a.isVisible = false
         end
 
-        -- Afficher la flèche correspondante
-        arrow.isVisible = true
+        -- Afficher la flèche sur le bon carré
+        arrowList[currentIndex].isVisible = true
 
         return true
     end)
 
-    -- Créer le texte "x ???" à droite du carré
     local text = display.newText({
         text = "x ???",
         x = startX + cellSize + 15,
@@ -184,32 +185,45 @@ for i = 1, #map.data.colors do
     text.anchorY = 0
     text:setFillColor(1, 1, 1)
 
-    -- Ajuster la position Y pour le prochain carré
     startY = startY + cellSize + spacing
 end
 
--- Afficher la première flèche par défaut
+-- Afficher la première flèche
 if firstArrow then
     firstArrow.isVisible = true
 end
+
 native.setProperty("mouseCursorVisible", true)
 
--- Molette souris sur windows
+-- 🖱️ Molette souris : changer currentIndex et mettre à jour flèche + drawPixel
 local function onMouseEvent(event)
     if event.scrollY and event.scrollY ~= 0 then
-        currentIndex = currentIndex - event.scrollY
+        if event.scrollY >= 0 then
+            currentIndex = currentIndex + 1
+        elseif event.scrollY <= 0 then
+            currentIndex = currentIndex - 1
+        end
 
-        if currentIndex < 1 then currentIndex = 1 end
-        if currentIndex > #map.data.colors then currentIndex = #map.data.colors end
+        -- Clamping pour rester dans les bornes valides
+        if currentIndex < 1 then 
+            currentIndex = #map.data.colors  
+        end
+        if currentIndex > #map.data.colors then 
+            currentIndex = 1
+        end
 
         drawPixel = map.data.colors[currentIndex]
-        print("Couleur (molette) :", drawPixel)
 
-        for i, arrow in ipairs(arrowList) do
-            arrow.isVisible = (i == currentIndex)
+        -- Cacher toutes les flèches
+        for _, a in ipairs(arrowList) do
+            a.isVisible = false
         end
+
+        -- Afficher la flèche sur le bon élément
+        arrowList[currentIndex].isVisible = true
     end
     return false
 end
 
+-- Activer l’écouteur molette
 Runtime:addEventListener("mouse", onMouseEvent)

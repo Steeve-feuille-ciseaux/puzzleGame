@@ -1,6 +1,9 @@
 -- DEVELLOPPEUMENT 
 v0.01.0 -> Afficher un puzzle
 v0.02.0 -> Moduler les puzzle et data associés
+v0.03.0 -> Afficher un grille vierge + ajouter des pixels de couleur
+v0.03.1 -> Hotfixe -> Remplacer les string color par des variables color
+v0.04.0 -> Selectionner un couleur + changer de couleur avec la molette
 
 EN COURS : 
 
