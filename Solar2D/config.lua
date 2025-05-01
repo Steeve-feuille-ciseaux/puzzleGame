@@ -20,4 +20,11 @@ application =
 		},
 		--]]
 	},
+
+    -- Active le support de la souris
+    window =
+    {
+        defaultMode = "windowed",
+        enableMouse = true,
+    },
 }
