@@ -81,21 +81,51 @@ local cols = map.data.Largeur
 local gridBlank = {}
 
 -- Fonction pour ajouter les couleurs
-local function onCellTap(event)
+local function onCellTouch(event)
     local rect = event.target
-    local i, j = rect.i, rect.j
+    local phase = event.phase
 
-    -- Modifier la valeur de la 
-	newColor = drawPixel
-    gridBlank[i][j] = newColor
+    if phase == "began" then
+        -- Mémoriser le temps de début
+        rect.touchStartTime = system.getTimer()
 
-    -- Mettre à jour la couleur
-    rect:setFillColor(unpack(colorMap[newColor]))
+        -- On capture le focus pour bien suivre le touch jusqu’au bout
+        display.getCurrentStage():setFocus(rect)
+        rect.isFocus = true
 
-    -- Supprimer le petit carré blanc si présent
-    if rect.marker then
-        rect.marker:removeSelf()
-        rect.marker = nil
+    elseif rect.isFocus then
+        if phase == "ended" or phase == "cancelled" then
+            display.getCurrentStage():setFocus(nil)
+            rect.isFocus = false
+
+            local elapsed = system.getTimer() - rect.touchStartTime
+
+            local i, j = rect.i, rect.j
+
+            if elapsed > 300 then -- CLIC LONG (simule bouton droit)                
+                gridBlank[i][j] = 99
+                rect:setFillColor(unpack(colorMap[99]))
+
+                -- Ajouter le petit carré blanc si absent
+                if not rect.marker then
+                    local x, y = rect.x, rect.y
+                    local marker = display.newRect(x, y, 3, 3)
+                    marker:setFillColor(1, 1, 1)
+                    rect.marker = marker
+                end
+            else
+                -- CLIC COURT (simule clic gauche)
+                local newColor = drawPixel
+                gridBlank[i][j] = newColor
+                rect:setFillColor(unpack(colorMap[newColor]))
+
+                -- Supprimer le petit carré blanc
+                if rect.marker then
+                    rect.marker:removeSelf()
+                    rect.marker = nil
+                end
+            end
+        end
     end
 
     return true
@@ -115,8 +145,8 @@ for i = 1, rows do
         rect.i = i
         rect.j = j
 
-        -- Ajouter le listener global
-        rect:addEventListener("tap", onCellTap)
+        -- Ajouter le listener global sur mobile
+        rect:addEventListener("touch", onCellTouch)
 
         -- Ajouter un petit carré blanc si valeur est 99
 		local marker = display.newRect(x, y, 3, 3)
@@ -146,11 +176,7 @@ for i = 1, #map.data.colors do
 
     table.insert(carreList, carre)
 
-    local arrow = display.newPolygon(startX - 30, startY, { 
-        0, -10,
-        0, 10,
-        15, 0
-    })
+    local arrow = display.newPolygon(startX - 30, startY, { 0, -10, 0, 10, 15, 0})
     arrow:setFillColor(1, 1, 1)
     arrow.isVisible = false
     table.insert(arrowList, arrow)

@@ -5,6 +5,7 @@ v0.03.0 -> Afficher un grille vierge + ajouter des pixels de couleur
 v0.03.1 -> Hotfixe -> Remplacer les string color par des variables color
 v0.04.0 -> Selectionner un couleur + changer de couleur avec la molette
 v0.04.1 -> Molette comptablie sur windows et inversé sur navigateur
+v0.05.0 -> Retirer une couleur avec le clic long
 
 EN COURS : 
 
