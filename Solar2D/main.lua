@@ -18,6 +18,23 @@ local colorMap = require("colorMap") -- colorMap.lua
 local map = selectMAP[letPuzzle]
 local grid = map.grid
 
+-- Grille vierge
+local gridBlank = {}
+
+local function countGridDifferences(grid1, grid2)
+    local value = 0
+
+    for y = 1, #grid1 do
+        for x = 1, #grid1[y] do
+            if grid1[y][x] ~= grid2[y][x] then
+                value = value + 1
+            end
+        end
+    end
+
+    return value
+end
+
 -- Affichage puzzle à reprodruire
 local cellMiniSize = map.data.miniSize  -- Taille de chaque case
 local offsetX = 10    -- Décalage à gauche
@@ -78,9 +95,65 @@ local gridOffsetY = map.data.posY   -- Décalage en haut
 local rows = map.data.Hauteur
 local cols = map.data.Largeur
 
-local gridBlank = {}
+local function printGrid()
+    print("Contenu de gridBlank :")
+    for i = 1, #gridBlank do
+        local row = {}
+        for j = 1, #gridBlank[i] do
+            table.insert(row, gridBlank[i][j])
+        end
+        print(table.concat(row, "\t"))
+    end
+end
 
--- Fonction pour ajouter les couleurs
+-- Position de départ des carré 
+local startX = 930
+local startY = 30
+local spacing = 10
+
+local arrowList = {}
+local carreList = {} -- 📌 Liste des carrés
+local firstArrow
+local currentIndex = 1 -- ✅ Bien initialisé
+
+-- ## Nombre de pixel contenu par le puzzle ##
+local pixCountTotal = 0
+
+for y = 1, #grid do
+    for x = 1, #grid[y] do
+        if grid[y][x] ~= 99 then
+            pixCountTotal = pixCountTotal + 1
+        end
+    end
+end
+
+local pixCountText = display.newText({
+    text = pixCountTotal,
+    x = display.contentWidth - 30,
+    y = map.data.totalY, -- Ajustement en dessous du derniers carré de couleur
+    font = native.systemFont,
+    fontSize = 30,
+    align = "right"
+})
+pixCountText.anchorX = 1  -- Alignement à droite
+pixCountText:setFillColor(1, 1, 1)  -- Couleur blanche
+
+-- ## Compteur de pixel a poser ##
+
+local diffCount2 = pixCountTotal
+
+local diffCountText = display.newText({
+    text = tostring(diffCount2),  -- Conversion explicite en texte
+    x = display.contentWidth - 80,
+    y = map.data.countY,  -- Ajustement en dessous du dernier carré de couleur
+    font = native.systemFont,
+    fontSize = 30,
+    align = "right"
+})
+diffCountText.anchorX = 1  -- Alignement à droite
+diffCountText:setFillColor(1, 1, 1)  -- Couleur blanche
+
+-- ## Fonction pour ajouter les couleurs ##
 local function onCellTouch(event)
     local rect = event.target
     local phase = event.phase
@@ -102,7 +175,8 @@ local function onCellTouch(event)
 
             local i, j = rect.i, rect.j
 
-            if elapsed > 300 then -- CLIC LONG (simule bouton droit)                
+            if elapsed > 300 then
+                -- CLIC LONG (simule bouton droit)                
                 gridBlank[i][j] = 99
                 rect:setFillColor(unpack(colorMap[99]))
 
@@ -118,6 +192,8 @@ local function onCellTouch(event)
                 local newColor = drawPixel
                 gridBlank[i][j] = newColor
                 rect:setFillColor(unpack(colorMap[newColor]))
+                print(gridBlank[i][j])
+                printGrid()
 
                 -- Supprimer le petit carré blanc
                 if rect.marker then
@@ -125,6 +201,16 @@ local function onCellTouch(event)
                     rect.marker = nil
                 end
             end
+
+            -- Recalculer diffCount après modification
+            diffCount2 = countGridDifferences(grid, gridBlank)
+
+            -- Mettre à jour le texte du compteur de différences
+            print(diffCount2)
+
+            -- Mise à jour du texte affiché
+            diffCountText.text = tostring(diffCount2)  -- Mettez à jour la propriété text
+
         end
     end
 
@@ -155,17 +241,7 @@ for i = 1, rows do
     end
 end
 
--- Position de départ
-local startX = 930
-local startY = 30
-local spacing = 10
-
-local arrowList = {}
-local carreList = {} -- 📌 Liste des carrés
-local firstArrow
-local currentIndex = 1 -- ✅ Bien initialisé
-
--- Créer les carrés
+-- Poser les carré sur la grille vierge
 for i = 1, #map.data.colors do
     local colorName = map.data.colors[i]
 
@@ -221,7 +297,7 @@ end
 
 native.setProperty("mouseCursorVisible", true)
 
--- 🖱️ Molette souris : changer currentIndex et mettre à jour flèche + drawPixel
+-- ## 🖱️ Molette souris : changer currentIndex et mettre à jour flèche + drawPixel ##
 local function onMouseEvent(event)
     if event.scrollY and event.scrollY ~= 0 then
         if event.scrollY >= 0 then

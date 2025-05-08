@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adaptation TIC-80 vers Solar2D</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #2c3e50;
+      margin: 2em;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #1e88e5;
+    }
+    ul {
+      padding-left: 1.5em;
+    }
+    .section {
+      margin-bottom: 2em;
+    }
+    .highlight {
+      background: #e3f2fd;
+      border-left: 5px solid #2196f3;
+      padding: 1em;
+      margin: 1em 0;
+    }
+    code {
+      background: #f0f0f0;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Adaptation d’un projet TIC-80 vers Solar2D</h1>
+
+    <div class="section">
+      <h2>Introduction</h2>
+      <p>
+        Adapter un projet de <strong>TIC-80</strong> (une fantasy console) vers <strong>Solar2D</strong> (anciennement Corona SDK) est tout à fait faisable, mais nécessite quelques ajustements, notamment au niveau des API graphiques et logiques.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Outils évalués</h2>
+
+      <h3>1. Windsurf</h3>
+      <p>
+        <strong>Windsurf</strong> est un outil de développement conçu spécifiquement pour Solar2D. Il permet une gestion de projet moderne, avec notamment :
+      </p>
+      <ul>
+        <li>L’autocomplétion pour les API Solar2D</li>
+        <li>L’organisation de projets multi-fichiers</li>
+        <li>La gestion simplifiée des assets et du code</li>
+      </ul>
+      <div class="highlight">
+        <strong>Pertinent ?</strong> Oui, Windsurf est un bon choix pour développer en Solar2D, surtout si tu viens d’un environnement plus structuré comme TIC-80.
+      </div>
+
+      <h3>2. Cursor</h3>
+      <p>
+        <strong>Cursor</strong> est un éditeur de code basé sur AI (souvent intégré à GitHub Copilot ou similaire). Il est indépendant de Solar2D mais peut t’aider à :
+      </p>
+      <ul>
+        <li>Convertir du code TIC-80 (souvent en Lua, mais avec des particularités) vers du Lua standard</li>
+        <li>Faire des suggestions intelligentes pour le refactoring</li>
+      </ul>
+      <div class="highlight">
+        <strong>Pertinent ?</strong> Oui, mais en complément. Cursor peut accélérer la traduction logique du code, mais ne remplace pas une compréhension des API spécifiques à Solar2D.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Adaptation TIC-80 → Solar2D : Points clés</h2>
+      <ul>
+        <li><strong>Langage :</strong> TIC-80 utilise Lua aussi, mais avec des fonctions spécifiques (<code>cls</code>, <code>spr</code>, <code>map</code>, etc.). Il faut les mapper vers Solar2D (<code>display.*</code>, <code>sprite</code>, <code>tilemap</code>, etc.).</li>
+        <li><strong>Graphismes :</strong> Pas de framebuffer direct dans Solar2D, il faut utiliser des <code>display.newImageRect</code>, <code>SpriteSheet</code>, etc.</li>
+        <li><strong>Input :</strong> TIC-80 gère les touches avec <code>btn()</code>, Solar2D utilise <code>Runtime:addEventListener("key", ...)</code>.</li>
+        <li><strong>Boucle de jeu :</strong> TIC-80 a <code>TIC()</code>; Solar2D utilise <code>enterFrame</code>.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Recommandation finale</h2>
+      <p>
+        Utilise <strong>Windsurf</strong> comme base de développement Solar2D.<br>
+        Utilise <strong>Cursor</strong> pour t’aider à convertir du code ou organiser tes scripts.<br>
+        Prends le temps de mapper les fonctions de TIC-80 vers les équivalents Solar2D.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

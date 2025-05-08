@@ -37,7 +37,11 @@ selectMAP = {
 			colorsNb = {64,11,21,20,27,22,12,5,3},
 			Largeur = 19,
 			Hauteur = 18,
-			miniSize = 15
+			miniSize = 15,
+			countX = 0,
+			countY = 500,
+			totalX = 0,
+			totalY = 540,
 		}
 	},
 	{
@@ -80,7 +84,11 @@ selectMAP = {
 			colorsNb = {121,58,195,128},
 			Largeur = 24,
 			Hauteur = 26,
-			miniSize = 10
+			miniSize = 10,
+			countX = 0,
+			countY = 0,
+			totalX = 0,
+			totalY = 0,
 		}
 	},
 }

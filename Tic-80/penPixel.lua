@@ -547,22 +547,6 @@ function resetGrid(g1)
     end
 end
 
-function watchEqual(t1, t2)
-    if #t1 ~= #t2 then return false end  
-
-    for i = 1, #t1 do
-        if #t1[i] ~= #t2[i] then return false end 
-
-        for j = 1, #t1[i] do
-            if t1[i][j] ~= t2[i][j] then
-                return false  
-            end
-        end
-    end
-
-    return true  
-end
-
 function countDifferences(t1, t2)
     local count = 0
     local total = 0

@@ -571,23 +571,6 @@ function resetGrid(g1)
     end
 end
 
--- Vérifier si les dimensions sont les mêmes
-function watchEqual(t1, t2)
-    if #t1 ~= #t2 then return false end  
-
-    for i = 1, #t1 do
-        if #t1[i] ~= #t2[i] then return false end  -- Vérifier la largeur de chaque ligne
-
-        for j = 1, #t1[i] do
-            if t1[i][j] ~= t2[i][j] then
-                return false  -- Dès qu'une cellule est différente, renvoyer false
-            end
-        end
-    end
-
-    return true  -- Si toutes les cases sont identiques, renvoyer true
-end
-
 -- Nombre de pixel à placer
 function countDifferences(t1, t2)
     local count = 0
