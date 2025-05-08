@@ -6,6 +6,7 @@ v0.03.1 -> Hotfixe -> Remplacer les string color par des variables color
 v0.04.0 -> Selectionner un couleur + changer de couleur avec la molette
 v0.05.0 -> Retirer une couleur avec le clic long
 v0.06.0 -> Ajouter un compteur dynamique des pixel totaux et restant
+v0.06.1 -> Ajouter un compteur dynamique des couleur restant à posé
 EN COURS : 
 
 ** Pensez à builder en HTML pour le tester sur navigateur + mobile

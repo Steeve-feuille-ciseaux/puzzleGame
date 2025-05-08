@@ -244,6 +244,7 @@ end
 -- Poser les carré sur la grille vierge
 for i = 1, #map.data.colors do
     local colorName = map.data.colors[i]
+    local colorNb = map.data.colorsNb[i]
 
     local carre = display.newRect(startX, startY, cellSize, cellSize)
     carre:setFillColor(unpack(colorMap[colorName]))
@@ -278,11 +279,11 @@ for i = 1, #map.data.colors do
     end)
 
     local text = display.newText({
-        text = "x ???",
+        text = "x " .. colorNb,
         x = startX + cellSize + 15,
-        y = startY - 10,
+        y = startY - 8,
         font = native.systemFont,
-        fontSize = 16
+        fontSize = 18
     })
     text.anchorY = 0
     text:setFillColor(1, 1, 1)
