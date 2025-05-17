@@ -12,6 +12,6 @@ v0.06.3 -> Stocker la valeur de la couleur lors d'un suppression
 v0.07.0 -> Affichage dynamique des pixel de couleur finaliser
 v0.07.1 -> Aucun pixel est ajouter lorsque le compteur est à 0
 
-EN COURS : Ajouter un compteur dynamique des couleur restant à posé
+EN COURS : 
 
 ** Pensez à builder en HTML pour le tester sur navigateur + mobile

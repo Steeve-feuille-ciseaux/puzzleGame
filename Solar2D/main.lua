@@ -218,42 +218,48 @@ elseif rect.isFocus then
 
         else
             -- CLIC COURT (simule clic gauche)
-local newColor = drawPixel
+            local newColor = drawPixel
 
--- Trouver l'index de la couleur sélectionnée
-local canPlace = false
-local colorIndex = nil
+            -- Vérifie si la cellule contient déjà cette couleur
+            if gridBlank[i][j] == newColor then
+                print("⏩ Cellule [" .. i .. "," .. j .. "] déjà colorée avec " .. tostring(newColor) .. ", aucune action")
+                return true  -- On quitte la fonction sans rien faire
+            end
 
-for k = 1, #map.data.colors do
-    if map.data.colors[k] == newColor then
-        colorIndex = k
-        if map.data.colorsNb[k] > 0 then
-            canPlace = true
-        end
-        break
-    end
-end
+            -- Trouver l'index de la couleur sélectionnée
+            local canPlace = false
+            local colorIndex = nil
 
-if not canPlace then
-    print("⛔ Impossible de placer la couleur " .. tostring(newColor) .. " : stock vide.")
-    return true  -- On quitte sans modifier la cellule
-end
+            for k = 1, #map.data.colors do
+                if map.data.colors[k] == newColor then
+                    colorIndex = k
+                    if map.data.colorsNb[k] > 0 then
+                        canPlace = true
+                    end
+                    break
+                end
+            end
 
--- ✅ Appliquer la couleur si disponible
-gridBlank[i][j] = newColor
-rect:setFillColor(unpack(colorMap[newColor]))
+            if not canPlace then
+                print("⛔ Impossible de placer la couleur " .. tostring(newColor) .. " : stock vide.")
+                return true  -- On quitte sans modifier la cellule
+            end
 
--- Supprimer le petit carré blanc si existant
-if rect.marker then
-    rect.marker:removeSelf()
-    rect.marker = nil
-end
+            -- ✅ Appliquer la couleur si disponible
+            gridBlank[i][j] = newColor
+            rect:setFillColor(unpack(colorMap[newColor]))
 
--- 🔽 Décrémenter et mettre à jour le texte
-map.data.colorsNb[colorIndex] = map.data.colorsNb[colorIndex] - 1
-if textColorNb[colorIndex] then
-    textColorNb[colorIndex].text = "x " .. map.data.colorsNb[colorIndex]
-end
+            -- Supprimer le petit carré blanc si existant
+            if rect.marker then
+                rect.marker:removeSelf()
+                rect.marker = nil
+            end
+
+            -- 🔽 Décrémenter et mettre à jour le texte
+            map.data.colorsNb[colorIndex] = map.data.colorsNb[colorIndex] - 1
+            if textColorNb[colorIndex] then
+                textColorNb[colorIndex].text = "x " .. map.data.colorsNb[colorIndex]
+            end
 
         end
 
