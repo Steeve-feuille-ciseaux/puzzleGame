@@ -8,6 +8,7 @@ v0.05.0 -> Retirer une couleur avec le clic long
 v0.06.0 -> Ajouter un compteur dynamique des pixel totaux et restant
 v0.06.1 -> Ajouter un compteur dynamique des couleur restant à posé
 v0.06.2 -> Mise à jours des couleurs
+v0.06.3 -> Stocker la valeur de la couleur lors d'un suppression
 
 EN COURS : Ajouter un compteur dynamique des couleur restant à posé
 

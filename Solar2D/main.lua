@@ -21,6 +21,9 @@ local grid = map.grid
 -- Grille vierge
 local gridBlank = {}
 
+-- Cellule de la grille vierge
+local indexCell = nil
+
 local function countGridDifferences(grid1, grid2)
     local value = 0
 
@@ -96,13 +99,13 @@ local rows = map.data.Hauteur
 local cols = map.data.Largeur
 
 local function printGrid()
-    print("Contenu de gridBlank :")
+    -- print("Contenu de gridBlank :")
     for i = 1, #gridBlank do
         local row = {}
         for j = 1, #gridBlank[i] do
             table.insert(row, gridBlank[i][j])
         end
-        print(table.concat(row, "\t"))
+        -- print(table.concat(row, "\t"))
     end
 end
 
@@ -177,6 +180,12 @@ local function onCellTouch(event)
 
             if elapsed > 300 then
                 -- CLIC LONG (simule bouton droit)                
+
+                -- ✅ Récupérer l'ancienne valeur de la cellule AVANT modification
+                indexCell = gridBlank[i][j]
+                print("Ancienne valeur de la cellule : " .. tostring(indexCell))
+
+                -- ⚠️ Maintenant seulement on écrase par 99
                 gridBlank[i][j] = 99
                 rect:setFillColor(unpack(colorMap[99]))
 
@@ -192,8 +201,8 @@ local function onCellTouch(event)
                 local newColor = drawPixel
                 gridBlank[i][j] = newColor
                 rect:setFillColor(unpack(colorMap[newColor]))
-                print(gridBlank[i][j])
-                printGrid()
+                -- print(gridBlank[i][j])
+                -- printGrid()
 
                 -- Supprimer le petit carré blanc
                 if rect.marker then
@@ -206,7 +215,7 @@ local function onCellTouch(event)
             diffCount2 = countGridDifferences(grid, gridBlank)
 
             -- Mettre à jour le texte du compteur de différences
-            print(diffCount2)
+            -- (diffCount2)
 
             -- Mise à jour du texte affiché
             diffCountText.text = tostring(diffCount2)  -- Mettez à jour la propriété text
@@ -241,7 +250,7 @@ for i = 1, rows do
     end
 end
 
--- Poser les carré sur la grille vierge
+-- Sélectionner une couleur 
 for i = 1, #map.data.colors do
     local colorName = map.data.colors[i]
     local colorNb = map.data.colorsNb[i]
