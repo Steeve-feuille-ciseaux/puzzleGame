@@ -24,6 +24,9 @@ local gridBlank = {}
 -- Cellule de la grille vierge
 local indexCell = nil
 
+-- Affiche la quantité de couleur disponible
+local textColorNb = {}
+
 local function countGridDifferences(grid1, grid2)
     local value = 0
 
@@ -158,34 +161,47 @@ diffCountText:setFillColor(1, 1, 1)  -- Couleur blanche
 
 -- ## Fonction pour ajouter les couleurs ##
 local function onCellTouch(event)
-    local rect = event.target
-    local phase = event.phase
+local rect = event.target
+local phase = event.phase
 
-    if phase == "began" then
-        -- Mémoriser le temps de début
-        rect.touchStartTime = system.getTimer()
+if phase == "began" then
+    -- Mémoriser le temps de début
+    rect.touchStartTime = system.getTimer()
 
-        -- On capture le focus pour bien suivre le touch jusqu’au bout
-        display.getCurrentStage():setFocus(rect)
-        rect.isFocus = true
+    -- On capture le focus pour bien suivre le touch jusqu’au bout
+    display.getCurrentStage():setFocus(rect)
+    rect.isFocus = true
 
-    elseif rect.isFocus then
-        if phase == "ended" or phase == "cancelled" then
-            display.getCurrentStage():setFocus(nil)
-            rect.isFocus = false
+elseif rect.isFocus then
+    if phase == "ended" or phase == "cancelled" then
+        display.getCurrentStage():setFocus(nil)
+        rect.isFocus = false
 
-            local elapsed = system.getTimer() - rect.touchStartTime
+        local elapsed = system.getTimer() - rect.touchStartTime
 
-            local i, j = rect.i, rect.j
+        local i, j = rect.i, rect.j
 
-            if elapsed > 300 then
-                -- CLIC LONG (simule bouton droit)                
+        if elapsed > 300 then
+            -- CLIC LONG (simule bouton droit) 
+            indexCell = gridBlank[i][j]
 
-                -- ✅ Récupérer l'ancienne valeur de la cellule AVANT modification
-                indexCell = gridBlank[i][j]
-                print("Ancienne valeur de la cellule : " .. tostring(indexCell))
+            if indexCell ~= 99 then
+                print("➕ Restauration : cellule [" .. i .. "," .. j .. "] - couleur " .. tostring(indexCell))
 
-                -- ⚠️ Maintenant seulement on écrase par 99
+                -- Incrémenter la quantité disponible de la couleur retirée
+                for k = 1, #map.data.colors do
+                    if map.data.colors[k] == indexCell then
+                        map.data.colorsNb[k] = map.data.colorsNb[k] + 1
+
+                        -- Mettre à jour le texte affiché
+                        if textColorNb[k] then
+                            textColorNb[k].text = "x " .. map.data.colorsNb[k]
+                        end
+                        break
+                    end
+                end
+
+                -- Remplacer la cellule par 99 (gris)
                 gridBlank[i][j] = 99
                 rect:setFillColor(unpack(colorMap[99]))
 
@@ -197,28 +213,57 @@ local function onCellTouch(event)
                     rect.marker = marker
                 end
             else
-                -- CLIC COURT (simule clic gauche)
-                local newColor = drawPixel
-                gridBlank[i][j] = newColor
-                rect:setFillColor(unpack(colorMap[newColor]))
-                -- print(gridBlank[i][j])
-                -- printGrid()
-
-                -- Supprimer le petit carré blanc
-                if rect.marker then
-                    rect.marker:removeSelf()
-                    rect.marker = nil
-                end
+                print("⏩ Cellule déjà vide (99), aucune action")
             end
 
-            -- Recalculer diffCount après modification
-            diffCount2 = countGridDifferences(grid, gridBlank)
+        else
+            -- CLIC COURT (simule clic gauche)
+            local newColor = drawPixel
+            gridBlank[i][j] = newColor
+            rect:setFillColor(unpack(colorMap[newColor]))
+            print(gridBlank[i][j])
+            printGrid()
 
-            -- Mettre à jour le texte du compteur de différences
-            -- (diffCount2)
+            -- Supprimer le petit carré blanc si existant
+            if rect.marker then
+                rect.marker:removeSelf()
+                rect.marker = nil
+            end
 
-            -- Mise à jour du texte affiché
-            diffCountText.text = tostring(diffCount2)  -- Mettez à jour la propriété text
+            -- 🔽 Décrémenter la quantité et mettre à jour le texte
+            for k = 1, #map.data.colors do
+                if map.data.colors[k] == newColor then
+                    if map.data.colorsNb[k] > 0 then
+                        map.data.colorsNb[k] = map.data.colorsNb[k] - 1
+
+                        -- ✅ Mise à jour du texte d’affichage
+                        if textColorNb[k] then
+                            textColorNb[k].text = "x " .. map.data.colorsNb[k]
+                        end
+                    else
+                        print("⚠️ Plus de pixels disponibles pour : " .. newColor)
+                    end
+                    break
+                end
+            end
+            -- print(gridBlank[i][j])
+            -- printGrid()
+
+            -- Supprimer le petit carré blanc
+            if rect.marker then
+                rect.marker:removeSelf()
+                rect.marker = nil
+            end
+        end
+
+        -- Recalculer diffCount après modification
+        diffCount2 = countGridDifferences(grid, gridBlank)
+
+        -- Mettre à jour le texte du compteur de différences
+        -- (diffCount2)
+
+        -- Mise à jour du texte affiché
+        diffCountText.text = tostring(diffCount2)  -- Mettez à jour la propriété text
 
         end
     end
@@ -287,15 +332,16 @@ for i = 1, #map.data.colors do
         return true
     end)
 
-    local text = display.newText({
+    textColorNb[i] = display.newText({
         text = "x " .. colorNb,
         x = startX + cellSize + 15,
         y = startY - 8,
         font = native.systemFont,
         fontSize = 18
     })
-    text.anchorY = 0
-    text:setFillColor(1, 1, 1)
+    textColorNb[i].anchorY = 0
+    textColorNb[i]:setFillColor(1, 1, 1)
+
 
     startY = startY + cellSize + spacing
 end
