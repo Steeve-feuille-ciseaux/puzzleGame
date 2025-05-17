@@ -186,7 +186,7 @@ elseif rect.isFocus then
             indexCell = gridBlank[i][j]
 
             if indexCell ~= 99 then
-                print("➕ Restauration : cellule [" .. i .. "," .. j .. "] - couleur " .. tostring(indexCell))
+                -- print("➕ Restauration : cellule [" .. i .. "," .. j .. "] - couleur " .. tostring(indexCell))
 
                 -- Incrémenter la quantité disponible de la couleur retirée
                 for k = 1, #map.data.colors do
@@ -218,42 +218,43 @@ elseif rect.isFocus then
 
         else
             -- CLIC COURT (simule clic gauche)
-            local newColor = drawPixel
-            gridBlank[i][j] = newColor
-            rect:setFillColor(unpack(colorMap[newColor]))
-            print(gridBlank[i][j])
-            printGrid()
+local newColor = drawPixel
 
-            -- Supprimer le petit carré blanc si existant
-            if rect.marker then
-                rect.marker:removeSelf()
-                rect.marker = nil
-            end
+-- Trouver l'index de la couleur sélectionnée
+local canPlace = false
+local colorIndex = nil
 
-            -- 🔽 Décrémenter la quantité et mettre à jour le texte
-            for k = 1, #map.data.colors do
-                if map.data.colors[k] == newColor then
-                    if map.data.colorsNb[k] > 0 then
-                        map.data.colorsNb[k] = map.data.colorsNb[k] - 1
+for k = 1, #map.data.colors do
+    if map.data.colors[k] == newColor then
+        colorIndex = k
+        if map.data.colorsNb[k] > 0 then
+            canPlace = true
+        end
+        break
+    end
+end
 
-                        -- ✅ Mise à jour du texte d’affichage
-                        if textColorNb[k] then
-                            textColorNb[k].text = "x " .. map.data.colorsNb[k]
-                        end
-                    else
-                        print("⚠️ Plus de pixels disponibles pour : " .. newColor)
-                    end
-                    break
-                end
-            end
-            -- print(gridBlank[i][j])
-            -- printGrid()
+if not canPlace then
+    print("⛔ Impossible de placer la couleur " .. tostring(newColor) .. " : stock vide.")
+    return true  -- On quitte sans modifier la cellule
+end
 
-            -- Supprimer le petit carré blanc
-            if rect.marker then
-                rect.marker:removeSelf()
-                rect.marker = nil
-            end
+-- ✅ Appliquer la couleur si disponible
+gridBlank[i][j] = newColor
+rect:setFillColor(unpack(colorMap[newColor]))
+
+-- Supprimer le petit carré blanc si existant
+if rect.marker then
+    rect.marker:removeSelf()
+    rect.marker = nil
+end
+
+-- 🔽 Décrémenter et mettre à jour le texte
+map.data.colorsNb[colorIndex] = map.data.colorsNb[colorIndex] - 1
+if textColorNb[colorIndex] then
+    textColorNb[colorIndex].text = "x " .. map.data.colorsNb[colorIndex]
+end
+
         end
 
         -- Recalculer diffCount après modification

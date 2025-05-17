@@ -10,6 +10,7 @@ v0.06.1 -> Ajouter un compteur dynamique des couleur restant à posé
 v0.06.2 -> Mise à jours des couleurs
 v0.06.3 -> Stocker la valeur de la couleur lors d'un suppression
 v0.07.0 -> Affichage dynamique des pixel de couleur finaliser
+v0.07.1 -> Aucun pixel est ajouter lorsque le compteur est à 0
 
 EN COURS : Ajouter un compteur dynamique des couleur restant à posé
 
