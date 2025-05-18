@@ -12,6 +12,7 @@ v0.06.3 -> Stocker la valeur de la couleur lors d'un suppression
 v0.07.0 -> Affichage dynamique des pixel de couleur finaliser
 v0.07.1 -> Aucun pixel est ajouter lorsque le compteur est à 0
 v0.07.2 -> ! HOTFIX ! lorsqu'on pose un pixel de couleur sur un autre, incremente l'ancien pixel de couleur 
+v0.08.0 -> Condition de fin puzzle + devMod
 
 EN COURS : condition de victoire
 

@@ -21,3 +21,6 @@ A FAIRE :
 
 BUG MAJEUR : 
 la molette est inversé pour changer de couleur
+
+lien du jeu :
+https://steeve-feuille-ciseaux.github.io/puzzleGame/Html/

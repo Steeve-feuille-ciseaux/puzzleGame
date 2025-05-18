@@ -27,6 +27,18 @@ local indexCell = nil
 -- Affiche la quantité de couleur disponible
 local textColorNb = {}
 
+-- Message de victoire
+local function showFinitoMessage()
+    local finitoText = display.newText({
+        text = "FINITO",
+        x = display.contentCenterX,
+        y = display.contentHeight - 30, -- 30 pixels depuis le bas
+        font = native.systemFontBold,
+        fontSize = 28
+    })
+    finitoText:setFillColor(0, 1, 0)  -- Vert
+end
+
 local function countGridDifferences(grid1, grid2)
     local value = 0
 
@@ -281,6 +293,10 @@ elseif rect.isFocus then
         -- Recalculer diffCount après modification
         diffCount2 = countGridDifferences(grid, gridBlank)
 
+        -- !! CONDITION DE FIN DU PUZZLE !!
+        if diffCount2 == 0 then
+            showFinitoMessage()
+        end
         -- Mettre à jour le texte du compteur de différences
         -- (diffCount2)
 
@@ -407,3 +423,12 @@ end
 
 -- Activer l’écouteur molette
 Runtime:addEventListener("mouse", onMouseEvent)
+
+-- DevMod Fin de puzzle
+local finishUp = require("finishBouton")
+finishUp(function()
+    diffCount2 = 0
+    diffCountText.text = tostring(diffCount2)
+    print("FINITO")
+    showFinitoMessage()
+end)
