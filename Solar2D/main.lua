@@ -219,6 +219,22 @@ elseif rect.isFocus then
         else
             -- CLIC COURT (simule clic gauche)
             local newColor = drawPixel
+            indexCell = gridBlank[i][j]
+
+            -- Si l'ancienne couleur est différente de la nouvelle couleur, on remet l'ancienne en stock
+            if indexCell ~= 99 and indexCell ~= newColor then
+                for k = 1, #map.data.colors do
+                    if map.data.colors[k] == indexCell then
+                        map.data.colorsNb[k] = map.data.colorsNb[k] + 1
+
+                        -- Mettre à jour le texte affiché
+                        if textColorNb[k] then
+                            textColorNb[k].text = "x " .. map.data.colorsNb[k]
+                        end
+                        break
+                    end
+                end
+            end
 
             -- Vérifie si la cellule contient déjà cette couleur
             if gridBlank[i][j] == newColor then
@@ -260,7 +276,6 @@ elseif rect.isFocus then
             if textColorNb[colorIndex] then
                 textColorNb[colorIndex].text = "x " .. map.data.colorsNb[colorIndex]
             end
-
         end
 
         -- Recalculer diffCount après modification
