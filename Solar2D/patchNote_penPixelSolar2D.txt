@@ -13,7 +13,8 @@ v0.07.0 -> Affichage dynamique des pixel de couleur finaliser
 v0.07.1 -> Aucun pixel est ajouter lorsque le compteur est à 0
 v0.07.2 -> ! HOTFIX ! lorsqu'on pose un pixel de couleur sur un autre, incremente l'ancien pixel de couleur 
 v0.08.0 -> Condition de fin puzzle + devMod
+v0.08.1 -> Soluce Mode * à poursuivre *
 
-EN COURS : condition de victoire
+EN COURS : Soluce Mode
 
 ** Pensez à builder en HTML pour le tester sur navigateur + mobile

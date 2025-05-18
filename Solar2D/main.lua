@@ -432,3 +432,9 @@ finishUp(function()
     print("FINITO")
     showFinitoMessage()
 end)
+
+-- DevMod Soluce
+local soluceUp = require("soluceBouton")
+
+-- Bouton Arc-en-ciel placé juste au-dessus du bouton vert
+soluceUp(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize)
