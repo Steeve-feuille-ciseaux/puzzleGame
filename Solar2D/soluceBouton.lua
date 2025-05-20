@@ -23,7 +23,7 @@ function M(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize, duration)
                 local correctVal = grid[i][j]
                 local userVal = gridBlank[i][j]
 
-                if correctVal ~= 99 and correctVal ~= userVal then
+                if correctVal ~= userVal then
                     local x = gridOffsetX + (j - 1) * cellSize - (cellSize / 2)
                     local y = gridOffsetY + (i - 1) * cellSize - (cellSize / 2)
 
