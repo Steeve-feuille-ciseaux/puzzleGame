@@ -437,4 +437,4 @@ end)
 local soluceUp = require("soluceBouton")
 
 -- Bouton Arc-en-ciel placé juste au-dessus du bouton vert
-soluceUp(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize)
+soluceUp(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize, 5)
