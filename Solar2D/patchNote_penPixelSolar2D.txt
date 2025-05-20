@@ -13,8 +13,10 @@ v0.07.0 -> Affichage dynamique des pixel de couleur finaliser
 v0.07.1 -> Aucun pixel est ajouter lorsque le compteur est à 0
 v0.07.2 -> ! HOTFIX ! lorsqu'on pose un pixel de couleur sur un autre, incremente l'ancien pixel de couleur 
 v0.08.0 -> Condition de fin puzzle + devMod
-v0.08.1 -> Soluce Mode * 1/2 *
-v0.08.2 -> Soluce Mode * 2/2 *
+v0.08.1 -> Soluce Mode * 1/3 *
+v0.08.2 -> Soluce Mode * 2/3 *
+v0.08.3 -> Soluce Mode * 3/3 *
+v0.09.0 -> Soluce Mode polish l'animation arc-en-ciel
 
 EN COURS : Soluce Mode polish l'animation arc-en-ciel
 
