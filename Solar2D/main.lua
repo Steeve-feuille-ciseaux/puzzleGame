@@ -8,6 +8,12 @@
 local letPuzzle = 1
 local drawPixel = nil
 
+-- Draw Pixel
+local drawUp = true
+
+-- Delete Pixel Mode
+local deletePix = false
+
 -- Tableau des Puzzle
 local selectMAP = require("selectMAP") -- selectMAP.lua
 
@@ -193,110 +199,127 @@ elseif rect.isFocus then
 
         local i, j = rect.i, rect.j
 
-        if elapsed > 300 then
-            -- CLIC LONG (simule bouton droit) 
-            indexCell = gridBlank[i][j]
+-- CLIC LONG : Efface toujours
+if elapsed > 300 then
+    indexCell = gridBlank[i][j]
 
-            if indexCell ~= 99 then
-                -- print("➕ Restauration : cellule [" .. i .. "," .. j .. "] - couleur " .. tostring(indexCell))
-
-                -- Incrémenter la quantité disponible de la couleur retirée
-                for k = 1, #map.data.colors do
-                    if map.data.colors[k] == indexCell then
-                        map.data.colorsNb[k] = map.data.colorsNb[k] + 1
-
-                        -- Mettre à jour le texte affiché
-                        if textColorNb[k] then
-                            textColorNb[k].text = "x " .. map.data.colorsNb[k]
-                        end
-                        break
-                    end
+    if indexCell ~= 99 then
+        for k = 1, #map.data.colors do
+            if map.data.colors[k] == indexCell then
+                map.data.colorsNb[k] = map.data.colorsNb[k] + 1
+                if textColorNb[k] then
+                    textColorNb[k].text = "x " .. map.data.colorsNb[k]
                 end
-
-                -- Remplacer la cellule par 99 (gris)
-                gridBlank[i][j] = 99
-                rect:setFillColor(unpack(colorMap[99]))
-
-                -- Ajouter le petit carré blanc si absent
-                if not rect.marker then
-                    local x, y = rect.x, rect.y
-                    local marker = display.newRect(x, y, 3, 3)
-                    marker:setFillColor(1, 1, 1)
-                    rect.marker = marker
-                end
-            else
-                print("⏩ Cellule déjà vide (99), aucune action")
+                break
             end
+        end
 
-        else
-            -- CLIC COURT (simule clic gauche)
-            local newColor = drawPixel
-            indexCell = gridBlank[i][j]
+        gridBlank[i][j] = 99
+        rect:setFillColor(unpack(colorMap[99]))
 
-            -- Si l'ancienne couleur est différente de la nouvelle couleur, on remet l'ancienne en stock
-            if indexCell ~= 99 and indexCell ~= newColor then
-                for k = 1, #map.data.colors do
-                    if map.data.colors[k] == indexCell then
-                        map.data.colorsNb[k] = map.data.colorsNb[k] + 1
+        if not rect.marker then
+            local x, y = rect.x, rect.y
+            local marker = display.newRect(x, y, 3, 3)
+            marker:setFillColor(1, 1, 1)
+            rect.marker = marker
+        end
+    else
+        print("⏩ Cellule déjà vide (99), aucune action")
+    end
 
-                        -- Mettre à jour le texte affiché
-                        if textColorNb[k] then
-                            textColorNb[k].text = "x " .. map.data.colorsNb[k]
-                        end
-                        break
-                    end
-                end
-            end
+else
+    -- CLIC COURT
+    if deletePix then
+        -- Mode suppression par clic court
+        indexCell = gridBlank[i][j]
 
-            -- Vérifie si la cellule contient déjà cette couleur
-            if gridBlank[i][j] == newColor then
-                print("⏩ Cellule [" .. i .. "," .. j .. "] déjà colorée avec " .. tostring(newColor) .. ", aucune action")
-                return true  -- On quitte la fonction sans rien faire
-            end
-
-            -- Trouver l'index de la couleur sélectionnée
-            local canPlace = false
-            local colorIndex = nil
-
+        if indexCell ~= 99 then
             for k = 1, #map.data.colors do
-                if map.data.colors[k] == newColor then
-                    colorIndex = k
-                    if map.data.colorsNb[k] > 0 then
-                        canPlace = true
+                if map.data.colors[k] == indexCell then
+                    map.data.colorsNb[k] = map.data.colorsNb[k] + 1
+                    if textColorNb[k] then
+                        textColorNb[k].text = "x " .. map.data.colorsNb[k]
                     end
                     break
                 end
             end
 
-            if not canPlace then
-                print("⛔ Impossible de placer la couleur " .. tostring(newColor) .. " : stock vide.")
-                return true  -- On quitte sans modifier la cellule
+            gridBlank[i][j] = 99
+            rect:setFillColor(unpack(colorMap[99]))
+
+            if not rect.marker then
+                local x, y = rect.x, rect.y
+                local marker = display.newRect(x, y, 3, 3)
+                marker:setFillColor(1, 1, 1)
+                rect.marker = marker
             end
+        else
+            print("⏩ Cellule déjà vide.")
+        end
 
-            -- ✅ Appliquer la couleur si disponible
-            gridBlank[i][j] = newColor
-            rect:setFillColor(unpack(colorMap[newColor]))
+    else
+        -- Mode peinture normal
+        local newColor = drawPixel
+        indexCell = gridBlank[i][j]
 
-            -- Supprimer le petit carré blanc si existant
-            if rect.marker then
-                rect.marker:removeSelf()
-                rect.marker = nil
-            end
-
-            -- 🔽 Décrémenter et mettre à jour le texte
-            map.data.colorsNb[colorIndex] = map.data.colorsNb[colorIndex] - 1
-            if textColorNb[colorIndex] then
-                textColorNb[colorIndex].text = "x " .. map.data.colorsNb[colorIndex]
+        if indexCell ~= 99 and indexCell ~= newColor then
+            for k = 1, #map.data.colors do
+                if map.data.colors[k] == indexCell then
+                    map.data.colorsNb[k] = map.data.colorsNb[k] + 1
+                    if textColorNb[k] then
+                        textColorNb[k].text = "x " .. map.data.colorsNb[k]
+                    end
+                    break
+                end
             end
         end
 
-        -- Recalculer diffCount après modification
-        diffCount2 = countGridDifferences(grid, gridBlank)
-
-        -- !! CONDITION DE FIN DU PUZZLE !!
-        if diffCount2 == 0 then
-            showFinitoMessage()
+        if gridBlank[i][j] == newColor then
+            print("⏩ Cellule [" .. i .. "," .. j .. "] déjà colorée avec " .. tostring(newColor) .. ", aucune action")
+            return true
         end
+
+        local canPlace = false
+        local colorIndex = nil
+
+        for k = 1, #map.data.colors do
+            if map.data.colors[k] == newColor then
+                colorIndex = k
+                if map.data.colorsNb[k] > 0 then
+                    canPlace = true
+                end
+                break
+            end
+        end
+
+        if not canPlace then
+            print("⛔ Impossible de placer la couleur " .. tostring(newColor) .. " : stock vide.")
+            return true
+        end
+
+        gridBlank[i][j] = newColor
+        rect:setFillColor(unpack(colorMap[newColor]))
+
+        if rect.marker then
+            rect.marker:removeSelf()
+            rect.marker = nil
+        end
+
+        map.data.colorsNb[colorIndex] = map.data.colorsNb[colorIndex] - 1
+        if textColorNb[colorIndex] then
+            textColorNb[colorIndex].text = "x " .. map.data.colorsNb[colorIndex]
+        end
+    end
+end
+
+-- Recalculer diffCount après modification (dans tous les cas)
+diffCount2 = countGridDifferences(grid, gridBlank)
+diffCountText.text = tostring(diffCount2)
+
+if diffCount2 == 0 then
+    showFinitoMessage()
+end
+
         -- Mettre à jour le texte du compteur de différences
         -- (diffCount2)
 
@@ -358,6 +381,7 @@ for i = 1, #map.data.colors do
     carre:addEventListener("tap", function(event)
         drawPixel = event.target.colorValue
         currentIndex = event.target.index -- ✅ Met à jour currentIndex correctement
+        deletePix = false  -- ✅ Désactive le mode suppression
 
         -- Masquer toutes les flèches
         for _, a in ipairs(arrowList) do
@@ -426,6 +450,16 @@ Runtime:addEventListener("mouse", onMouseEvent)
 
 -- DevMod Fin de puzzle
 local finishUp = require("finishBouton")
+
+local finishButtonText = display.newText({
+    text = "Fin",  -- Conversion explicite en texte
+    x = 80,
+    y = display.contentHeight - 70,  -- Ajustement en dessous du dernier carré de couleur
+    font = native.systemFont,
+    fontSize = 30,
+    align = "right"
+})
+
 finishUp(function()
     diffCount2 = 0
     diffCountText.text = tostring(diffCount2)
@@ -438,3 +472,76 @@ local soluceUp = require("soluceBouton")
 
 -- Bouton Arc-en-ciel placé juste au-dessus du bouton vert
 soluceUp(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize, 5)
+
+local soluceButtonText = display.newText({
+    text = "Soluce",  -- Conversion explicite en texte
+    x = 100,
+    y = display.contentHeight - 110,  -- Ajustement en dessous du dernier carré de couleur
+    font = native.systemFont,
+    fontSize = 30,
+    align = "right"
+})
+
+local deleteButton = require("deleteButton")
+
+-- Créer le bouton jaune
+local yellowButton = display.newCircle(30, display.contentHeight - 150, 12.5)
+yellowButton:setFillColor(1, 1, 0)  -- Jaune
+
+-- HSV → RGB conversion
+local function hsvToRgb(h, s, v)
+    local r, g, b
+    local i = math.floor(h * 6)
+    local f = h * 6 - i
+    local p = v * (1 - s)
+    local q = v * (1 - f * s)
+    local t = v * (1 - (1 - f) * s)
+    i = i % 6
+
+    if i == 0 then r, g, b = v, t, p
+    elseif i == 1 then r, g, b = q, v, p
+    elseif i == 2 then r, g, b = p, v, t
+    elseif i == 3 then r, g, b = p, q, v
+    elseif i == 4 then r, g, b = t, p, v
+    elseif i == 5 then r, g, b = v, p, q
+    end
+
+    return r, g, b
+end
+
+
+-- 🌀 Animation arc-en-ciel du bouton jaune quand deletePix == true
+local hue = 0
+timer.performWithDelay(100, function()
+    if deletePix then
+        hue = (hue + 0.08) % 1
+        local r, g, b = hsvToRgb(hue, 1, 1)
+        yellowButton:setFillColor(r, g, b)
+    else
+        yellowButton:setFillColor(1, 1, 0)  -- Remet en jaune si pas en mode suppression
+    end
+end, 0)
+
+local yellowButtonText = display.newText({
+    text = "Effacer",  -- Conversion explicite en texte
+    x = 100,
+    y = display.contentHeight - 150,  -- Ajustement en dessous du dernier carré de couleur
+    font = native.systemFont,
+    fontSize = 30,
+    align = "right"
+})
+
+-- Événement de clic
+local function onYellowButtonClick(event)
+    if event.phase == "ended" then
+        -- Remplacer le curseur natif avec l'image de la croix rouge
+        deleteButton.setCursorToCross()
+        deletePix = true  -- ✅ Active le mode suppression
+    end
+    return true
+end
+
+-- Activer un curseur personnalisé dès le départ
+deleteButton.setCustomCursor("img/crossRed.png", 32, 32)
+
+yellowButton:addEventListener("touch", onYellowButtonClick)
