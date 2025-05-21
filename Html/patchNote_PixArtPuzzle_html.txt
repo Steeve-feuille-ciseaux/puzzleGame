@@ -17,8 +17,9 @@ v0.08.1 -> Soluce Mode * 1/3 *
 v0.08.2 -> Soluce Mode * 2/3 *
 v0.08.3 -> Soluce Mode * 3/3 *
 v0.09.0 -> Soluce Mode polish l'animation arc-en-ciel
+v0.10.0 -> Toggle bouton delete + icone sur bureau * A moduler plus tard * 
 
-EN COURS : 
+EN COURS : Icone souris
 
 A FAIRE : 
 - Reproduire la version TIC-80 en navigateur

@@ -542,6 +542,10 @@ local function onYellowButtonClick(event)
 end
 
 -- Activer un curseur personnalisé dès le départ
-deleteButton.setCustomCursor("img/crossRed.png", 32, 32)
+if deletePix == true then
+    deleteButton.setCustomCursor("img/crossRed.png", 32, 32)
+else
+    deleteButton.setCustomCursor("img/penIcon.png", 32, 32)
+end
 
 yellowButton:addEventListener("touch", onYellowButtonClick)
