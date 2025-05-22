@@ -9,18 +9,6 @@ local function onMouseMove(event)
 end
 
 -- Désactive le curseur natif en le cachant
-function N.setCursorToCross()
-    -- Cacher le curseur natif (enlever les deux méthodes)
-    native.setProperty("mouseCursor", "none")
-    native.setProperty("mouseCursorVisible", false)
-    
-    -- Assurer que le curseur personnalisé est bien actif
-    if not customCursorImage then
-        -- Optionnel : Ajouter le curseur personnalisé ici si ce n'est pas déjà fait
-        N.setCustomCursor("images/crossRed.png", 32, 32)
-    end
-end
-
 function N.setCustomCursor(imagePath, width, height)
     -- Nettoyer le curseur précédent si déjà existant
     if customCursorImage then
@@ -28,14 +16,20 @@ function N.setCustomCursor(imagePath, width, height)
         customCursorImage = nil
     end
 
-    -- Ajouter l'image personnalisée comme curseur
+    -- Ajouter l’image personnalisée comme curseur
     customCursorImage = display.newImageRect(group, imagePath, width or 32, height or 32)
+    
+    -- 🔽 Ancrage en bas à gauche
+    customCursorImage.anchorX = 0
+    customCursorImage.anchorY = 1
+    
+    -- Position de départ
     customCursorImage.x, customCursorImage.y = 0, 0
 
-    -- Masquer le curseur natif (on cache le curseur natif ici)
+    -- Masquer le curseur natif
     native.setProperty("mouseCursorVisible", false)
 
-    -- Assurer que l'événement de mouvement de la souris est bien géré
+    -- Ajouter l'écouteur pour déplacer le curseur personnalisé avec la souris
     Runtime:addEventListener("mouse", onMouseMove)
 end
 
