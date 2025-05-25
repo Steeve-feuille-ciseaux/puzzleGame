@@ -267,29 +267,18 @@ else
         else
             print("⏩ Cellule déjà vide.")
         end
-
     else
         -- Mode peinture normal
         local newColor = drawPixel
         indexCell = gridBlank[i][j]
 
-        if indexCell ~= 99 and indexCell ~= newColor then
-            for k = 1, #map.data.colors do
-                if map.data.colors[k] == indexCell then
-                    map.data.colorsNb[k] = map.data.colorsNb[k] + 1
-                    if textColorNb[k] then
-                        textColorNb[k].text = "x " .. map.data.colorsNb[k]
-                    end
-                    break
-                end
-            end
-        end
-
+        -- Si on essaie de poser la même couleur, ne rien faire
         if gridBlank[i][j] == newColor then
             print("⏩ Cellule [" .. i .. "," .. j .. "] déjà colorée avec " .. tostring(newColor) .. ", aucune action")
             return true
         end
 
+        -- Vérifier si on peut placer la couleur (stock > 0)
         local canPlace = false
         local colorIndex = nil
 
@@ -308,14 +297,30 @@ else
             return true
         end
 
+        -- Ici on est sûr de pouvoir placer la couleur, donc on remet en stock la couleur précédente si ce n'est pas 99
+        if indexCell ~= 99 then
+            for k = 1, #map.data.colors do
+                if map.data.colors[k] == indexCell then
+                    map.data.colorsNb[k] = map.data.colorsNb[k] + 1
+                    if textColorNb[k] then
+                        textColorNb[k].text = "x " .. map.data.colorsNb[k]
+                    end
+                    break
+                end
+            end
+        end
+
+        -- Poser la nouvelle couleur
         gridBlank[i][j] = newColor
         rect:setFillColor(unpack(colorMap[newColor]))
 
+        -- Retirer le marqueur si existant
         if rect.marker then
             rect.marker:removeSelf()
             rect.marker = nil
         end
 
+        -- Décrémenter le stock de la couleur posée
         map.data.colorsNb[colorIndex] = map.data.colorsNb[colorIndex] - 1
         if textColorNb[colorIndex] then
             textColorNb[colorIndex].text = "x " .. map.data.colorsNb[colorIndex]
