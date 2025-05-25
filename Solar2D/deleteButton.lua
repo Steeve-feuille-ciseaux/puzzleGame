@@ -12,6 +12,7 @@ local cellSize = nil
 local function onMouseMove(event)
     local x, y = event.x, event.y
     group.x, group.y = x, y
+    group:toFront() -- 🔁 le curseur passe AU-DESSUS de tout
 end
 
 function N.setCustomCursor(imagePath, width, height, ancrageX, ancrageY)
@@ -19,13 +20,19 @@ function N.setCustomCursor(imagePath, width, height, ancrageX, ancrageY)
         customCursorImage:removeSelf()
         customCursorImage = nil
     end
+
     customCursorImage = display.newImageRect(group, imagePath, width or 32, height or 32)
     customCursorImage.anchorX = ancrageX
     customCursorImage.anchorY = ancrageY
     customCursorImage.x, customCursorImage.y = 0, 0
+
     native.setProperty("mouseCursorVisible", false)
+
+    -- ✅ Évite d'ajouter plusieurs listeners
+    Runtime:removeEventListener("mouse", onMouseMove)
     Runtime:addEventListener("mouse", onMouseMove)
 end
+
 
 function N.removeCustomCursor()
     if customCursorImage then
@@ -119,6 +126,10 @@ function N.init(params)
     currentIndex = params.currentIndex
     -- Met à jour le curseur initial
     updateDeleteMode(false)
+end
+
+function N.updateDeleteMode(isDelete)
+    updateDeleteMode(isDelete)
 end
 
 return N

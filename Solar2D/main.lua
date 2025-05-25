@@ -11,8 +11,19 @@ local drawPixel = nil
 -- Draw Pixel
 local drawUp = true
 
--- Delete Pixel Mode
-deletePix = false  -- variable globale
+-- Masquer le curseur système au lancement
+native.setProperty("mouseCursorVisible", false)
+
+-- Module Delete Pixel 
+local deleteButton = require("deleteButton")
+
+deleteButton.updateDeleteMode(false)
+
+deleteButton.init({
+    map = map,
+    arrowList = arrowList,
+    currentIndex = currentIndex
+})
 
 -- Tableau des Puzzle
 local selectMAP = require("selectMAP") -- selectMAP.lua
@@ -375,7 +386,7 @@ for i = 1, #map.data.colors do
     carre:addEventListener("tap", function(event)
         drawPixel = event.target.colorValue
         currentIndex = event.target.index -- ✅ Met à jour currentIndex correctement
-        deletePix = false  -- ✅ Désactive le mode suppression
+        deleteButton.updateDeleteMode(false)  -- ✅ Désactive le mode suppression
 
         -- Masquer toutes les flèches
         for _, a in ipairs(arrowList) do
@@ -427,6 +438,7 @@ local function onMouseEvent(event)
         end
 
         drawPixel = map.data.colors[currentIndex]
+        deleteButton.updateDeleteMode(false)
 
         -- Cacher toutes les flèches
         for _, a in ipairs(arrowList) do
@@ -474,12 +486,4 @@ local soluceButtonText = display.newText({
     font = native.systemFont,
     fontSize = 30,
     align = "right"
-})
-
-local deleteButton = require("deleteButton")
-
-deleteButton.init({
-    map = map,
-    arrowList = arrowList,
-    currentIndex = currentIndex
 })
