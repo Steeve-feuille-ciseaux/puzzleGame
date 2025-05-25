@@ -21,6 +21,7 @@ v0.10.0 -> Toggle bouton delete + icone sur bureau
 v0.10.1 -> Déplacer l'ancrage de penIcon en bas à gauche
 v0.10.2 -> ! HOTFIX ! Toggle bouton delete + icone sur bureau * résolue *
 v0.10.3 -> ! HOTFIX ! icone sur bureau résolu avec la molette et la selection de couleur
+v0.10.4 -> * BUG EN PAUSE * le remplacement l'icone au démarage
 
 EN COURS : sur bureau icone Draw où Pen
 

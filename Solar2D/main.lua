@@ -12,7 +12,7 @@ local drawPixel = nil
 local drawUp = true
 
 -- Masquer le curseur système au lancement
-native.setProperty("mouseCursorVisible", false)
+-- native.setProperty("mouseCursorVisible", false)
 
 -- Module Delete Pixel 
 local deleteButton = require("deleteButton")
