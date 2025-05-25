@@ -12,7 +12,7 @@ local drawPixel = nil
 local drawUp = true
 
 -- Delete Pixel Mode
-local deletePix = false
+deletePix = false  -- variable globale
 
 -- Tableau des Puzzle
 local selectMAP = require("selectMAP") -- selectMAP.lua
@@ -138,7 +138,7 @@ local spacing = 10
 local arrowList = {}
 local carreList = {} -- 📌 Liste des carrés
 local firstArrow
-local currentIndex = 1 -- ✅ Bien initialisé
+currentIndex = 1 -- ✅ Bien initialisé
 
 -- ## Nombre de pixel contenu par le puzzle ##
 local pixCountTotal = 0
@@ -320,12 +320,6 @@ if diffCount2 == 0 then
     showFinitoMessage()
 end
 
-        -- Mettre à jour le texte du compteur de différences
-        -- (diffCount2)
-
-        -- Mise à jour du texte affiché
-        diffCountText.text = tostring(diffCount2)  -- Mettez à jour la propriété text
-
         end
     end
 
@@ -484,68 +478,8 @@ local soluceButtonText = display.newText({
 
 local deleteButton = require("deleteButton")
 
--- Créer le bouton jaune
-local yellowButton = display.newCircle(30, display.contentHeight - 150, 12.5)
-yellowButton:setFillColor(1, 1, 0)  -- Jaune
-
--- HSV → RGB conversion
-local function hsvToRgb(h, s, v)
-    local r, g, b
-    local i = math.floor(h * 6)
-    local f = h * 6 - i
-    local p = v * (1 - s)
-    local q = v * (1 - f * s)
-    local t = v * (1 - (1 - f) * s)
-    i = i % 6
-
-    if i == 0 then r, g, b = v, t, p
-    elseif i == 1 then r, g, b = q, v, p
-    elseif i == 2 then r, g, b = p, v, t
-    elseif i == 3 then r, g, b = p, q, v
-    elseif i == 4 then r, g, b = t, p, v
-    elseif i == 5 then r, g, b = v, p, q
-    end
-
-    return r, g, b
-end
-
-
--- 🌀 Animation arc-en-ciel du bouton jaune quand deletePix == true
-local hue = 0
-timer.performWithDelay(100, function()
-    if deletePix then
-        hue = (hue + 0.08) % 1
-        local r, g, b = hsvToRgb(hue, 1, 1)
-        yellowButton:setFillColor(r, g, b)
-    else
-        yellowButton:setFillColor(1, 1, 0)  -- Remet en jaune si pas en mode suppression
-    end
-end, 0)
-
-local yellowButtonText = display.newText({
-    text = "Effacer",  -- Conversion explicite en texte
-    x = 100,
-    y = display.contentHeight - 150,  -- Ajustement en dessous du dernier carré de couleur
-    font = native.systemFont,
-    fontSize = 30,
-    align = "right"
+deleteButton.init({
+    map = map,
+    arrowList = arrowList,
+    currentIndex = currentIndex
 })
-
--- Événement de clic
-local function onYellowButtonClick(event)
-    if event.phase == "ended" then
-        -- Remplacer le curseur natif avec l'image de la croix rouge
-        deleteButton.setCursorToCross()
-        deletePix = true  -- ✅ Active le mode suppression
-    end
-    return true
-end
-
--- Activer un curseur personnalisé dès le départ
-if deletePix == true then
-    deleteButton.setCustomCursor("img/crossRed.png", 32, 32)
-else
-    deleteButton.setCustomCursor("img/penIcon.png", 32, 32)
-end
-
-yellowButton:addEventListener("touch", onYellowButtonClick)
