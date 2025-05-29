@@ -15,7 +15,7 @@ local drawUp = true
 -- native.setProperty("mouseCursorVisible", false)
 
 -- Module Delete Pixel 
-local deleteButton = require("deleteButton")
+local deleteButton = require("module.deleteButton")
 
 deleteButton.updateDeleteMode(false)
 
@@ -26,10 +26,10 @@ deleteButton.init({
 })
 
 -- Tableau des Puzzle
-local selectMAP = require("selectMAP") -- selectMAP.lua
+local selectMAP = require("module.selectMAP") -- selectMAP.lua
 
 -- Tableau des couleurs (valeur -> couleur)
-local colorMap = require("colorMap") -- colorMap.lua
+local colorMap = require("module.colorMap") -- colorMap.lua
 
 -- Variable Map et Data
 local map = selectMAP[letPuzzle]
@@ -460,7 +460,7 @@ end
 Runtime:addEventListener("mouse", onMouseEvent)
 
 -- DevMod Fin de puzzle
-local finishUp = require("finishBouton")
+local finishUp = require("module.finishBouton")
 
 local finishButtonText = display.newText({
     text = "Fin",  -- Conversion explicite en texte
@@ -479,7 +479,7 @@ finishUp(function()
 end)
 
 -- DevMod Soluce
-local soluceUp = require("soluceBouton")
+local soluceUp = require("module.soluceBouton")
 
 -- Bouton Arc-en-ciel placé juste au-dessus du bouton vert
 soluceUp(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize, 5)

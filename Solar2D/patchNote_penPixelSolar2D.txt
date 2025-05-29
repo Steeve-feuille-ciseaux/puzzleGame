@@ -22,9 +22,17 @@ v0.10.1 -> Déplacer l'ancrage de penIcon en bas à gauche
 v0.10.2 -> ! HOTFIX ! Toggle bouton delete + icone sur bureau * résolue *
 v0.10.3 -> ! HOTFIX ! icone sur bureau résolu avec la molette et la selection de couleur
 v0.10.4 -> * BUG EN PAUSE * le remplacement l'icone au démarage
+v0.10.5 -> Réorganisation des fichiers
 
 EN COURS : sur bureau icone Draw où Pen
 
 BUG A CORRIGER : le remplacement l'icone au démarage
 
 ** Pensez à builder en HTML pour le tester sur navigateur + mobile
+
+A FAIRE : 
+- Changement d'écran
+- Selection puzzle
+- Animation
+- musique et effet sonore 
+- Etudié l'inclinaisons de la grille à dessiner
