@@ -24,8 +24,9 @@ v0.10.3 -> ! HOTFIX ! icone sur bureau résolu avec la molette et la selection d
 v0.10.4 -> * BUG EN PAUSE * le remplacement l'icone au démarage
 v0.10.5 -> Réorganisation des fichiers
 v0.10.6 -> Réorganisation des fichiers pour le swapScreen
+v0.10.7 -> Ecran titre
 
-EN COURS : sur bureau icone Draw où Pen
+EN COURS : Ecran selection
 
 BUG A CORRIGER : le remplacement l'icone au démarage
 

@@ -1,16 +1,20 @@
--- scene1.lua
+-- Title.lua
 local composer = require("composer")
 local scene = composer.newScene()
 
 function scene:create(event)
     local sceneGroup = self.view
 
+    -- Image de fond responsive
+    local background = display.newImageRect(sceneGroup, "img/background.png", display.actualContentWidth, display.actualContentHeight)
+    background.x = display.contentCenterX
+    background.y = display.contentCenterY
+
+    -- Texte clignotant
     local button = display.newText(sceneGroup, "Push Here for start", display.contentCenterX, display.contentHeight * 0.75, native.systemFont, 32)
-    
-    -- Permet d’interagir même quand alpha = 0
     button.isHitTestable = true
 
-    -- Fonction pour faire clignoter le texte en boucle
+    -- Fonction pour faire clignoter le texte
     local function blink()
         transition.to(button, {
             time = 700,
@@ -19,13 +23,13 @@ function scene:create(event)
                 transition.to(button, {
                     time = 1400,
                     alpha = 1,
-                    onComplete = blink  -- Relancer la boucle
+                    onComplete = blink
                 })
             end
         })
     end
 
-    blink()  -- Lancer le clignotement
+    blink()
 
     button:addEventListener("tap", function()
         composer.gotoScene("swapScreen.scene2", {effect="fade", time=500})
