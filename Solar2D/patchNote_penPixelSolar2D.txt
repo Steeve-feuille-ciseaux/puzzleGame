@@ -23,6 +23,7 @@ v0.10.2 -> ! HOTFIX ! Toggle bouton delete + icone sur bureau * résolue *
 v0.10.3 -> ! HOTFIX ! icone sur bureau résolu avec la molette et la selection de couleur
 v0.10.4 -> * BUG EN PAUSE * le remplacement l'icone au démarage
 v0.10.5 -> Réorganisation des fichiers
+v0.10.6 -> Réorganisation des fichiers pour le swapScreen
 
 EN COURS : sur bureau icone Draw où Pen
 
