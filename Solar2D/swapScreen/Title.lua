@@ -32,7 +32,7 @@ function scene:create(event)
     blink()
 
     button:addEventListener("tap", function()
-        composer.gotoScene("swapScreen.scene2", {effect="fade", time=500})
+        composer.gotoScene("swapScreen.selectDraw", {effect="fade", time=500})
     end)
 end
 
