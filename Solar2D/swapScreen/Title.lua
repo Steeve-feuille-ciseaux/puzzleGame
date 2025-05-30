@@ -1,4 +1,9 @@
+-----------------------------------------------------------------------------------------
+--
 -- Title.lua
+--
+-----------------------------------------------------------------------------------------
+
 local composer = require("composer")
 local scene = composer.newScene()
 
@@ -6,7 +11,7 @@ function scene:create(event)
     local sceneGroup = self.view
 
     -- Image de fond responsive
-    local background = display.newImageRect(sceneGroup, "img/background.png", display.actualContentWidth, display.actualContentHeight)
+    local background = display.newImageRect(sceneGroup, "img/penPixel3.png", display.actualContentWidth, display.actualContentHeight)
     background.x = display.contentCenterX
     background.y = display.contentCenterY
 

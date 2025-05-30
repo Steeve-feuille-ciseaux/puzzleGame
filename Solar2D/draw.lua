@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------
 --
--- main.lua
+-- draw.lua
 --
 -----------------------------------------------------------------------------------------
 
@@ -26,10 +26,10 @@ deleteButton.init({
 })
 
 -- Tableau des Puzzle
-local selectMAP = require("module.selectMAP") -- selectMAP.lua
+local selectMAP = require("data.drawMap1") -- drawMap1.lua
 
 -- Tableau des couleurs (valeur -> couleur)
-local colorMap = require("module.colorMap") -- colorMap.lua
+local colorMap = require("data.colorMap") -- colorMap.lua
 
 -- Variable Map et Data
 local map = selectMAP[letPuzzle]
