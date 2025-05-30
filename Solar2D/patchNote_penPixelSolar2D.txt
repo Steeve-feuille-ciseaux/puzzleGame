@@ -25,8 +25,9 @@ v0.10.4 -> * BUG EN PAUSE * le remplacement l'icone au démarage
 v0.10.5 -> Réorganisation des fichiers
 v0.10.6 -> Réorganisation des fichiers pour le swapScreen
 v0.10.7 -> Ecran titre
-v0.10.8 -> Ecran selection part 1
+v0.10.8 -> Ecran selection part 1 -> UI selection dessin + page
 v0.10.9 -> Ecran selection part 2 -> link les dessin avec le tableau de selection
+v0.10.10 -> Ecran selection part 3 -> Afficher le dessin 
 
 EN COURS : Ecran selection
 

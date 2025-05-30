@@ -1,15 +1,9 @@
------------------------------------------------------------------------------------------
---
--- selectDraw.lua
---
------------------------------------------------------------------------------------------
-
 local composer = require("composer")
 local scene = composer.newScene()
 
--- Importation des dessins
+-- 📦 Importation des données
 local dataMap = require("data.drawMap1")
-
+local ColorMiniDraw = require("data.colorMap")
 
 function scene:create(event)
     local sceneGroup = self.view
@@ -25,9 +19,9 @@ function scene:create(event)
     })
     title:setFillColor(0.5, 0.5, 0.5)
 
-    -- 📝 Affichage dynamique de la page
+    -- 🧾 Pages
     local pageCurrent = 1
-    local pageMax = 5 -- 🟢 Modifie selon le nombre réel de pages
+    local pageMax = 5
 
     local pageIndicator = display.newText({
         parent = sceneGroup,
@@ -39,7 +33,7 @@ function scene:create(event)
     })
     pageIndicator:setFillColor(0.5, 0.5, 0.5)
 
-    -- 🔄 Calcul pour centrer la grille
+    -- 📐 Grille
     local squareSize = 230
     local spacing = 20
     local numRows = 2
@@ -60,10 +54,11 @@ function scene:create(event)
                 local y = startY + row * (squareSize + spacing) + squareSize / 2
 
                 local mapData = dataMap[idCounter]
+                    -- local cellSize = (squareSize * 0.8) / math.max(mapData.data.Hauteur, mapData.data.Largeur)
 
                 if mapData then
                     local square = display.newRect(sceneGroup, x, y, squareSize, squareSize)
-                    square:setFillColor(0.2, 0.6, 1)
+                    square:setFillColor(0.3, 0.3, 0.3)
                     square:setStrokeColor(1)
 
                     square.idNom = mapData.num
@@ -72,6 +67,29 @@ function scene:create(event)
                     square.clear = mapData.data.Clear
                     square.unlock = mapData.data.Unlock
                     square.name = mapData.data.name
+
+                    -- Dessin du mini-puzzle
+                    local grid = mapData.grid
+                    -- local cellSize = squareSize * 0.04  -- taille uniforme pour tous
+                    local cellSize = (squareSize * 0.8) / math.max(mapData.data.Hauteur, mapData.data.Largeur)
+                    local offsetX = x - (cellSize * mapData.data.Largeur) / 2
+                    local offsetY = y - (cellSize * mapData.data.Hauteur) / 2
+
+                    for row = 1, #grid do
+                        for col = 1, #grid[row] do
+                            local value = grid[row][col]
+                            if value ~= 99 then
+                                local color = ColorMiniDraw[value] or {1, 1, 1}
+                                local px = offsetX + (col - 1) * cellSize
+                                local py = offsetY + (row - 1) * cellSize
+
+                                local pixel = display.newRect(sceneGroup, px, py, cellSize, cellSize)
+                                pixel:setFillColor(unpack(color))
+                                pixel.anchorX = 0
+                                pixel.anchorY = 0
+                            end
+                        end
+                    end
 
                     square:addEventListener("tap", function()
                         print("🟥 Carré sélectionné :")
@@ -85,19 +103,18 @@ function scene:create(event)
                         composer.gotoScene("swapScreen.Title", { effect = "crossFade", time = 500 })
                     end)
                 else
-                    -- 🔒 Case vide : afficher un carré grisé avec une croix
+                    -- 🞬 Carré vide avec croix blanche
                     local square = display.newRect(sceneGroup, x, y, squareSize, squareSize)
-                    square:setFillColor(0.6, 0.6, 0.6)
+                    square:setFillColor(0.3, 0.3, 0.3)
                     square:setStrokeColor(0.3)
                     square.strokeWidth = 2
 
-                    -- Croix blanche
                     local offset = squareSize * 0.4
                     local line1 = display.newLine(sceneGroup, x - offset, y - offset, x + offset, y + offset)
                     local line2 = display.newLine(sceneGroup, x - offset, y + offset, x + offset, y - offset)
 
                     for _, line in ipairs({line1, line2}) do
-                        line:setStrokeColor(1, 1, 1)
+                        line:setStrokeColor(0, 0, 0)
                         line.strokeWidth = 4
                     end
                 end
@@ -109,7 +126,7 @@ function scene:create(event)
 
     drawGrid()
 
-    -- 🔺 Création des flèches (triangles)
+    -- 🔺 Création des flèches
     local size = 40
     local ajustArrowY = 20 
     local ajustArrowX = 60 
@@ -120,55 +137,27 @@ function scene:create(event)
         arrow.strokeWidth = 2
         arrow:setStrokeColor(unpack(stroke))
 
-        -- Animation + appel de la logique
-        local function tapped()
-            -- Sauvegarde de la couleur actuelle
-            local originalFill = { unpack(fill) }
-
-            -- Flash orange
+        arrow:addEventListener("tap", function()
             arrow:setFillColor(1, 0.5, 0)
-
             timer.performWithDelay(150, function()
-                arrow:setFillColor(unpack(originalFill))
+                arrow:setFillColor(unpack(fill))
             end)
-
             onTap()
-        end
+        end)
 
-        arrow:addEventListener("tap", tapped)
         return arrow
     end
 
-    local leftArrow, rightArrow -- rendre visibles globalement pour pouvoir les modifier
+    local leftArrow, rightArrow
 
     local function updatePageDisplay()
         pageIndicator.text = pageCurrent .. " / " .. pageMax
-
-        -- Gère la visibilité des flèches
-        if pageCurrent <= 1 then
-            leftArrow.isVisible = false
-            leftArrow.isHitTestable = false
-        else
-            leftArrow.isVisible = true
-            leftArrow.isHitTestable = true
-        end
-
-        if pageCurrent >= pageMax then
-            rightArrow.isVisible = false
-            rightArrow.isHitTestable = false
-        else
-            rightArrow.isVisible = true
-            rightArrow.isHitTestable = true
-        end
+        leftArrow.isVisible, leftArrow.isHitTestable = pageCurrent > 1, pageCurrent > 1
+        rightArrow.isVisible, rightArrow.isHitTestable = pageCurrent < pageMax, pageCurrent < pageMax
     end
 
-    -- ➡️ Flèche droite (page suivante)
-    local rightArrowPoints = {
-        0, -size,
-        0, size,
-        size, 0
-    }
-
+    -- ➡️ Flèche droite
+    local rightArrowPoints = {0, -size, 0, size, size, 0}
     rightArrow = createArrow(rightArrowPoints,
         display.contentWidth - ajustArrowX, display.contentCenterY,
         {0.6, 0.6, 1}, {0.3, 0.3, 0.6},
@@ -176,18 +165,12 @@ function scene:create(event)
             if pageCurrent < pageMax then
                 pageCurrent = pageCurrent + 1
                 updatePageDisplay()
-                -- 🔁 Redessiner ou changer de page ici si besoin
             end
         end
     )
 
-    -- ⬅️ Flèche gauche (page précédente)
-    local leftArrowPoints = {
-        0, -size,
-        0, size,
-        -size, 0
-    }
-
+    -- ⬅️ Flèche gauche
+    local leftArrowPoints = {0, -size, 0, size, -size, 0}
     leftArrow = createArrow(leftArrowPoints,
         ajustArrowX, display.contentCenterY,
         {0.6, 0.6, 1}, {0.3, 0.3, 0.6},
@@ -195,14 +178,11 @@ function scene:create(event)
             if pageCurrent > 1 then
                 pageCurrent = pageCurrent - 1
                 updatePageDisplay()
-                -- 🔁 Redessiner ou changer de page ici si besoin
             end
         end
     )
 
-    -- 🔁 Mise à jour initiale
     updatePageDisplay()
-
 end
 
 scene:addEventListener("create", scene)
