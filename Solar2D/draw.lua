@@ -7,6 +7,9 @@
 local composer = require("composer")
 local scene = composer.newScene()
 
+-- Charger le module backBoutton
+local backBoutton = require("module.backBoutton")  
+
 composer.removeScene("selectDraw", true)
 
 function scene:create(event)
@@ -495,7 +498,21 @@ function scene:create(event)
         align = "right"
     })
 
-end
+    -- Revenir au sélection de dessin
+    local abortDraw = require("module.backBoutton")
 
-scene:addEventListener("create", scene)
+    local function onAbortDraw()
+        -- Retirer explicitement la scène actuelle "draw"
+        composer.removeScene("draw")  -- Cela permet de nettoyer la scène draw
+
+        -- Naviguer vers la scène selectDraw
+        composer.gotoScene("swapScreen.selectDraw", { time = 500, effect = "fade" })  -- Tu peux aussi choisir l'effet de transition ici
+    end
+
+    -- Attacher cette fonction à l'événement du bouton
+    abortDraw(onAbortDraw)
+
+    end
+
+    scene:addEventListener("create", scene)
 return scene

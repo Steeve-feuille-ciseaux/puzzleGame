@@ -29,8 +29,9 @@ v0.10.8 -> Ecran selection part 1 -> UI selection dessin + page
 v0.10.9 -> Ecran selection part 2 -> link les dessin avec le tableau de selection
 v0.10.10 -> Ecran selection part 3 -> Afficher le dessin 
 v0.11.0 -> Ecran selection Terminé -> Transition 
+v0.11.1 -> Bonton Retour part 1 -> affichez le bouton
 
-EN COURS : Ecran selection
+EN COURS : Etudié l'inclinaisons de la grille à dessiner
 
 BUG A CORRIGER : le remplacement l'icone au démarage
 
@@ -38,10 +39,10 @@ BUG A CORRIGER : le remplacement l'icone au démarage
 
 A FAIRE : 
 - Changement d'écran
-- Selection puzzle
 - Animation
 - musique et effet sonore 
-- Etudié l'inclinaisons de la grille à dessiner
+- IA Draw mettre colorNb dans son carre de couleur puis le déplacé en dessous de la minimap
+- Pareil pour le compteur pour gagner en place pour la grille vierge
 
 Reflexion : 
 - Quizz sur le nom des couleurs pour débloquer davantage de puzzle
