@@ -42,8 +42,8 @@ function scene:create(event)
 
     local gridWidth = numCols * squareSize + (numCols - 1) * spacing
     local gridHeight = numRows * squareSize + (numRows - 1) * spacing
-    local startX = (display.actualContentWidth - gridWidth) / 2
-    local startY = (display.actualContentHeight - gridHeight + ajustY) / 2
+    local startX = (display.contentCenterX - gridWidth / 2)
+    local startY = (display.contentCenterY - gridHeight / 2) + ajustY - 30
 
     -- 🧱 Création de la grille
     local function drawGrid()

@@ -22,6 +22,13 @@ v0.10.1 -> Déplacer l'ancrage de penIcon en bas à gauche
 v0.10.2 -> ! HOTFIX ! Toggle bouton delete + icone sur bureau * résolue *
 v0.10.3 -> ! HOTFIX ! icone sur bureau résolu avec la molette et la selection de couleur
 v0.10.4 -> * BUG EN PAUSE * le remplacement l'icone au démarage
+v0.10.5 -> Réorganisation des fichiers
+v0.10.6 -> Réorganisation des fichiers pour le swapScreen
+v0.10.7 -> Ecran titre
+v0.10.8 -> Ecran selection part 1 -> UI selection dessin + page
+v0.10.9 -> Ecran selection part 2 -> link les dessin avec le tableau de selection
+v0.10.10 -> Ecran selection part 3 -> Afficher le dessin 
+v0.11.0 -> Ecran selection Terminé -> Transition 
 
 EN COURS : sur bureau icone Draw où Pen
 
