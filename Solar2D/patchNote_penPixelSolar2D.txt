@@ -28,6 +28,7 @@ v0.10.7 -> Ecran titre
 v0.10.8 -> Ecran selection part 1 -> UI selection dessin + page
 v0.10.9 -> Ecran selection part 2 -> link les dessin avec le tableau de selection
 v0.10.10 -> Ecran selection part 3 -> Afficher le dessin 
+v0.11.0 -> Ecran selection Terminé -> Transition 
 
 EN COURS : Ecran selection
 
@@ -41,3 +42,6 @@ A FAIRE :
 - Animation
 - musique et effet sonore 
 - Etudié l'inclinaisons de la grille à dessiner
+
+Reflexion : 
+- Quizz sur le nom des couleurs pour débloquer davantage de puzzle
