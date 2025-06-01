@@ -94,11 +94,11 @@ function scene:create(event)
                     -- Ajout de la gestion de la suppression de la scène précédente
                     square:addEventListener("tap", function()
                         -- Suppression de la scène actuelle
-                        composer.removeScene("selectDraw")
+                        composer.removeScene("swapScreen.selectDraw")
 
                         -- Sélection du puzzle et transition vers la scène de dessin
                         composer.setVariable("selectedPuzzle", square.idNom)
-                        composer.gotoScene("draw", { effect = "crossFade", time = 500 })
+                        composer.gotoScene("swapScreen.draw", { effect = "crossFade", time = 500 })
                     end)
                 else
                     -- 🞬 Carré vide avec croix blanche
