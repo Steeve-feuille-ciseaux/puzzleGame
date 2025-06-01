@@ -614,6 +614,7 @@ function scene:create(event)
     end    
 
     -- Importation du module backBoutton.lua
+    local deleteButton = require("module.deleteButton")
     local createBackButton = require("module.backBoutton")
     local retourButton, retourButtonText = createBackButton(onAbortDraw)
     sceneGroup:insert(retourButton)
