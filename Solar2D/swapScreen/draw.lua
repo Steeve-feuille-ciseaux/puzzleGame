@@ -7,9 +7,6 @@
 local composer = require("composer")
 local scene = composer.newScene()
 
--- Importation du module backBoutton.lua
--- local createBackButton = require("module.backBoutton")
-
 composer.removeScene("selectDraw", true)
 function scene:create(event)
     local sceneGroup = self.view
@@ -26,26 +23,22 @@ function scene:create(event)
     local letPuzzle = composer.getVariable("selectedPuzzle")
     local drawPixel = nil
 
-    -- Masquer le curseur système au lancement
-    -- native.setProperty("mouseCursorVisible", false)
-
-    -- Module Delete Pixel 
-    local deleteButton = require("module.deleteButton")
-
-    deleteButton.updateDeleteMode(false)
-
-    deleteButton.init({
-        map = map,
-        arrowList = arrowList,
-        currentIndex = currentIndex
-    })
-
     local selectMAP = require("data.drawMap1")
     local colorMap = require("data.colorMap")
 
     -- Variable Map et Data
     local map = selectMAP[letPuzzle]
     local grid = map.grid
+
+    -- Taille des cellules miniatures
+    local cellMiniSize = map.data.miniSize  -- ✅ Maintenant que map est défini
+
+    -- Initialisation des variables
+    scene.miniRects = {}
+
+    -- Affichage puzzle à reproduire
+    local offsetX = 10
+    local offsetY = 20
 
     -- Grille vierge
     local gridBlank = {}
@@ -82,11 +75,10 @@ function scene:create(event)
         return value
     end
 
-    -- Affichage puzzle à reprodruire
-    local cellMiniSize = map.data.miniSize  -- Taille de chaque case
-    local offsetX = 10    -- Décalage à gauche
-    local offsetY = 20    -- Décalage en haut
+    -- Initialisation des variables
+    scene.miniRects = {}
 
+    -- Affichage puzzle à reprodruire
     for y = 1, #grid do
         for x = 1, #grid[y] do
             local value = grid[y][x]
@@ -98,6 +90,8 @@ function scene:create(event)
             rect:setFillColor(unpack(color))
             rect.anchorX = 0
             rect.anchorY = 0
+            sceneGroup:insert(rect)
+            table.insert(scene.miniRects, rect) -- ✅ Stocke pour suppression
 
             -- Si c’est 99 (gris), ajouter un petit carré blanc au centre
             if valueC == 99 then
@@ -106,6 +100,8 @@ function scene:create(event)
                 local centerY = offsetY + (y - 1) * cellMiniSize + cellMiniSize / 2
                 local whiteSquare = display.newRect(centerX, centerY, whiteSize, whiteSize)
                 whiteSquare:setFillColor(1, 1, 1)
+                sceneGroup:insert(whiteSquare)
+                table.insert(scene.miniRects, whiteSquare) -- ✅ Aussi stocké
             end
         end
     end
@@ -478,6 +474,12 @@ function scene:create(event)
 
     -- DevMod Fin de puzzle
     local finishUp = require("module.finishBouton")
+    local finishButton = finishUp(function()
+        diffCount2 = 0
+        diffCountText.text = tostring(diffCount2)
+        showFinitoMessage()
+    end)
+    scene.finishButton = finishButton
 
     local finishButtonText = display.newText({
         text = "Fin",  -- Conversion explicite en texte
@@ -497,6 +499,8 @@ function scene:create(event)
 
     -- DevMod Soluce
     local soluceUp = require("module.soluceBouton")
+    local soluceButton = soluceUp(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize, 5)
+    scene.soluceButton = soluceButton
 
     -- Bouton Arc-en-ciel placé juste au-dessus du bouton vert
     soluceUp(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize, 5)
@@ -512,24 +516,34 @@ function scene:create(event)
 
     -- Revenir au sélection de dessin
     local function onAbortDraw()
-        -- Supprimer les textes infos puzzle
-        if scene.puzzleText then
-            scene.puzzleText:removeSelf()
-            scene.puzzleText = nil
+        -- Supprimer les infos du puzzle (texte à gauche)
+        local textElements = {
+            scene.puzzleText,
+            scene.titleText,
+            scene.difficultyText,
+            scene.finishButtonText,
+            scene.soluceButtonText,
+            scene.retourButtonText
+        }
+
+        for _, txt in ipairs(textElements) do
+            if txt then
+                txt:removeSelf()
+            end
         end
-        if scene.titleText then
-            scene.titleText:removeSelf()
-            scene.titleText = nil
-        end
-        if scene.difficultyText then
-            scene.difficultyText:removeSelf()
-            scene.difficultyText = nil
+
+        -- Supprimer la mini carte (en haut à gauche)
+        if scene.miniRects then
+            for _, rect in ipairs(scene.miniRects) do
+                rect:removeSelf()
+            end
+            scene.miniRects = nil
         end
 
         -- Supprimer la grille vierge
         if scene.gridRects then
             for i, row in ipairs(scene.gridRects) do
-                for j, rect in ipairs(row) do
+                for _, rect in ipairs(row) do
                     if rect.marker then
                         rect.marker:removeSelf()
                         rect.marker = nil
@@ -540,7 +554,7 @@ function scene:create(event)
             scene.gridRects = nil
         end
 
-        -- Supprimer les carrés de couleur
+        -- Supprimer les carrés de couleur (à droite)
         if scene.carreList then
             for _, carre in ipairs(scene.carreList) do
                 carre:removeSelf()
@@ -548,44 +562,77 @@ function scene:create(event)
             scene.carreList = nil
         end
 
-        -- Navigation vers la scène sélection
+        -- Supprimer les flèches blanches de sélection
+        if scene.arrowList then
+            for _, arrow in ipairs(scene.arrowList) do
+                arrow:removeSelf()
+            end
+            scene.arrowList = nil
+        end
+
+        -- Supprimer les textes de quantité de couleurs
+        if scene.textColorNb then
+            for _, txt in ipairs(scene.textColorNb) do
+                txt:removeSelf()
+            end
+            scene.textColorNb = nil
+        end
+
+        -- Supprimer les boutons ronds
+        if scene.retourButton then
+            scene.retourButton:removeSelf()
+            scene.retourButton = nil
+        end
+        if scene.finishButton then
+            scene.finishButton:removeSelf()
+            scene.finishButton = nil
+        end
+        if scene.soluceButton then
+            scene.soluceButton:removeSelf()
+            scene.soluceButton = nil
+        end
+
+        -- Supprimer les compteurs
+        if scene.diffCountText then
+            scene.diffCountText:removeSelf()
+            scene.diffCountText = nil
+        end
+
+        if scene.pixCountText then
+            scene.pixCountText:removeSelf()
+            scene.pixCountText = nil
+        end
+
+        -- Navigation retour vers l'écran de sélection
         composer.gotoScene("swapScreen.selectDraw", {
             time = 500,
             effect = "fade"
         })
 
+        -- Nettoyer la scène actuelle
         composer.removeScene("swapScreen.draw")
-    end
+    end    
 
-    -- Appel de la fonction pour créer le bouton de retour
-    local function createBackButton(onBack)
-        -- Création du bouton rond bleu, en bas à droite
-        local button = display.newCircle(30, display.contentHeight - 30, 12.5)
-        button:setFillColor(0, 0, 1)  -- Bleu
+    -- Importation du module backBoutton.lua
+    local createBackButton = require("module.backBoutton")
+    local retourButton, retourButtonText = createBackButton(onAbortDraw)
+    sceneGroup:insert(retourButton)
+    sceneGroup:insert(retourButtonText)
+    scene.retourButton = retourButton
+    scene.retourButtonText = retourButtonText
 
-        -- Création du texte "Retour" à droite du bouton
-        local buttonText = display.newText({
-            text = "Retour",
-            x = 100,
-            y = display.contentHeight - 30,
-            font = native.systemFont,
-            fontSize = 30,
-        })
-        buttonText:setFillColor(1, 1, 1)  -- Texte en blanc
-
-        -- Fonction de gestion du clic
-        local function onTap()
-            if onBack then
-                onBack()  -- Appel de la fonction onAbortDraw pour revenir à selectDraw
-            end
-        end
-
-        -- Ajouter un listener pour le clic sur le bouton
-        button:addEventListener("tap", onTap)
-    end
-
-    -- Appel du bouton "Retour"
-    createBackButton(onAbortDraw, sceneGroup)
+    scene.puzzleText = puzzleText
+    scene.titleText = titleText
+    scene.difficultyText = difficultyText
+    scene.miniRects = {}  -- lors de la création de la miniMap
+    scene.arrowList = arrowList
+    scene.carreList = self.carreList
+    scene.textColorNb = textColorNb
+    scene.diffCountText = diffCountText
+    scene.pixCountText = pixCountText
+    scene.finishButtonText = finishButtonText
+    scene.soluceButtonText = soluceButtonText
+    scene.retourButtonText = buttonText  -- bouton "Retour"
 
     end
 

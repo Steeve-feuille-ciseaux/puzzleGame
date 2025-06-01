@@ -1,3 +1,9 @@
+-----------------------------------------------------------------------------------------
+--
+-- soluceBouton.lua
+--
+-----------------------------------------------------------------------------------------
+
 local M = {}
 
 -- HSV → RGB conversion
@@ -103,6 +109,7 @@ function M(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize, duration)
             -- end
         end)
     end)
+    return button
 end
 
 return M

@@ -1,29 +1,21 @@
 -- backBoutton.lua
-
 local function createBackButton(onBack)
-    -- Création du bouton rond bleu, en bas à droite
     local button = display.newCircle(30, display.contentHeight - 30, 12.5)
-    button:setFillColor(0, 0, 1)  -- Bleu
+    button:setFillColor(0, 0, 1)
 
-    -- Création du texte "Retour" à droite du bouton
     local buttonText = display.newText({
         text = "Retour",
-        x = 100,
-        y = display.contentHeight - 30,
+        x = 100, y = display.contentHeight - 30,
         font = native.systemFont,
-        fontSize = 30,
+        fontSize = 30
     })
-    buttonText:setFillColor(1, 1, 1)  -- Texte en blanc
+    buttonText:setFillColor(1, 1, 1)
 
-    -- Fonction de gestion du clic
-    local function onTap()
-        if onBack then
-            onBack()
-        end
-    end
+    button:addEventListener("tap", function()
+        if onBack then onBack() end
+    end)
 
-    -- Ajouter un listener pour le clic sur le bouton
-    button:addEventListener("tap", onTap)
+    return button, buttonText
 end
 
 return createBackButton
