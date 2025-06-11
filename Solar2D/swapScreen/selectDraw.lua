@@ -32,6 +32,27 @@ local gridHeight = numRows * squareSize + (numRows - 1) * spacing
 local startX = (display.contentCenterX - gridWidth / 2)
 local startY = (display.contentCenterY - gridHeight / 2) + ajustY - 30
 
+-- Fonction pour récupérer les bornes utiles du puzzle (non 99)
+local function getPuzzleBounds(grid)
+    local minRow, maxRow = #grid, 1
+    local minCol, maxCol = #grid[1], 1
+
+    for row = 1, #grid do
+        for col = 1, #grid[row] do
+            if grid[row][col] ~= 99 then
+                if row < minRow then minRow = row end
+                if row > maxRow then maxRow = row end
+                if col < minCol then minCol = col end
+                if col > maxCol then maxCol = col end
+            end
+        end
+    end
+
+    local height = maxRow - minRow + 1
+    local width = maxCol - minCol + 1
+    return minRow, minCol, height, width
+end
+
 -- 🧱 Dessin de la grille
 local function drawGrid()
     local idCounter = 1
@@ -43,6 +64,8 @@ local function drawGrid()
             local mapData = dataMap[idCounter]
 
             if mapData then
+                
+                -- 🟫 Carré de fond
                 local square = display.newRect(sceneGroup, x, y, squareSize, squareSize)
                 square:setFillColor(0.3, 0.3, 0.3)
                 square:setStrokeColor(1)
@@ -55,18 +78,23 @@ local function drawGrid()
                 square.unlock = mapData.data.Unlock
                 square.name = mapData.data.name
 
+                -- 📏 Calculs d’adaptation à une taille unique
                 local grid = mapData.grid
-                local cellSize = (squareSize * 0.8) / math.max(mapData.data.Hauteur, mapData.data.Largeur)
-                local offsetX = x - (cellSize * mapData.data.Largeur) / 2
-                local offsetY = y - (cellSize * mapData.data.Hauteur) / 2
+                local minRow, minCol, height, width = getPuzzleBounds(grid)
+                local maxCells = math.max(width, height)
+                local maxRenderSize = squareSize * 0.8
+                local cellSize = maxRenderSize / maxCells
+                local offsetX = x - (width * cellSize) / 2
+                local offsetY = y - (height * cellSize) / 2
 
-                for row = 1, #grid do
-                    for col = 1, #grid[row] do
-                        local value = grid[row][col]
+                -- 🎨 Rendu des pixels miniatures
+                for r = minRow, minRow + height - 1 do
+                    for c = minCol, minCol + width - 1 do
+                        local value = grid[r][c]
                         if value ~= 99 then
                             local color = ColorMiniDraw[value] or {1, 1, 1}
-                            local px = offsetX + (col - 1) * cellSize
-                            local py = offsetY + (row - 1) * cellSize
+                            local px = offsetX + (c - minCol) * cellSize
+                            local py = offsetY + (r - minRow) * cellSize
 
                             local pixel = display.newRect(sceneGroup, px, py, cellSize, cellSize)
                             pixel:setFillColor(unpack(color))
