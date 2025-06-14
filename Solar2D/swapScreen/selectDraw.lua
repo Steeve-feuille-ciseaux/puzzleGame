@@ -105,9 +105,12 @@ local function drawGrid()
                     end
                 end
 
+                local selectedId = mapData.num
+                local currentPage = pageCurrent
                 square:addEventListener("tap", function()
                     composer.removeScene("swapScreen.selectDraw")
-                    composer.setVariable("selectedPuzzle", square.idNom)
+                    composer.setVariable("selectedPuzzle", selectedId)
+                    composer.setVariable("selectedPage", currentPage)
                     composer.gotoScene("swapScreen.draw", { effect = "crossFade", time = 500 })
                 end)
             else

@@ -34,23 +34,24 @@ v0.11.1.1 -> Bonton Retour part 2 -> Bug syntaxe goToScene et removeScene
 v0.11.1.2 -> Bonton Retour part 3 -> Bug syntaxe goToScene et removeScene 
 v0.11.1.3 -> ! PAUSE ! Bonton Retour part 4 -> Bug syntaxe goToScene et removeScene 
 v0.12.0 -> ajout de puzzle page 1 de la demo TIC-80
-v0.13.0 -> changement de page dynamique -> ajout du fichier drawMap1 et drawMap2
-v0.14.0 -> Ajustement des miniature quelque soit la taille des puzzle
-v0.15.0 -> Ajout de puzzle page 2 de la demo TIC-80
-v0.16.0 -> update drawMap2.lua
+v0.12.1 -> changement de page dynamique -> ajout du fichier drawMap1 et drawMap2
+v0.12.2 -> Ajustement des miniature quelque soit la taille des puzzle
+v0.12.3 -> Ajout de puzzle page 2 de la demo TIC-80
+v0.12.4 -> update drawMap2.lua
+v0.12.5 -> ! HOTFIX ! Affiche correctement un puzzle de la page 2 et au delà
 
-EN COURS : Etudié l'inclinaisons de la grille à dessiner
+EN COURS : Changement d'écran
 
 BUG A CORRIGER : le remplacement l'icone au démarage
 
 ** Pensez à builder en HTML pour le tester sur navigateur + mobile
 
 A FAIRE : 
-- Changement d'écran
 - Animation
 - musique et effet sonore 
 - IA Draw mettre colorNb dans son carre de couleur puis le déplacé en dessous de la minimap
 - Pareil pour le compteur pour gagner en place pour la grille vierge
+- Etudié l'inclinaisons de la grille à dessiner
 
 Reflexion : 
 - Quizz sur le nom des couleurs pour débloquer davantage de puzzle

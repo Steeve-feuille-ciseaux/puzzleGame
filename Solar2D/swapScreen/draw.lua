@@ -23,7 +23,8 @@ function scene:create(event)
     local letPuzzle = composer.getVariable("selectedPuzzle")
     local drawPixel = nil
 
-    local selectMAP = require("data.drawMap1")
+    local selectedPage = composer.getVariable("selectedPage") or 1
+    local selectMAP = require("data.drawMap" .. selectedPage)
     local colorMap = require("data.colorMap")
 
     -- Variable Map et Data
@@ -404,7 +405,7 @@ function scene:create(event)
         carre:addEventListener("tap", function(event)
             drawPixel = event.target.colorValue
             currentIndex = event.target.index -- ✅ Met à jour currentIndex correctement
-            deleteButton.updateDeleteMode(false)  -- ✅ Désactive le mode suppression
+            -- deleteButton.updateDeleteMode(false)  -- ✅ Désactive le mode suppression
 
             -- Masquer toutes les flèches
             for _, a in ipairs(arrowList) do
