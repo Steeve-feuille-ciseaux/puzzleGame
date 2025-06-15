@@ -39,6 +39,7 @@ v0.12.2 -> Ajustement des miniature quelque soit la taille des puzzle
 v0.12.3 -> Ajout de puzzle page 2 de la demo TIC-80
 v0.12.4 -> update drawMap2.lua
 v0.12.5 -> ! HOTFIX ! Affiche correctement un puzzle de la page 2 et au delà
+v0.13.0 -> ! REPRISE ! Bonton Retour part 5 -> Bonton Soluce, Fin, Retour feature réussi
 
 EN COURS : Changement d'écran
 

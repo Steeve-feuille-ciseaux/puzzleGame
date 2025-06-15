@@ -481,6 +481,7 @@ function scene:create(event)
         showFinitoMessage()
     end)
     scene.finishButton = finishButton
+    sceneGroup:insert(finishButton)
 
     local finishButtonText = display.newText({
         text = "Fin",  -- Conversion explicite en texte
@@ -491,20 +492,10 @@ function scene:create(event)
         align = "right"
     })
 
-    finishUp(function()
-        diffCount2 = 0
-        diffCountText.text = tostring(diffCount2)
-        print("FINITO")
-        showFinitoMessage()
-    end)
-
     -- DevMod Soluce
     local soluceUp = require("module.soluceBouton")
     local soluceButton = soluceUp(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize, 5)
     scene.soluceButton = soluceButton
-
-    -- Bouton Arc-en-ciel placé juste au-dessus du bouton vert
-    soluceUp(grid, gridBlank, gridOffsetX, gridOffsetY, cellSize, 5)
 
     local soluceButtonText = display.newText({
         text = "Soluce",  -- Conversion explicite en texte
