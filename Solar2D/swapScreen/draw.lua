@@ -583,6 +583,16 @@ function scene:create(event)
             scene.soluceButton:removeSelf()
             scene.soluceButton = nil
         end
+        if scene.deleteButton then
+            local deleteButton = require("module.deleteButton")
+            deleteButton.cancelBlinkTimer() -- ✅ Ajout important ici
+            scene.deleteButton:removeSelf()
+            scene.deleteButton = nil
+        end
+        if scene.deleteButtonText then
+            scene.deleteButtonText:removeSelf()
+            scene.deleteButtonText = nil
+        end
 
         -- Supprimer les compteurs
         if scene.diffCountText then
@@ -607,6 +617,17 @@ function scene:create(event)
 
     -- Importation du module backBoutton.lua
     local deleteButton = require("module.deleteButton")
+    deleteButton.init({
+        map = map,
+        arrowList = arrowList,
+        currentIndex = currentIndex
+    })
+    sceneGroup:insert(deleteButton.yellowButton)
+    sceneGroup:insert(deleteButton.yellowButtonText)
+    scene.deleteButton = deleteButton.yellowButton
+    scene.deleteButtonText = deleteButton.yellowButtonText
+
+
     local createBackButton = require("module.backBoutton")
     local retourButton, retourButtonText = createBackButton(onAbortDraw)
     sceneGroup:insert(retourButton)

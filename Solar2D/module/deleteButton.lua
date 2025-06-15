@@ -82,7 +82,7 @@ local yellowButtonText = display.newText({
 })
 
 local hue = 0
-timer.performWithDelay(100, function()
+local blinkTimerId = timer.performWithDelay(100, function()
     if deletePix then
         hue = (hue + 0.08) % 1
         local r, g, b = hsvToRgb(hue, 1, 1)
@@ -91,6 +91,13 @@ timer.performWithDelay(100, function()
         yellowButton:setFillColor(1, 1, 0)
     end
 end, 0)
+
+function N.cancelBlinkTimer()
+    if blinkTimerId then
+        timer.cancel(blinkTimerId)
+        blinkTimerId = nil
+    end
+end
 
 -- Met à jour le mode suppression et le curseur personnalisé
 local function updateDeleteMode(isDelete)
@@ -137,5 +144,8 @@ end
 function N.updateDeleteMode(isDelete)
     updateDeleteMode(isDelete)
 end
+
+N.yellowButton = yellowButton
+N.yellowButtonText = yellowButtonText
 
 return N
