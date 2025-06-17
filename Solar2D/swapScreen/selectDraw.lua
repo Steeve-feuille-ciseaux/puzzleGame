@@ -13,7 +13,7 @@ end
 
 -- 📄 Variables globales à la scène
 local pageCurrent = 1
-local pageMax = 2
+local pageMax = 3
 local dataMap = loadDataMap(pageCurrent)
 local sceneGroup
 local pageIndicator
