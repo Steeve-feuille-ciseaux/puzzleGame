@@ -29,6 +29,7 @@ v0.10.8 -> Ecran selection part 1 -> UI selection dessin + page
 v0.10.9 -> Ecran selection part 2 -> link les dessin avec le tableau de selection
 v0.10.10 -> Ecran selection part 3 -> Afficher le dessin 
 v0.11.0 -> Ecran selection Terminé -> Transition 
+v0.12.0 -> Ajout 3 pages de puzzle
 
 EN COURS : sur bureau icone Draw où Pen
 
