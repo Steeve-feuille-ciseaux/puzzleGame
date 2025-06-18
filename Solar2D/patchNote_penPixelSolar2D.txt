@@ -42,6 +42,7 @@ v0.12.5 -> ! HOTFIX ! Affiche correctement un puzzle de la page 2 et au delà
 v0.13.0 -> ! REPRISE ! Bonton Retour part 5 -> Bonton Soluce, Fin, Retour feature réussir
 v0.13.1 -> ! En cours ! Bonton Retour part 6 -> résolution de bug
 v0.14.0 -> new drawMap3.lua -> page 3 Puzzle
+v0.14.1 -> update drawMap3.lua -> add icone#1 + bird#1 
 
 EN COURS : Changement d'écran
 

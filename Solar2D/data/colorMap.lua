@@ -22,7 +22,7 @@ local colorMap = {
     [13] = {0.580, 0.690, 0.761},  -- gris clair
     [14] = {0.337, 0.424, 0.525},  -- gris
     [15] = {0.200, 0.235, 0.341},  -- gris foncé
-    [16] = {0.914, 0.729, 0.733},  -- new color solar2D vert golden collard
+    [16] = {0.914, 0.729, 0.733},  -- new color solar2D rose blossom
 }
 
 return colorMap
