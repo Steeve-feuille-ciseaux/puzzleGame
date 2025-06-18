@@ -615,7 +615,8 @@ function scene:create(event)
         composer.removeScene("swapScreen.draw")
     end    
 
-    -- Importation du module backBoutton.lua
+    -- Importation du module deleteButton.lua    
+    package.loaded["module.deleteButton"] = nil
     local deleteButton = require("module.deleteButton")
     deleteButton.init({
         map = map,
@@ -627,7 +628,7 @@ function scene:create(event)
     scene.deleteButton = deleteButton.yellowButton
     scene.deleteButtonText = deleteButton.yellowButtonText
 
-
+    -- Importation du module backBoutton.lua
     local createBackButton = require("module.backBoutton")
     local retourButton, retourButtonText = createBackButton(onAbortDraw)
     sceneGroup:insert(retourButton)

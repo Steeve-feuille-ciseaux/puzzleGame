@@ -43,7 +43,7 @@ v0.13.0 -> ! REPRISE ! Bonton Retour part 5 -> Bonton Soluce, Fin, Retour featur
 v0.13.1 -> ! En cours ! Bonton Retour part 6 -> résolution de bug
 v0.14.0 -> new drawMap3.lua -> page 3 Puzzle
 v0.14.1 -> update drawMap3.lua -> add icone#1 + bird#1 
-
+v0.15.0 -> ! HOTFIX ! bug du patch v0.11.1.3 résolue
 EN COURS : Changement d'écran
 
 BUG A CORRIGER : le remplacement l'icone au démarage
