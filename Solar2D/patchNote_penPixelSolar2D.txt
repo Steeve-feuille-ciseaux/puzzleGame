@@ -45,6 +45,7 @@ v0.14.0 -> new drawMap3.lua -> page 3 Puzzle
 v0.14.1 -> update drawMap3.lua -> add icone#1 + bird#1 
 v0.15.0 -> ! HOTFIX ! bug du patch v0.11.1.3 résolue
 v0.15.1 -> ! UPDATE ! ajustement taille et position de tous les puzzle lors du dessin
+v0.15.2 -> new puzzle fish#1 
 
 EN COURS : Changement d'écran
 
