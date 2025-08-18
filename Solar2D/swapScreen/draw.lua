@@ -33,13 +33,13 @@ function scene:create(event)
     local grid = map.grid
 
     -- Taille des cellules miniatures
-    local cellMiniSize = map.data.miniSize  -- ✅ Maintenant que map est défini
+    local cellMiniSize = map.data.miniSize  
 
     -- Initialisation des variables
     scene.miniRects = {}
 
     -- Affichage puzzle à reproduire
-    local offsetX = 10
+    local offsetX = 15
     local offsetY = 20
 
     -- Grille vierge
@@ -170,10 +170,10 @@ function scene:create(event)
                 pixCountTotal = pixCountTotal + 1
             end
             if x == 1 then
-                compass.number(50, 18, 22) -- x=50, taille=18, espacement=22
+                compass.randowX(5, cellMiniSize - 2, cellMiniSize)
             end
         end
-        compass.letter(90, 18, 22)
+        compass.randowY(10, cellMiniSize - 2, cellMiniSize)
     end
 
     local pixCountText = display.newText({

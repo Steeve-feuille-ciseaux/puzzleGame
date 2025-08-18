@@ -2,78 +2,78 @@
 
 local compass = {}
 
-local compteurNumber = 0
-local compteurLetter = 0
+local compteurX = 0
+local compteurY = 0
 
-local numberGroup = display.newGroup()
-local letterGroup = display.newGroup()
+local xGroup = display.newGroup()
+local yGroup = display.newGroup()
 
--- Permet de reset les compteurs et de nettoyer les affichages
+-- Fonction pour générer une couleur unique en fonction d'un index
+local function generateColor(index)
+    local hue = (index * 47) % 360  -- 47 pour éviter des motifs trop répétitifs
+    local c = 1
+    local x = 1 - math.abs((hue / 60) % 2 - 1)
+
+    local r, g, b
+    if hue < 60 then r, g, b = c, x, 0
+    elseif hue < 120 then r, g, b = x, c, 0
+    elseif hue < 180 then r, g, b = 0, c, x
+    elseif hue < 240 then r, g, b = 0, x, c
+    elseif hue < 300 then r, g, b = x, 0, c
+    else r, g, b = c, 0, x
+    end
+
+    return {r, g, b}
+end
+
 function compass.resetCounters()
-    compteurNumber = 0
-    compteurLetter = 0
+    compteurX = 0
+    compteurY = 0
 
-    -- Supprimer les textes affichés
-    for i = numberGroup.numChildren, 1, -1 do
-        local child = numberGroup[i]
-        if child and child.removeSelf then
-            child:removeSelf()
-        end
+    for i = xGroup.numChildren, 1, -1 do
+        xGroup[i]:removeSelf()
     end
-
-    for i = letterGroup.numChildren, 1, -1 do
-        local child = letterGroup[i]
-        if child and child.removeSelf then
-            child:removeSelf()
-        end
+    for i = yGroup.numChildren, 1, -1 do
+        yGroup[i]:removeSelf()
     end
 end
 
--- Affiche un nombre à l'écran de haut en bas
-function compass.number(x, size, space)
-    compteurNumber = compteurNumber + 1
+-- Ajoute un pixel coloré verticalement (pour les lignes)
+function compass.randowX(x, size, space)
+    compteurX = compteurX + 1
+    local y = 20 + (compteurX - 1) * space
 
-    local y = 20 + (compteurNumber - 1) * space
+    local color = generateColor(compteurX)
 
-    local txt = display.newText({
-        text = tostring(compteurNumber),
-        x = x,
-        y = y,
-        font = native.systemFontBold,
-        fontSize = size
-    })
-    txt:setFillColor(1, 1, 1)
-    numberGroup:insert(txt)
+    local rect = display.newRect(x, y, size / 2, size)
+    rect:setFillColor(unpack(color))
+    
+    -- 💡 Bordure gris clair
+    rect.strokeWidth = 1
+    -- rect:setStrokeColor(0.8, 0.8, 0.8)
+    rect:setStrokeColor(0, 0, 0)
+
+    rect.anchorX, rect.anchorY = 0, 0
+    xGroup:insert(rect)
 end
 
--- Convertit un index en lettre style Excel (A, B, ..., Z, AA, AB...)
-local function toLetters(n)
-    local alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    local result = ""
-    while n > 0 do
-        local remainder = (n - 1) % 26
-        result = alphabet:sub(remainder + 1, remainder + 1) .. result
-        n = math.floor((n - 1) / 26)
-    end
-    return result
-end
+-- Ajoute un pixel coloré horizontalement (pour les colonnes)
+function compass.randowY(y, size, space)
+    compteurY = compteurY + 1
+    local x = 17 + (compteurY - 1) * space
 
--- Affiche les lettres à l'écran de haut en bas
-function compass.letter(x, size, space)
-    compteurLetter = compteurLetter + 1
-    local letter = toLetters(compteurLetter)
+    local color = generateColor(compteurY)
 
-    local x = 20 + (compteurLetter - 1) * space
+    local rect = display.newRect(x, y, size, size / 2)
+    rect:setFillColor(unpack(color))
+    
+    -- 💡 Bordure gris clair
+    rect.strokeWidth = 1
+    -- rect:setStrokeColor(0.8, 0.8, 0.8)
+    rect:setStrokeColor(0, 0, 0)
 
-    local txt = display.newText({
-        text = letter,
-        x = x,
-        y = y,
-        font = native.systemFontBold,
-        fontSize = size
-    })
-    txt:setFillColor(1, 1, 1)
-    letterGroup:insert(txt)
+    rect.anchorX, rect.anchorY = 0, 0
+    yGroup:insert(rect)
 end
 
 return compass
