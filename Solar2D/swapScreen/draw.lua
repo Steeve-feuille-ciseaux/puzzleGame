@@ -34,6 +34,8 @@ function scene:create(event)
 
     -- Taille des cellules miniatures
     local cellMiniSize = map.data.miniSize  
+    local cellLargeur = map.data.Largeur
+    local cellHauteur = map.data.Hauteur
 
     -- Initialisation des variables
     scene.miniRects = {}
@@ -169,10 +171,16 @@ function scene:create(event)
             if grid[y][x] ~= 99 then
                 pixCountTotal = pixCountTotal + 1
             end
-            if x == 1 then
-                compass.randowX(5, cellMiniSize - 2, cellMiniSize)
-            end
         end
+    end
+
+    -- Ligne Rambow X (lignes verticales)
+    for i = 1, cellHauteur do
+        compass.randowX(5, cellMiniSize - 2, cellMiniSize)
+    end
+
+    -- Ligne Rambow Y (lignes horizontales)
+    for i = 1, cellLargeur do
         compass.randowY(10, cellMiniSize - 2, cellMiniSize)
     end
 
@@ -382,6 +390,16 @@ function scene:create(event)
 
             rect:addEventListener("touch", onCellTouch)
         end
+    end    
+
+    -- Ligne Rambow X (lignes verticales)
+    for i = 1, cellHauteur do
+        compass.randowX(gridOffsetX, cellSize - 2, cellSize)
+    end
+
+    -- Ligne Rambow Y (lignes horizontales)
+    for i = 1, cellLargeur do
+        compass.randowY(gridOffsetY, cellSize - 2, cellSize)
     end
 
     -- Sélectionner une couleur 

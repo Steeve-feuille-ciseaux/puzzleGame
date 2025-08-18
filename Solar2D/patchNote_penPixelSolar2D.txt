@@ -51,6 +51,7 @@ v0.17.0 -> Repère colonne / ligne part 1 -> module et intégration
 v0.17.1 -> Repère colonne / ligne part 2 -> reset des valeurs
 v0.17.1.1 -> Repère colonne / ligne part 3 -> essaie affichage
 v0.17.2 -> Repère colonne / ligne part 4 -> Repère de couleur
+v0.17.2.1 -> Repère colonne / ligne part 5 -> prérequis repère grille principale
 
 EN COURS : Changement d'écran
 
