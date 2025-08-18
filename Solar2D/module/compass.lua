@@ -1,25 +1,38 @@
 local compass = {}
 
--- Fonction pour afficher un nombre
+-- Compteurs internes au module
 local compteurNumber = 0
-function compass.number(_)
+local compteurLetter = 0
+
+-- Fonction pour incrémenter et afficher un nombre
+function compass.number(x)
     compteurNumber = compteurNumber + 1
     print("Compass Number: " .. compteurNumber)
 end
 
--- Fonction pour afficher une lettre
-local compteurLetter = 0
-local alphabet = {}
-for c = 65, 90 do -- ASCII codes de 'A' à 'Z'
-    table.insert(alphabet, string.char(c))
+-- Fonction pour incrémenter et afficher une lettre majuscule
+function compass.letter()
+    local alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    compteurLetter = compteurLetter + 1
+
+    local function toLetters(n)
+        local result = ""
+        while n > 0 do
+            local remainder = (n - 1) % 26
+            result = alphabet:sub(remainder + 1, remainder + 1) .. result
+            n = math.floor((n - 1) / 26)
+        end
+        return result
+    end
+
+    local letter = toLetters(compteurLetter)
+    print("Compass Letter: " .. letter)
 end
 
-function compass.letter()
-    compteurLetter = compteurLetter + 1
-    if compteurLetter > #alphabet then
-        compteurLetter = 1 -- revient à 'a' après 'z'
-    end
-    print("Compass Letter: " .. alphabet[compteurLetter])
+-- Fonction pour réinitialiser les compteurs
+function compass.resetCounters()
+    compteurNumber = 0
+    compteurLetter = 0
 end
 
 return compass

@@ -484,6 +484,7 @@ function scene:create(event)
         diffCount2 = 0
         diffCountText.text = tostring(diffCount2)
         showFinitoMessage()
+        compass.resetCounters()
     end)
     scene.finishButton = finishButton
     sceneGroup:insert(finishButton)
@@ -610,11 +611,10 @@ function scene:create(event)
             scene.pixCountText = nil
         end
 
+        compass.resetCounters()
+
         -- Navigation retour vers l'écran de sélection
-        composer.gotoScene("swapScreen.selectDraw", {
-            time = 500,
-            effect = "fade"
-        })
+        composer.gotoScene("swapScreen.selectDraw", {time = 500, effect = "fade"})
 
         -- Nettoyer la scène actuelle
         composer.removeScene("swapScreen.draw")
