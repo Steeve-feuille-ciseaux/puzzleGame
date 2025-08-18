@@ -170,10 +170,10 @@ function scene:create(event)
                 pixCountTotal = pixCountTotal + 1
             end
             if x == 1 then
-                compass.number(x) 
+                compass.number(50, 18, 22) -- x=50, taille=18, espacement=22
             end
         end
-        compass.letter()
+        compass.letter(90, 18, 22)
     end
 
     local pixCountText = display.newText({

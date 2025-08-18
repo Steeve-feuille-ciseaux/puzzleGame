@@ -49,6 +49,7 @@ v0.15.2 -> start puzzle fish#1
 v0.16.0 -> new puzzle fish#1 
 v0.17.0 -> Repère colonne / ligne part 1 -> module et intégration
 v0.17.1 -> Repère colonne / ligne part 2 -> reset des valeurs
+v0.17.1.1 -> Repère colonne / ligne part 3 -> essaie affichage
 
 EN COURS : Changement d'écran
 
