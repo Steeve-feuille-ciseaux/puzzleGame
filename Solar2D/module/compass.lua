@@ -76,4 +76,38 @@ function compass.randowY(y, size, space)
     yGroup:insert(rect)
 end
 
+-- Ajoute un pixel coloré verticalement (pour les lignes) - VERSION DYNAMIQUE
+function compass.randowX2(i, gridOffsetY, x, size, space, decalageHaut)
+    -- Décalage vertical ajustable (paramètre optionnel, défaut 0)
+    decalageHaut = decalageHaut or 0
+
+    local y = gridOffsetY + (i - 1) * space + (space - size) / 2 - decalageHaut
+    local color = generateColor(i)
+
+    local rect = display.newRect(x, y, size / 2, size)
+    rect:setFillColor(unpack(color))
+    rect.strokeWidth = 1
+    rect:setStrokeColor(0, 0, 0)
+
+    rect.anchorX, rect.anchorY = 0, 0
+    xGroup:insert(rect)
+end
+
+-- Ajoute un pixel coloré horizontalement (pour les colonnes) - VERSION DYNAMIQUE
+function compass.randowY2(j, gridOffsetX, y, size, space, decalageGauche)
+    -- Décalage horizontal ajustable (paramètre optionnel, défaut 0)
+    decalageGauche = decalageGauche or 0
+
+    local x = gridOffsetX + (j - 1) * space + (space - size) / 2 - decalageGauche
+    local color = generateColor(j)
+
+    local rect = display.newRect(x, y, size, size / 2)
+    rect:setFillColor(unpack(color))
+    rect.strokeWidth = 1
+    rect:setStrokeColor(0, 0, 0)
+
+    rect.anchorX, rect.anchorY = 0, 0
+    yGroup:insert(rect)
+end
+
 return compass

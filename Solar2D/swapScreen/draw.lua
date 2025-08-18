@@ -364,7 +364,7 @@ function scene:create(event)
         return true
     end
 
-    -- Créer une grille vierge interactive 
+   -- Créer une grille vierge interactive 
     for i = 1, rows do
         self.gridRects[i] = {}
         gridBlank[i] = {}  -- Important pour initialiser gridBlank aussi !
@@ -392,14 +392,27 @@ function scene:create(event)
         end
     end    
 
-    -- Ligne Rambow X (lignes verticales)
-    for i = 1, cellHauteur do
-        compass.randowX(gridOffsetX, cellSize - 2, cellSize)
+    -- ✅ CALCUL DYNAMIQUE DES DÉCALAGES POUR LES BORDURES
+    
+    -- Calculer la distance optimale en fonction de la taille des cellules
+    local borderOffset = math.max(30, cellSize + 5) -- Minimum 30px, ou cellSize + 5px
+    
+    -- Calculer les décalages pour aligner parfaitement les bordures
+    local decalageHaut = math.floor(cellSize * 0.5)    -- Décalage vertical basé sur la taille des cellules
+    local decalageGauche = math.floor(cellSize * 0.5)  -- Décalage horizontal basé sur la taille des cellules
+    
+    -- Positions des bordures
+    local borderX = gridOffsetX - borderOffset
+    local borderY = gridOffsetY - borderOffset
+
+    -- ✅ DESSINER LES LIGNES VERTICALES (à gauche de chaque ligne) - DYNAMIQUE
+    for i = 1, rows do
+        compass.randowX2(i, gridOffsetY, borderX, cellSize - 2, cellSize, decalageHaut)
     end
 
-    -- Ligne Rambow Y (lignes horizontales)
-    for i = 1, cellLargeur do
-        compass.randowY(gridOffsetY, cellSize - 2, cellSize)
+    -- ✅ DESSINER LES LIGNES HORIZONTALES (au-dessus de chaque colonne) - DYNAMIQUE
+    for j = 1, cols do
+        compass.randowY2(j, gridOffsetX, borderY, cellSize - 2, cellSize, decalageGauche)
     end
 
     -- Sélectionner une couleur 
