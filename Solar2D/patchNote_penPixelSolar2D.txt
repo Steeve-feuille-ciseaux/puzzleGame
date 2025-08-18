@@ -47,6 +47,7 @@ v0.15.0 -> ! HOTFIX ! bug du patch v0.11.1.3 résolue
 v0.15.1 -> ! UPDATE ! ajustement taille et position de tous les puzzle lors du dessin
 v0.15.2 -> start puzzle fish#1 
 v0.16.0 -> new puzzle fish#1 
+v0.17.0 -> Repère colonne et ligne
 
 EN COURS : Changement d'écran
 

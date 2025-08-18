@@ -26,6 +26,7 @@ function scene:create(event)
     local selectedPage = composer.getVariable("selectedPage") or 1
     local selectMAP = require("data.drawMap" .. selectedPage)
     local colorMap = require("data.colorMap")
+    local compass = require("module.compass")
 
     -- Variable Map et Data
     local map = selectMAP[letPuzzle]
@@ -131,7 +132,7 @@ function scene:create(event)
     })
     difficultyText.anchorX = 0
 
-    -- Créer une grille vierge
+    -- Créer une grille vierge mini-grille modèle à réproduire
     local cellSize = map.data.cellSize  -- Taille de chaque case
     local gridOffsetX = map.data.posX   -- Décalage à gauche
     local gridOffsetY = map.data.posY   -- Décalage en haut
@@ -168,7 +169,11 @@ function scene:create(event)
             if grid[y][x] ~= 99 then
                 pixCountTotal = pixCountTotal + 1
             end
+            if x == 1 then
+                compass.number(x) 
+            end
         end
+        compass.letter()
     end
 
     local pixCountText = display.newText({
@@ -351,7 +356,7 @@ function scene:create(event)
         return true
     end
 
-    -- Créer une grille vierge
+    -- Créer une grille vierge interactive 
     for i = 1, rows do
         self.gridRects[i] = {}
         gridBlank[i] = {}  -- Important pour initialiser gridBlank aussi !
