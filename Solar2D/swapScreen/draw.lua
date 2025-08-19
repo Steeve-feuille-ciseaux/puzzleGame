@@ -27,6 +27,7 @@ function scene:create(event)
     local selectMAP = require("data.drawMap" .. selectedPage)
     local colorMap = require("data.colorMap")
     local compass = require("module.compass")
+    local animation = require("module.animation")
 
     -- Variable Map et Data
     local map = selectMAP[letPuzzle]
@@ -212,25 +213,24 @@ function scene:create(event)
 
     -- ## Fonction pour ajouter les couleurs ##
     local function onCellTouch(event)
-    local rect = event.target
-    local phase = event.phase
+        local rect = event.target
+        local phase = event.phase
 
-    if phase == "began" then
-        -- Mémoriser le temps de début
-        rect.touchStartTime = system.getTimer()
+        if phase == "began" then
+            -- Mémoriser le temps de début
+            rect.touchStartTime = system.getTimer()
 
-        -- On capture le focus pour bien suivre le touch jusqu’au bout
-        display.getCurrentStage():setFocus(rect)
-        rect.isFocus = true
+            -- On capture le focus pour bien suivre le touch jusqu’au bout
+            display.getCurrentStage():setFocus(rect)
+            rect.isFocus = true
 
-    elseif rect.isFocus then
-        if phase == "ended" or phase == "cancelled" then
-            display.getCurrentStage():setFocus(nil)
-            rect.isFocus = false
+        elseif rect.isFocus then
+            if phase == "ended" or phase == "cancelled" then
+                display.getCurrentStage():setFocus(nil)
+                rect.isFocus = false
 
-            local elapsed = system.getTimer() - rect.touchStartTime
-
-            local i, j = rect.i, rect.j
+                local elapsed = system.getTimer() - rect.touchStartTime
+                local i, j = rect.i, rect.j
 
     -- CLIC LONG : Efface toujours
     if elapsed > 300 then
@@ -335,6 +335,7 @@ function scene:create(event)
             -- Poser la nouvelle couleur
             gridBlank[i][j] = newColor
             rect:setFillColor(unpack(colorMap[newColor]))
+            animation.fireWork(rect.x, rect.y, colorMap[newColor], scene.view)
 
             -- Retirer le marqueur si existant
             if rect.marker then
