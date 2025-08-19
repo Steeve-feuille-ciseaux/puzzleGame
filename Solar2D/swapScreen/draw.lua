@@ -249,6 +249,7 @@ function scene:create(event)
 
             gridBlank[i][j] = 99
             rect:setFillColor(unpack(colorMap[99]))
+            animation.ringBoom(rect.x, rect.y, colorMap[indexCell], scene.view)
 
             if not rect.marker then
                 local x, y = rect.x, rect.y
@@ -279,6 +280,7 @@ function scene:create(event)
 
                 gridBlank[i][j] = 99
                 rect:setFillColor(unpack(colorMap[99]))
+                animation.ringBoom(rect.x, rect.y, colorMap[indexCell], scene.view)
 
                 if not rect.marker then
                     local x, y = rect.x, rect.y

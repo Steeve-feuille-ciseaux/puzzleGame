@@ -54,6 +54,7 @@ v0.17.2 -> Repère colonne / ligne part 4 -> Repère de couleur sur la minigrill
 v0.17.2.1 -> Repère colonne / ligne part 5 -> prérequis repère grille principale
 v0.17.3 -> Repère colonne / ligne part 6 -> pRepère de couleur sur la grille intéractive
 v0.18.0 -> Animation lors qu'un pixel est placé
+v0.18.1 -> Animation lors qu'un pixel est retiré
 
 EN COURS : Changement d'écran
 
